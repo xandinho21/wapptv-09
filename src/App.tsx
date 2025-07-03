@@ -7,7 +7,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminProvider } from "./contexts/AdminContext";
 import Index from "./pages/Index";
 import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminLayout from "./pages/admin/AdminLayout";
+import WhatsappConfig from "./pages/admin/WhatsappConfig";
+import ButtonsConfig from "./pages/admin/ButtonsConfig";
+import PricingConfig from "./pages/admin/PricingConfig";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,7 +25,12 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/dashboard" element={<AdminLayout />}>
+              <Route index element={<WhatsappConfig />} />
+              <Route path="whatsapp" element={<WhatsappConfig />} />
+              <Route path="buttons" element={<ButtonsConfig />} />
+              <Route path="pricing" element={<PricingConfig />} />
+            </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
