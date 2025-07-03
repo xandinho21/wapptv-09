@@ -46,9 +46,9 @@ const Tutorials = ({
             </p>
           </div>
 
-          <div className="mx-[117px]">
-            <Carousel className="">
-              <CarouselContent className="">
+          <div className="mx-[26px] my-[25px]">
+            <Carousel className="px-0 mx-0">
+              <CarouselContent className="object-cover">
                 {tutorials.map(tutorial => <CarouselItem key={tutorial.id} className="my-[13px] mx-0 px-[27px]">
                     <div className={`${colors.bg} rounded-xl p-6 border-2 ${colors.border} ${colors.hover} transition-all duration-300 hover:scale-105 cursor-pointer h-full`} onClick={() => handleTutorialClick(tutorial.link)}>
                       <div className="aspect-square mb-4 overflow-hidden rounded-lg px-0 mx-[15px] py-0">
