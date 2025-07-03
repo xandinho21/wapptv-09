@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface Plan {
@@ -7,13 +8,6 @@ interface Plan {
   period: string;
   features: string[];
   popular: boolean;
-}
-
-interface Tutorial {
-  id: string;
-  title: string;
-  imageUrl: string;
-  link: string;
 }
 
 interface AdminData {
@@ -42,8 +36,6 @@ interface AdminData {
   kratorPrice: string;
   plans: Plan[];
   popularText: string;
-  tutorials: Tutorial[];
-  kratorTutorials: Tutorial[];
 }
 
 interface AdminContextType {
@@ -59,8 +51,6 @@ interface AdminContextType {
   updateKratorPrice: (price: string) => void;
   updatePlans: (plans: Plan[]) => void;
   updatePopularText: (text: string) => void;
-  updateTutorials: (tutorials: Tutorial[]) => void;
-  updateKratorTutorials: (tutorials: Tutorial[]) => void;
 }
 
 export const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -136,47 +126,7 @@ const DEFAULT_ADMIN_DATA: AdminData = {
       popular: false
     }
   ],
-  popularText: 'MAIS POPULAR',
-  tutorials: [
-    {
-      id: '1',
-      title: 'Como instalar no Smart TV',
-      imageUrl: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=400&fit=crop',
-      link: 'https://example.com/tutorial1'
-    },
-    {
-      id: '2',
-      title: 'Configuração no Android',
-      imageUrl: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=400&fit=crop',
-      link: 'https://example.com/tutorial2'
-    },
-    {
-      id: '3',
-      title: 'Setup no iOS',
-      imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop',
-      link: 'https://example.com/tutorial3'
-    },
-    {
-      id: '4',
-      title: 'Configuração no PC',
-      imageUrl: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=400&h=400&fit=crop',
-      link: 'https://example.com/tutorial4'
-    }
-  ],
-  kratorTutorials: [
-    {
-      id: '1',
-      title: 'Instalação do Sistema Krator',
-      imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=400&fit=crop',
-      link: 'https://example.com/krator-tutorial1'
-    },
-    {
-      id: '2',
-      title: 'Configuração Avançada',
-      imageUrl: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=400&fit=crop',
-      link: 'https://example.com/krator-tutorial2'
-    }
-  ]
+  popularText: 'MAIS POPULAR'
 };
 
 const ADMIN_PASSWORD = 'admin123';
@@ -265,18 +215,6 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
-  const updateTutorials = (tutorials: Tutorial[]) => {
-    const newData = { ...adminData, tutorials };
-    setAdminData(newData);
-    localStorage.setItem('adminData', JSON.stringify(newData));
-  };
-
-  const updateKratorTutorials = (tutorials: Tutorial[]) => {
-    const newData = { ...adminData, kratorTutorials: tutorials };
-    setAdminData(newData);
-    localStorage.setItem('adminData', JSON.stringify(newData));
-  };
-
   return (
     <AdminContext.Provider value={{
       isAuthenticated,
@@ -290,9 +228,7 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       updateResellerSettings,
       updateKratorPrice,
       updatePlans,
-      updatePopularText,
-      updateTutorials,
-      updateKratorTutorials
+      updatePopularText
     }}>
       {children}
     </AdminContext.Provider>

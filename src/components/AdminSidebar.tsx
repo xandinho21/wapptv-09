@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { MessageCircle, Settings, DollarSign, Star, BookOpen } from 'lucide-react';
+import { MessageCircle, Settings, DollarSign, Star } from 'lucide-react';
 
 const menuItems = [
   {
@@ -29,11 +29,6 @@ const menuItems = [
     title: 'Configurar Planos',
     url: '/admin/dashboard/plans',
     icon: Star,
-  },
-  {
-    title: 'Tutoriais',
-    url: '/admin/dashboard/tutorials',
-    icon: BookOpen,
   },
   {
     title: 'Tabela de Preços',
