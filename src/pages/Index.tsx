@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Hero from '../components/Hero';
 import Plans from '../components/Plans';
 import TrialSection from '../components/TrialSection';
+import Tutorials from '../components/Tutorials';
 import Krator from '../components/Krator';
 import ResellerSection from '../components/ResellerSection';
 import Footer from '../components/Footer';
@@ -15,7 +16,9 @@ const Index = () => {
       <Hero />
       <Plans />
       <TrialSection />
+      <Tutorials variant="green" />
       <Krator />
+      <Tutorials variant="purple" />
       <ResellerSection />
       <Footer />
     </div>

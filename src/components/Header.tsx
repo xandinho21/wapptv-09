@@ -43,6 +43,12 @@ const Header = () => {
               Krator
             </button>
             <button
+              onClick={() => scrollToSection('revenda')}
+              className="text-gray-300 hover:text-green-400 transition-colors duration-200"
+            >
+              Revenda
+            </button>
+            <button
               onClick={() => scrollToSection('contato')}
               className="text-gray-300 hover:text-green-400 transition-colors duration-200"
             >
@@ -80,6 +86,12 @@ const Header = () => {
                 className="text-left px-4 py-2 text-gray-300 hover:text-green-400 hover:bg-gray-700 transition-colors duration-200"
               >
                 Krator
+              </button>
+              <button
+                onClick={() => scrollToSection('revenda')}
+                className="text-left px-4 py-2 text-gray-300 hover:text-green-400 hover:bg-gray-700 transition-colors duration-200"
+              >
+                Revenda
               </button>
               <button
                 onClick={() => scrollToSection('contato')}
