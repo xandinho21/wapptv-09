@@ -1,6 +1,15 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+interface Plan {
+  id: string;
+  name: string;
+  price: string;
+  period: string;
+  features: string[];
+  popular: boolean;
+}
+
 interface AdminData {
   contacts: string[];
   resellerContacts: string[];
@@ -25,6 +34,8 @@ interface AdminData {
     }[];
   };
   kratorPrice: string;
+  plans: Plan[];
+  popularText: string;
 }
 
 interface AdminContextType {
@@ -38,6 +49,8 @@ interface AdminContextType {
   updateButtonTexts: (buttonTexts: AdminData['buttonTexts']) => void;
   updateResellerSettings: (settings: AdminData['resellerSettings']) => void;
   updateKratorPrice: (price: string) => void;
+  updatePlans: (plans: Plan[]) => void;
+  updatePopularText: (text: string) => void;
 }
 
 export const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -68,10 +81,55 @@ const DEFAULT_ADMIN_DATA: AdminData = {
       { credits: 500, price: 'R$ 6,00' }
     ]
   },
-  kratorPrice: 'R$ 25,00'
+  kratorPrice: 'R$ 25,00',
+  plans: [
+    {
+      id: '1',
+      name: 'Plano 1 Tela',
+      price: 'R$ 25,00',
+      period: 'por mês',
+      features: [
+        '1 Tela simultânea',
+        'Alta qualidade',
+        'Todos os canais',
+        'Filmes e séries',
+        'Suporte via whatsapp'
+      ],
+      popular: false
+    },
+    {
+      id: '2',
+      name: 'Plano 2 Telas',
+      price: 'R$ 35,00',
+      period: 'por mês',
+      features: [
+        '2 Telas simultâneas',
+        'Alta qualidade',
+        'Todos os canais',
+        'Filmes e séries',
+        'Suporte via whatsapp'
+      ],
+      popular: true
+    },
+    {
+      id: '3',
+      name: 'Plano 3 Telas',
+      price: 'R$ 45,00',
+      period: 'por mês',
+      features: [
+        '3 Telas simultâneas',
+        'Alta qualidade',
+        'Todos os canais',
+        'Filmes e séries',
+        'Suporte via whatsapp'
+      ],
+      popular: false
+    }
+  ],
+  popularText: 'MAIS POPULAR'
 };
 
-const ADMIN_PASSWORD = 'admin123'; // Em produção, isso deveria vir de um backend seguro
+const ADMIN_PASSWORD = 'admin123';
 
 export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -145,6 +203,18 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
+  const updatePlans = (plans: Plan[]) => {
+    const newData = { ...adminData, plans };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
+  };
+
+  const updatePopularText = (popularText: string) => {
+    const newData = { ...adminData, popularText };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
+  };
+
   return (
     <AdminContext.Provider value={{
       isAuthenticated,
@@ -156,7 +226,9 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       updateMessages,
       updateButtonTexts,
       updateResellerSettings,
-      updateKratorPrice
+      updateKratorPrice,
+      updatePlans,
+      updatePopularText
     }}>
       {children}
     </AdminContext.Provider>

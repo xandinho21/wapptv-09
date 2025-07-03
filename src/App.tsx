@@ -10,6 +10,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminLayout from "./pages/admin/AdminLayout";
 import WhatsappConfig from "./pages/admin/WhatsappConfig";
 import ButtonsConfig from "./pages/admin/ButtonsConfig";
+import PlansConfig from "./pages/admin/PlansConfig";
 import PricingConfig from "./pages/admin/PricingConfig";
 import NotFound from "./pages/NotFound";
 
@@ -29,9 +30,9 @@ const App = () => (
               <Route index element={<WhatsappConfig />} />
               <Route path="whatsapp" element={<WhatsappConfig />} />
               <Route path="buttons" element={<ButtonsConfig />} />
+              <Route path="plans" element={<PlansConfig />} />
               <Route path="pricing" element={<PricingConfig />} />
             </Route>
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

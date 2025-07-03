@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useAdmin } from '../hooks/useAdmin';
 
@@ -9,43 +10,6 @@ const Plans = () => {
     const message = encodeURIComponent(adminData.messages.default);
     window.open(`https://wa.me/${randomContact}?text=${message}`, '_blank');
   };
-
-  const plans = [
-    {
-      name: 'Plano 1 Tela',
-      price: 'R$ 25,00',
-      features: [
-        '1 Tela simultânea',
-        'Alta qualidade',
-        'Todos os canais',
-        'Filmes e séries',
-        'Suporte via whatsapp'
-      ]
-    },
-    {
-      name: 'Plano 2 Telas',
-      price: 'R$ 35,00',
-      features: [
-        '2 Telas simultâneas',
-        'Alta qualidade',
-        'Todos os canais',
-        'Filmes e séries',
-        'Suporte via whatsapp'
-      ],
-      popular: true
-    },
-    {
-      name: 'Plano 3 Telas',
-      price: 'R$ 45,00',
-      features: [
-        '3 Telas simultâneas',
-        'Alta qualidade',
-        'Todos os canais',
-        'Filmes e séries',
-        'Suporte via whatsapp'
-      ]
-    }
-  ];
 
   return (
     <section id="planos" className="py-20 bg-gray-900">
@@ -60,9 +24,9 @@ const Plans = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {plans.map((plan, index) => (
+          {adminData.plans.map((plan) => (
             <div
-              key={index}
+              key={plan.id}
               className={`relative bg-gray-800 rounded-2xl p-8 border-2 transition-all duration-300 hover:scale-105 ${
                 plan.popular
                   ? 'border-green-400 shadow-2xl shadow-green-400/20'
@@ -71,14 +35,14 @@ const Plans = () => {
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">
-                  MAIS POPULAR
+                  {adminData.popularText}
                 </div>
               )}
 
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
                 <div className="text-4xl font-bold text-green-400 mb-2">{plan.price}</div>
-                <div className="text-gray-400">por mês</div>
+                <div className="text-gray-400">{plan.period}</div>
               </div>
 
               <ul className="space-y-3 mb-8">
