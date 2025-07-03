@@ -57,9 +57,9 @@ const AdminSidebar = () => {
           <SidebarGroupLabel className="text-gray-400 text-xs uppercase tracking-wider">
             {state === 'expanded' ? 'Configurações' : ''}
           </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {menuItems.map(item => <SidebarMenuItem key={item.title} className="bg-green-950">
+          <SidebarGroupContent className="">
+            <SidebarMenu className="">
+              {menuItems.map(item => <SidebarMenuItem key={item.title} className="hover:bg-gray-900 ">
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} className={({
                   isActive
