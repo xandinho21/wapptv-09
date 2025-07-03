@@ -16,9 +16,9 @@ const Index = () => {
       <Hero />
       <Plans />
       <TrialSection />
-      <Tutorials variant="green" />
+      <Tutorials variant="green" type="wapp" />
       <Krator />
-      <Tutorials variant="purple" />
+      <Tutorials variant="purple" type="krator" />
       <ResellerSection />
       <Footer />
     </div>

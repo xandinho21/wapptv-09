@@ -5,9 +5,10 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 
 interface TutorialsProps {
   variant?: 'green' | 'purple';
+  type?: 'wapp' | 'krator';
 }
 
-const Tutorials = ({ variant = 'green' }: TutorialsProps) => {
+const Tutorials = ({ variant = 'green', type = 'wapp' }: TutorialsProps) => {
   const { adminData } = useAdmin();
 
   const handleTutorialClick = (link: string) => {
@@ -30,8 +31,9 @@ const Tutorials = ({ variant = 'green' }: TutorialsProps) => {
   };
 
   const colors = colorClasses[variant];
+  const tutorials = type === 'krator' ? adminData.kratorTutorials : adminData.tutorials;
 
-  if (!adminData.tutorials || adminData.tutorials.length === 0) {
+  if (!tutorials || tutorials.length === 0) {
     return null;
   }
 
@@ -51,7 +53,7 @@ const Tutorials = ({ variant = 'green' }: TutorialsProps) => {
           <div className="relative">
             <Carousel className="w-full max-w-5xl mx-auto">
               <CarouselContent className="-ml-2 md:-ml-4">
-                {adminData.tutorials.map((tutorial) => (
+                {tutorials.map((tutorial) => (
                   <CarouselItem key={tutorial.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                     <div 
                       className={`${colors.bg} rounded-xl p-6 border-2 ${colors.border} ${colors.hover} transition-all duration-300 hover:scale-105 cursor-pointer h-full`}
