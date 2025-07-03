@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAdmin } from '../hooks/useAdmin';
 
@@ -21,7 +20,7 @@ const ResellerSection = () => {
   }
 
   return (
-    <section className="py-12 bg-gray-800">
+    <section id="revenda" className="py-12 bg-gray-800">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <button

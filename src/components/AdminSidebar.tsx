@@ -31,6 +31,11 @@ const menuItems = [
     icon: Star,
   },
   {
+    title: 'Tutoriais',
+    url: '/admin/dashboard/tutorials',
+    icon: Settings,
+  },
+  {
     title: 'Tabela de Preços',
     url: '/admin/dashboard/pricing',
     icon: DollarSign,

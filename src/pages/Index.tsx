@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
@@ -7,6 +6,7 @@ import TrialSection from '../components/TrialSection';
 import Krator from '../components/Krator';
 import ResellerSection from '../components/ResellerSection';
 import Footer from '../components/Footer';
+import Tutorials from '../components/Tutorials';
 
 const Index = () => {
   return (
@@ -15,7 +15,9 @@ const Index = () => {
       <Hero />
       <Plans />
       <TrialSection />
+      <Tutorials type="wapp" />
       <Krator />
+      <Tutorials type="krator" />
       <ResellerSection />
       <Footer />
     </div>

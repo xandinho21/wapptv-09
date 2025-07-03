@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface Plan {
@@ -8,6 +7,13 @@ interface Plan {
   period: string;
   features: string[];
   popular: boolean;
+}
+
+interface Tutorial {
+  id: string;
+  title: string;
+  image: string;
+  link: string;
 }
 
 interface AdminData {
@@ -36,6 +42,10 @@ interface AdminData {
   kratorPrice: string;
   plans: Plan[];
   popularText: string;
+  tutorials: {
+    wapp: Tutorial[];
+    krator: Tutorial[];
+  };
 }
 
 interface AdminContextType {
@@ -51,6 +61,7 @@ interface AdminContextType {
   updateKratorPrice: (price: string) => void;
   updatePlans: (plans: Plan[]) => void;
   updatePopularText: (text: string) => void;
+  updateTutorials: (type: 'wapp' | 'krator', tutorials: Tutorial[]) => void;
 }
 
 export const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -126,7 +137,31 @@ const DEFAULT_ADMIN_DATA: AdminData = {
       popular: false
     }
   ],
-  popularText: 'MAIS POPULAR'
+  popularText: 'MAIS POPULAR',
+  tutorials: {
+    wapp: [
+      {
+        id: '1',
+        title: 'Como configurar sua TV',
+        image: '/placeholder.svg',
+        link: 'https://example.com/tutorial1'
+      },
+      {
+        id: '2',
+        title: 'Instalação do aplicativo',
+        image: '/placeholder.svg',
+        link: 'https://example.com/tutorial2'
+      }
+    ],
+    krator: [
+      {
+        id: '1',
+        title: 'Setup inicial Krator',
+        image: '/placeholder.svg',
+        link: 'https://example.com/krator1'
+      }
+    ]
+  }
 };
 
 const ADMIN_PASSWORD = 'admin123';
@@ -215,6 +250,18 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
+  const updateTutorials = (type: 'wapp' | 'krator', tutorials: Tutorial[]) => {
+    const newData = { 
+      ...adminData, 
+      tutorials: {
+        ...adminData.tutorials,
+        [type]: tutorials
+      }
+    };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
+  };
+
   return (
     <AdminContext.Provider value={{
       isAuthenticated,
@@ -228,7 +275,8 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       updateResellerSettings,
       updateKratorPrice,
       updatePlans,
-      updatePopularText
+      updatePopularText,
+      updateTutorials
     }}>
       {children}
     </AdminContext.Provider>
