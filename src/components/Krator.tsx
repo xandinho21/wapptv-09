@@ -19,7 +19,7 @@ const Krator = () => {
 
   const kratorPlan = {
     name: 'Krator 1 Tela',
-    price: 'R$ 25,00',
+    price: adminData.kratorPrice,
     features: ['1 Tela simultânea', 'Sistema Krator incluído', 'Alta qualidade', 'Streaming otimizado', 'Suporte via whatsapp']
   };
 
@@ -47,10 +47,12 @@ const Krator = () => {
                 </p>
                 
                 <div className="space-y-4">
-                  {['Streaming em tempo real otimizado', 'Qualidade adaptativa automática', 'Cache inteligente para maior velocidade', 'Interface intuitiva e responsiva'].map((feature, index) => <div key={index} className="flex items-center">
+                  {['Streaming em tempo real otimizado', 'Qualidade adaptativa automática', 'Cache inteligente para maior velocidade', 'Interface intuitiva e responsiva'].map((feature, index) => (
+                    <div key={index} className="flex items-center">
                       <div className="w-3 h-3 bg-purple-400 rounded-full mr-4"></div>
                       <span className="text-gray-300 text-base">{feature}</span>
-                    </div>)}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -87,7 +89,7 @@ const Krator = () => {
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 {/* Plano Krator */}
-                <div className="bg-purple-800/50 backdrop-blur-sm rounded-xl p-6 border-2 border-purple-300 shadow-xl shadow-purple-400/20 transition-all duration-300 hover:scale-105">
+                <div className="bg-purple-800/50 backdrop-blur-sm rounded-xl p-6 border-2 border-purple-300 shadow-xl shadow-purple-400/20 transition-all duration-300 hover:scale-105 relative">
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-purple-300 text-purple-900 px-3 py-1 rounded-full text-sm font-bold">
                     DISPONÍVEL
                   </div>

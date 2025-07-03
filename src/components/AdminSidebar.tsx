@@ -55,7 +55,7 @@ const AdminSidebar = () => {
   };
 
   return (
-    <Sidebar className="bg-gray-800 border-gray-700">
+    <Sidebar className="bg-gray-900 border-gray-700">
       <SidebarHeader className="p-6 border-b border-gray-700">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
@@ -70,7 +70,7 @@ const AdminSidebar = () => {
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="bg-gray-900">
         <SidebarGroup>
           <SidebarGroupLabel className="text-gray-400 text-xs uppercase tracking-wider">
             {state === 'expanded' ? 'Configurações' : ''}
@@ -86,7 +86,7 @@ const AdminSidebar = () => {
                         `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
                           isActive
                             ? 'bg-green-500 text-white'
-                            : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                            : 'text-gray-300 hover:bg-gray-800 hover:text-white'
                         }`
                       }
                     >
@@ -101,12 +101,12 @@ const AdminSidebar = () => {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-gray-700">
+      <SidebarFooter className="p-4 border-t border-gray-700 bg-gray-900">
         <div className="space-y-2">
           <Button
             onClick={() => navigate('/')}
             variant="outline"
-            className="w-full border-gray-600 text-gray-300 hover:bg-gray-700 justify-start"
+            className="w-full border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white justify-start"
             size={state === 'expanded' ? 'default' : 'icon'}
           >
             <Eye size={16} />

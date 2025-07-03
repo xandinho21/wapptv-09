@@ -24,6 +24,7 @@ interface AdminData {
       price: string;
     }[];
   };
+  kratorPrice: string;
 }
 
 interface AdminContextType {
@@ -36,6 +37,7 @@ interface AdminContextType {
   updateMessages: (messages: AdminData['messages']) => void;
   updateButtonTexts: (buttonTexts: AdminData['buttonTexts']) => void;
   updateResellerSettings: (settings: AdminData['resellerSettings']) => void;
+  updateKratorPrice: (price: string) => void;
 }
 
 export const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -65,7 +67,8 @@ const DEFAULT_ADMIN_DATA: AdminData = {
       { credits: 100, price: 'R$ 7,00' },
       { credits: 500, price: 'R$ 6,00' }
     ]
-  }
+  },
+  kratorPrice: 'R$ 25,00'
 };
 
 const ADMIN_PASSWORD = 'admin123'; // Em produção, isso deveria vir de um backend seguro
@@ -136,6 +139,12 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
+  const updateKratorPrice = (kratorPrice: string) => {
+    const newData = { ...adminData, kratorPrice };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
+  };
+
   return (
     <AdminContext.Provider value={{
       isAuthenticated,
@@ -146,7 +155,8 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       updateResellerContacts,
       updateMessages,
       updateButtonTexts,
-      updateResellerSettings
+      updateResellerSettings,
+      updateKratorPrice
     }}>
       {children}
     </AdminContext.Provider>
