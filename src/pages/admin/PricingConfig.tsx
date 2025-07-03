@@ -111,7 +111,7 @@ const PricingConfig = () => {
                   <Label className="text-gray-300">Preço</Label>
                   <Input value={price.price} onChange={e => updateWappPrice(index, 'price', e.target.value)} className="mt-1 bg-gray-600 border-gray-500 text-white" placeholder="R$ 15,00" />
                 </div>
-                <div>
+                <div className="text-gray-900">
                   <Label className="text-gray-300">Características</Label>
                   <Input value={price.features} onChange={e => updateWappPrice(index, 'features', e.target.value)} className="mt-1 bg-gray-600 border-gray-500 text-white" placeholder="1 mês" />
                 </div>
