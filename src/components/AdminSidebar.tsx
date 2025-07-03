@@ -59,7 +59,7 @@ const AdminSidebar = () => {
           </SidebarGroupLabel>
           <SidebarGroupContent className="">
             <SidebarMenu className="">
-              {menuItems.map(item => <SidebarMenuItem key={item.title} className="hover:bg-gray-900 ">
+              {menuItems.map(item => <SidebarMenuItem key={item.title} className="">
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} className={({
                   isActive
