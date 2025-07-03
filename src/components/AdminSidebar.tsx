@@ -59,7 +59,7 @@ const AdminSidebar = () => {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menuItems.map(item => <SidebarMenuItem key={item.title}>
+              {menuItems.map(item => <SidebarMenuItem key={item.title} className="bg-green-950">
                   <SidebarMenuButton asChild>
                     <NavLink to={item.url} className={({
                   isActive
