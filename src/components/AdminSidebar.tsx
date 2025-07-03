@@ -38,15 +38,16 @@ const menuItems = [
 ];
 
 const AdminSidebar = () => {
-  const { collapsed } = useSidebar();
+  const { state } = useSidebar();
   const location = useLocation();
+  const isCollapsed = state === 'collapsed';
 
   return (
-    <Sidebar className={`${collapsed ? 'w-14' : 'w-64'} bg-gray-800 border-r border-gray-700`}>
+    <Sidebar className={`${isCollapsed ? 'w-14' : 'w-64'} bg-gray-800 border-r border-gray-700`}>
       <SidebarContent className="bg-gray-800">
         <SidebarGroup>
           <SidebarGroupLabel className="text-green-400 font-semibold px-4 py-2">
-            {!collapsed && 'Menu Principal'}
+            {!isCollapsed && 'Menu Principal'}
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -62,7 +63,7 @@ const AdminSidebar = () => {
                   >
                     <NavLink to={item.url} className="flex items-center gap-3 px-4 py-2">
                       <item.icon size={20} />
-                      {!collapsed && <span>{item.title}</span>}
+                      {!isCollapsed && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
