@@ -1,20 +1,20 @@
-
 import React from 'react';
 import { useAdmin } from '../hooks/useAdmin';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
-
 interface TutorialsProps {
   variant?: 'green' | 'purple';
   type?: 'wapp' | 'krator';
 }
-
-const Tutorials = ({ variant = 'green', type = 'wapp' }: TutorialsProps) => {
-  const { adminData } = useAdmin();
-
+const Tutorials = ({
+  variant = 'green',
+  type = 'wapp'
+}: TutorialsProps) => {
+  const {
+    adminData
+  } = useAdmin();
   const handleTutorialClick = (link: string) => {
     window.open(link, '_blank');
   };
-
   const colorClasses = {
     green: {
       bg: 'bg-gray-800',
@@ -29,16 +29,12 @@ const Tutorials = ({ variant = 'green', type = 'wapp' }: TutorialsProps) => {
       hover: 'hover:border-purple-400/50'
     }
   };
-
   const colors = colorClasses[variant];
   const tutorials = type === 'krator' ? adminData.kratorTutorials : adminData.tutorials;
-
   if (!tutorials || tutorials.length === 0) {
     return null;
   }
-
-  return (
-    <section className={`py-16 ${colors.bg}`}>
+  return <section className={`py-16 ${colors.bg}`}>
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -50,29 +46,20 @@ const Tutorials = ({ variant = 'green', type = 'wapp' }: TutorialsProps) => {
             </p>
           </div>
 
-          <div className="relative">
+          <div className="relative mx-0 py-0 px-0">
             <Carousel className="w-full max-w-5xl mx-auto">
               <CarouselContent className="-ml-2 md:-ml-4">
-                {tutorials.map((tutorial) => (
-                  <CarouselItem key={tutorial.id} className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
-                    <div 
-                      className={`${colors.bg} rounded-xl p-6 border-2 ${colors.border} ${colors.hover} transition-all duration-300 hover:scale-105 cursor-pointer h-full`}
-                      onClick={() => handleTutorialClick(tutorial.link)}
-                    >
-                      <div className="aspect-square mb-4 overflow-hidden rounded-lg">
-                        <img 
-                          src={tutorial.imageUrl} 
-                          alt={tutorial.title}
-                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                        />
+                {tutorials.map(tutorial => <CarouselItem key={tutorial.id} className="my-[13px] mx-0 px-[27px]">
+                    <div className={`${colors.bg} rounded-xl p-6 border-2 ${colors.border} ${colors.hover} transition-all duration-300 hover:scale-105 cursor-pointer h-full`} onClick={() => handleTutorialClick(tutorial.link)}>
+                      <div className="aspect-square mb-4 overflow-hidden rounded-lg px-0 mx-[15px] py-0">
+                        <img src={tutorial.imageUrl} alt={tutorial.title} className="w-full h-full transition-transform duration-300 hover:scale-110 object-cover" />
                       </div>
                       
                       <h4 className={`text-lg font-bold text-center ${colors.accent} hover:underline`}>
                         {tutorial.title}
                       </h4>
                     </div>
-                  </CarouselItem>
-                ))}
+                  </CarouselItem>)}
               </CarouselContent>
               <CarouselPrevious className="left-0" />
               <CarouselNext className="right-0" />
@@ -80,8 +67,6 @@ const Tutorials = ({ variant = 'green', type = 'wapp' }: TutorialsProps) => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Tutorials;
