@@ -123,7 +123,7 @@ const PricingConfig = () => {
               </div>)}
 
             <div className="flex gap-2">
-              <Button onClick={addWappPrice} variant="outline" className="border-gray-600 text-gray-300">
+              <Button onClick={addWappPrice} variant="outline" className="border-gray-600 text-zinc-900">
                 <Plus size={16} className="mr-2" />
                 Adicionar Plano
               </Button>
