@@ -52,7 +52,7 @@ const AdminSidebar = () => {
         </div>
       </SidebarHeader>
 
-      <SidebarContent className="bg-gray-900 rounded-sm my-0 py-0">
+      <SidebarContent className="bg-gray-900 ">
         <SidebarGroup className="py-0">
           <SidebarGroupLabel className="text-gray-400 text-xs uppercase tracking-wider">
             {state === 'expanded' ? 'Configurações' : ''}
