@@ -23,6 +23,7 @@ interface Tutorial {
 
 interface AdminConfig {
   id: string;
+  user_id: string;
   contacts: string[];
   reseller_contacts: string[];
   messages: {
@@ -53,34 +54,60 @@ export const useSupabaseAdmin = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
 
-  // Fetch admin config
+  // Fetch admin config using raw query
   const { data: adminConfig } = useQuery({
     queryKey: ['admin-config', user?.id],
     queryFn: async () => {
       if (!user?.id) return null;
       
       const { data, error } = await supabase
-        .from('admin_configs')
+        .from('admin_configs' as any)
         .select('*')
         .eq('user_id', user.id)
         .single();
 
       if (error && error.code !== 'PGRST116') {
         console.error('Error fetching admin config:', error);
-        throw error;
-      }
-
-      // If no config exists, create one
-      if (!data) {
+        
+        // If no config exists, create one with default values
         const { data: newConfig, error: insertError } = await supabase
-          .from('admin_configs')
-          .insert([{ user_id: user.id }])
+          .from('admin_configs' as any)
+          .insert([{ 
+            user_id: user.id,
+            contacts: ['+5519993075627', '+5519995753398'],
+            reseller_contacts: ['+5519993075627'],
+            messages: {
+              default: 'Olá! Gostaria de contratar um plano da Wapp TV. Podem me ajudar?',
+              krator: 'Olá! Gostaria de contratar um plano da Wapp TV com o sistema Krator. Podem me ajudar?',
+              contact: 'Olá! Gostaria de mais informações sobre a Wapp TV.',
+              trial4h: 'Olá! Gostaria de solicitar um teste grátis de 4 horas da Wapp TV. Podem me ajudar?',
+              trial1h: 'Olá! Gostaria de solicitar um teste grátis de 1 hora do sistema Krator. Podem me ajudar?',
+              reseller: 'Olá! Gostaria de informações sobre como me tornar um revendedor da Wapp TV. Podem me ajudar?'
+            },
+            button_texts: {
+              trial4h: 'Teste Grátis 4h',
+              trial1h: 'Teste Grátis 1h',
+              reseller: 'Quero ser um revendedor'
+            },
+            reseller_settings: {
+              showButton: true,
+              creditPrices: [
+                { credits: 10, price: 'R$ 11,00' },
+                { credits: 30, price: 'R$ 10,00' },
+                { credits: 50, price: 'R$ 8,00' },
+                { credits: 100, price: 'R$ 7,00' },
+                { credits: 500, price: 'R$ 6,00' }
+              ]
+            },
+            krator_price: 'R$ 25,00',
+            popular_text: 'MAIS POPULAR'
+          }])
           .select()
           .single();
 
         if (insertError) {
           console.error('Error creating admin config:', insertError);
-          throw insertError;
+          return null;
         }
         return newConfig;
       }
@@ -97,14 +124,14 @@ export const useSupabaseAdmin = () => {
       if (!user?.id) return [];
       
       const { data, error } = await supabase
-        .from('plans')
+        .from('plans' as any)
         .select('*')
         .eq('user_id', user.id)
         .order('created_at');
 
       if (error) {
         console.error('Error fetching plans:', error);
-        throw error;
+        return [];
       }
 
       return data || [];
@@ -119,18 +146,18 @@ export const useSupabaseAdmin = () => {
       if (!user?.id) return { wapp: [], krator: [] };
       
       const { data, error } = await supabase
-        .from('tutorials')
+        .from('tutorials' as any)
         .select('*')
         .eq('user_id', user.id)
         .order('created_at');
 
       if (error) {
         console.error('Error fetching tutorials:', error);
-        throw error;
+        return { wapp: [], krator: [] };
       }
 
-      const wappTutorials = data?.filter(t => t.type === 'wapp') || [];
-      const kratorTutorials = data?.filter(t => t.type === 'krator') || [];
+      const wappTutorials = data?.filter((t: any) => t.type === 'wapp') || [];
+      const kratorTutorials = data?.filter((t: any) => t.type === 'krator') || [];
 
       return {
         wapp: wappTutorials,
@@ -146,7 +173,7 @@ export const useSupabaseAdmin = () => {
       if (!user?.id || !adminConfig?.id) throw new Error('User not authenticated');
 
       const { error } = await supabase
-        .from('admin_configs')
+        .from('admin_configs' as any)
         .update(updates)
         .eq('id', adminConfig.id);
 
@@ -163,7 +190,7 @@ export const useSupabaseAdmin = () => {
       if (!user?.id) throw new Error('User not authenticated');
 
       // Delete existing plans
-      await supabase.from('plans').delete().eq('user_id', user.id);
+      await supabase.from('plans' as any).delete().eq('user_id', user.id);
 
       // Insert new plans
       const plansToInsert = newPlans.map(plan => ({
@@ -171,8 +198,10 @@ export const useSupabaseAdmin = () => {
         user_id: user.id,
       }));
 
-      const { error } = await supabase.from('plans').insert(plansToInsert);
-      if (error) throw error;
+      if (plansToInsert.length > 0) {
+        const { error } = await supabase.from('plans' as any).insert(plansToInsert);
+        if (error) throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['plans', user?.id] });
@@ -185,7 +214,7 @@ export const useSupabaseAdmin = () => {
       if (!user?.id) throw new Error('User not authenticated');
 
       // Delete existing tutorials of this type
-      await supabase.from('tutorials').delete().eq('user_id', user.id).eq('type', type);
+      await supabase.from('tutorials' as any).delete().eq('user_id', user.id).eq('type', type);
 
       // Insert new tutorials
       const tutorialsToInsert = newTutorials.map(tutorial => ({
@@ -195,7 +224,7 @@ export const useSupabaseAdmin = () => {
       }));
 
       if (tutorialsToInsert.length > 0) {
-        const { error } = await supabase.from('tutorials').insert(tutorialsToInsert);
+        const { error } = await supabase.from('tutorials' as any).insert(tutorialsToInsert);
         if (error) throw error;
       }
     },
