@@ -3,7 +3,24 @@ import React from 'react';
 import { useAdmin } from '../hooks/useAdmin';
 
 const Plans = () => {
-  const { adminData } = useAdmin();
+  const { adminData, loading } = useAdmin();
+
+  if (loading) {
+    return (
+      <section id="planos" className="py-20 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Escolha Seu <span className="text-green-400">Plano</span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Carregando planos...
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const handleBuyClick = () => {
     const randomContact = adminData.contacts[Math.floor(Math.random() * adminData.contacts.length)];

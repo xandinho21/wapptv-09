@@ -9,7 +9,114 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      admin_settings: {
+        Row: {
+          button_texts: Json
+          contacts: string[]
+          created_at: string
+          id: string
+          krator_price: string
+          messages: Json
+          popular_text: string
+          reseller_contacts: string[]
+          reseller_settings: Json
+          updated_at: string
+        }
+        Insert: {
+          button_texts?: Json
+          contacts?: string[]
+          created_at?: string
+          id?: string
+          krator_price?: string
+          messages?: Json
+          popular_text?: string
+          reseller_contacts?: string[]
+          reseller_settings?: Json
+          updated_at?: string
+        }
+        Update: {
+          button_texts?: Json
+          contacts?: string[]
+          created_at?: string
+          id?: string
+          krator_price?: string
+          messages?: Json
+          popular_text?: string
+          reseller_contacts?: string[]
+          reseller_settings?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      plans: {
+        Row: {
+          created_at: string
+          display_order: number
+          features: string[]
+          id: string
+          name: string
+          period: string
+          popular: boolean
+          price: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          features?: string[]
+          id?: string
+          name: string
+          period: string
+          popular?: boolean
+          price: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          features?: string[]
+          id?: string
+          name?: string
+          period?: string
+          popular?: boolean
+          price?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tutorials: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          image_url: string | null
+          link: string
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          link: string
+          title: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          image_url?: string | null
+          link?: string
+          title?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
