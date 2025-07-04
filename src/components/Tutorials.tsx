@@ -14,27 +14,8 @@ interface TutorialsProps {
 }
 
 const Tutorials: React.FC<TutorialsProps> = ({ type }) => {
-  const { adminData, loading } = useAdmin();
+  const { adminData } = useAdmin();
   const tutorials = adminData.tutorials[type];
-
-  if (loading) {
-    const isKrator = type === 'krator';
-    const bgClass = isKrator 
-      ? 'bg-gradient-to-br from-purple-900 via-purple-800 to-gray-900' 
-      : 'bg-gray-800';
-
-    return (
-      <section className={`py-16 ${bgClass}`}>
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Carregando tutoriais...
-            </h2>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   if (!tutorials || tutorials.length === 0) {
     return null;
@@ -44,6 +25,7 @@ const Tutorials: React.FC<TutorialsProps> = ({ type }) => {
   const bgClass = isKrator 
     ? 'bg-gradient-to-br from-purple-900 via-purple-800 to-gray-900' 
     : 'bg-gray-800';
+  const titleColor = isKrator ? 'text-purple-400' : 'text-green-400';
   const cardBg = isKrator ? 'bg-purple-800/30' : 'bg-green-800/30';
   const borderColor = isKrator ? 'border-purple-400/20' : 'border-green-400/20';
 
@@ -52,7 +34,7 @@ const Tutorials: React.FC<TutorialsProps> = ({ type }) => {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className={`text-3xl md:text-4xl font-bold text-white mb-4`}>
               Tutoriais {isKrator ? 'Krator' : 'Wapp TV'}
             </h2>
             <p className="text-xl text-gray-300">
@@ -84,7 +66,7 @@ const Tutorials: React.FC<TutorialsProps> = ({ type }) => {
                           className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                         />
                       </div>
-                      <h3 className="text-lg font-semibold text-white text-center">
+                      <h3 className={`text-lg font-semibold text-white text-center`}>
                         {tutorial.title}
                       </h3>
                     </div>

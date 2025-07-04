@@ -1,6 +1,4 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useAdminSettings, usePlans, useTutorials, useUpdateAdminSettings, useUpdatePlans, useUpdateTutorials } from '../hooks/useSupabaseData';
 
 interface Plan {
   id: string;
@@ -53,7 +51,6 @@ interface AdminData {
 interface AdminContextType {
   isAuthenticated: boolean;
   adminData: AdminData;
-  loading: boolean;
   login: (password: string) => boolean;
   logout: () => void;
   updateContacts: (contacts: string[]) => void;
@@ -69,74 +66,127 @@ interface AdminContextType {
 
 export const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
+const DEFAULT_ADMIN_DATA: AdminData = {
+  contacts: ['+5519993075627', '+5519995753398'],
+  resellerContacts: ['+5519993075627'],
+  messages: {
+    default: 'Olá! Gostaria de contratar um plano da Wapp TV. Podem me ajudar?',
+    krator: 'Olá! Gostaria de contratar um plano da Wapp TV com o sistema Krator. Podem me ajudar?',
+    contact: 'Olá! Gostaria de mais informações sobre a Wapp TV.',
+    trial4h: 'Olá! Gostaria de solicitar um teste grátis de 4 horas da Wapp TV. Podem me ajudar?',
+    trial1h: 'Olá! Gostaria de solicitar um teste grátis de 1 hora do sistema Krator. Podem me ajudar?',
+    reseller: 'Olá! Gostaria de informações sobre como me tornar um revendedor da Wapp TV. Podem me ajudar?'
+  },
+  buttonTexts: {
+    trial4h: 'Teste Grátis 4h',
+    trial1h: 'Teste Grátis 1h',
+    reseller: 'Quero ser um revendedor'
+  },
+  resellerSettings: {
+    showButton: true,
+    creditPrices: [
+      { credits: 10, price: 'R$ 11,00' },
+      { credits: 30, price: 'R$ 10,00' },
+      { credits: 50, price: 'R$ 8,00' },
+      { credits: 100, price: 'R$ 7,00' },
+      { credits: 500, price: 'R$ 6,00' }
+    ]
+  },
+  kratorPrice: 'R$ 25,00',
+  plans: [
+    {
+      id: '1',
+      name: 'Plano 1 Tela',
+      price: 'R$ 25,00',
+      period: 'por mês',
+      features: [
+        '1 Tela simultânea',
+        'Alta qualidade',
+        'Todos os canais',
+        'Filmes e séries',
+        'Suporte via whatsapp'
+      ],
+      popular: false
+    },
+    {
+      id: '2',
+      name: 'Plano 2 Telas',
+      price: 'R$ 35,00',
+      period: 'por mês',
+      features: [
+        '2 Telas simultâneas',
+        'Alta qualidade',
+        'Todos os canais',
+        'Filmes e séries',
+        'Suporte via whatsapp'
+      ],
+      popular: true
+    },
+    {
+      id: '3',
+      name: 'Plano 3 Telas',
+      price: 'R$ 45,00',
+      period: 'por mês',
+      features: [
+        '3 Telas simultâneas',
+        'Alta qualidade',
+        'Todos os canais',
+        'Filmes e séries',
+        'Suporte via whatsapp'
+      ],
+      popular: false
+    }
+  ],
+  popularText: 'MAIS POPULAR',
+  tutorials: {
+    wapp: [
+      {
+        id: '1',
+        title: 'Como configurar sua TV',
+        image: '/placeholder.svg',
+        link: 'https://example.com/tutorial1'
+      },
+      {
+        id: '2',
+        title: 'Instalação do aplicativo',
+        image: '/placeholder.svg',
+        link: 'https://example.com/tutorial2'
+      }
+    ],
+    krator: [
+      {
+        id: '1',
+        title: 'Setup inicial Krator',
+        image: '/placeholder.svg',
+        link: 'https://example.com/krator1'
+      }
+    ]
+  }
+};
+
 const ADMIN_PASSWORD = 'admin123';
 
 export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  const { data: adminSettings, isLoading: adminLoading } = useAdminSettings();
-  const { data: plans, isLoading: plansLoading } = usePlans();
-  const { data: wappTutorials, isLoading: wappTutorialsLoading } = useTutorials('wapp');
-  const { data: kratorTutorials, isLoading: kratorTutorialsLoading } = useTutorials('krator');
-  
-  const updateAdminSettingsMutation = useUpdateAdminSettings();
-  const updatePlansMutation = useUpdatePlans();
-  const updateTutorialsMutation = useUpdateTutorials();
-
-  const loading = adminLoading || plansLoading || wappTutorialsLoading || kratorTutorialsLoading;
+  const [adminData, setAdminData] = useState<AdminData>(DEFAULT_ADMIN_DATA);
 
   useEffect(() => {
+    // Carregar dados do localStorage
     const storedAuth = localStorage.getItem('adminAuth');
+    const storedData = localStorage.getItem('adminData');
+    
     if (storedAuth === 'true') {
       setIsAuthenticated(true);
     }
-  }, []);
-
-  const adminData: AdminData = {
-    contacts: adminSettings?.contacts || [],
-    resellerContacts: adminSettings?.reseller_contacts || [],
-    messages: adminSettings?.messages || {
-      default: '',
-      krator: '',
-      contact: '',
-      trial4h: '',
-      trial1h: '',
-      reseller: ''
-    },
-    buttonTexts: adminSettings?.button_texts || {
-      trial4h: '',
-      trial1h: '',
-      reseller: ''
-    },
-    resellerSettings: adminSettings?.reseller_settings || {
-      showButton: true,
-      creditPrices: []
-    },
-    kratorPrice: adminSettings?.krator_price || 'R$ 25,00',
-    plans: plans?.map(plan => ({
-      id: plan.id,
-      name: plan.name,
-      price: plan.price,
-      period: plan.period,
-      features: plan.features,
-      popular: plan.popular
-    })) || [],
-    popularText: adminSettings?.popular_text || 'MAIS POPULAR',
-    tutorials: {
-      wapp: wappTutorials?.map(tutorial => ({
-        id: tutorial.id,
-        title: tutorial.title,
-        image: tutorial.image_url || '/placeholder.svg',
-        link: tutorial.link
-      })) || [],
-      krator: kratorTutorials?.map(tutorial => ({
-        id: tutorial.id,
-        title: tutorial.title,
-        image: tutorial.image_url || '/placeholder.svg',
-        link: tutorial.link
-      })) || []
+    
+    if (storedData) {
+      try {
+        setAdminData(JSON.parse(storedData));
+      } catch (error) {
+        console.error('Erro ao carregar dados admin:', error);
+      }
     }
-  };
+  }, []);
 
   const login = (password: string): boolean => {
     if (password === ADMIN_PASSWORD) {
@@ -153,58 +203,69 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const updateContacts = (contacts: string[]) => {
-    updateAdminSettingsMutation.mutate({ contacts });
+    const newData = { ...adminData, contacts };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
   const updateResellerContacts = (resellerContacts: string[]) => {
-    updateAdminSettingsMutation.mutate({ reseller_contacts: resellerContacts });
+    const newData = { ...adminData, resellerContacts };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
   const updateMessages = (messages: AdminData['messages']) => {
-    updateAdminSettingsMutation.mutate({ messages });
+    const newData = { ...adminData, messages };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
   const updateButtonTexts = (buttonTexts: AdminData['buttonTexts']) => {
-    updateAdminSettingsMutation.mutate({ button_texts: buttonTexts });
+    const newData = { ...adminData, buttonTexts };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
   const updateResellerSettings = (resellerSettings: AdminData['resellerSettings']) => {
-    updateAdminSettingsMutation.mutate({ reseller_settings: resellerSettings });
+    const newData = { ...adminData, resellerSettings };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
   const updateKratorPrice = (kratorPrice: string) => {
-    updateAdminSettingsMutation.mutate({ krator_price: kratorPrice });
+    const newData = { ...adminData, kratorPrice };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
   const updatePlans = (plans: Plan[]) => {
-    const plansWithOrder = plans.map((plan, index) => ({
-      ...plan,
-      display_order: index + 1
-    }));
-    updatePlansMutation.mutate(plansWithOrder);
+    const newData = { ...adminData, plans };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
   const updatePopularText = (popularText: string) => {
-    updateAdminSettingsMutation.mutate({ popular_text: popularText });
+    const newData = { ...adminData, popularText };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
   const updateTutorials = (type: 'wapp' | 'krator', tutorials: Tutorial[]) => {
-    const tutorialsWithOrder = tutorials.map((tutorial, index) => ({
-      id: tutorial.id,
-      title: tutorial.title,
-      image_url: tutorial.image,
-      link: tutorial.link,
-      type,
-      display_order: index + 1
-    }));
-    updateTutorialsMutation.mutate({ type, tutorials: tutorialsWithOrder });
+    const newData = { 
+      ...adminData, 
+      tutorials: {
+        ...adminData.tutorials,
+        [type]: tutorials
+      }
+    };
+    setAdminData(newData);
+    localStorage.setItem('adminData', JSON.stringify(newData));
   };
 
   return (
     <AdminContext.Provider value={{
       isAuthenticated,
       adminData,
-      loading,
       login,
       logout,
       updateContacts,
