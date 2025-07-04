@@ -14,6 +14,7 @@ import WhatsappConfig from "./pages/admin/WhatsappConfig";
 import ButtonsConfig from "./pages/admin/ButtonsConfig";
 import PlansConfig from "./pages/admin/PlansConfig";
 import PricingConfig from "./pages/admin/PricingConfig";
+import AdminSettings from "./pages/admin/AdminSettings";
 import NotFound from "./pages/NotFound";
 import TutorialsConfig from "./pages/admin/TutorialsConfig";
 
@@ -41,6 +42,7 @@ const App = () => (
                 <Route path="plans" element={<PlansConfig />} />
                 <Route path="tutorials" element={<TutorialsConfig />} />
                 <Route path="pricing" element={<PricingConfig />} />
+                <Route path="settings" element={<AdminSettings />} />
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

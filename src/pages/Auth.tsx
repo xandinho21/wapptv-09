@@ -10,9 +10,8 @@ import { useToast } from '@/hooks/use-toast';
 const Auth = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSignUp, setIsSignUp] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { signIn, signUp, user } = useAuth();
+  const { signIn, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -28,27 +27,21 @@ const Auth = () => {
     setIsLoading(true);
 
     try {
-      const { error } = isSignUp 
-        ? await signUp(email, password)
-        : await signIn(email, password);
+      const { error } = await signIn(email, password);
 
       if (error) {
         toast({
-          title: "Erro na autenticação",
+          title: "Erro no login",
           description: error.message,
           variant: "destructive",
         });
       } else {
         toast({
-          title: isSignUp ? "Conta criada!" : "Login realizado!",
-          description: isSignUp 
-            ? "Verifique seu email para confirmar a conta." 
-            : "Bem-vindo ao painel administrativo.",
+          title: "Login realizado!",
+          description: "Bem-vindo ao painel administrativo.",
         });
         
-        if (!isSignUp) {
-          navigate('/admin/dashboard');
-        }
+        navigate('/admin/dashboard');
       }
     } catch (error) {
       toast({
@@ -68,7 +61,7 @@ const Auth = () => {
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-green-400 mb-2">Wapp TV</h1>
             <p className="text-gray-300">
-              {isSignUp ? 'Criar Conta' : 'Entrar'}
+              Login Administrativo
             </p>
           </div>
 
@@ -83,7 +76,7 @@ const Auth = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-2 bg-gray-700 border-gray-600 text-white"
-                placeholder="seu@email.com"
+                placeholder="admin@email.com"
                 required
               />
             </div>
@@ -108,24 +101,9 @@ const Auth = () => {
               disabled={isLoading}
               className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3"
             >
-              {isLoading 
-                ? (isSignUp ? 'Criando conta...' : 'Entrando...') 
-                : (isSignUp ? 'Criar Conta' : 'Entrar')
-              }
+              {isLoading ? 'Entrando...' : 'Entrar'}
             </Button>
           </form>
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-gray-400 hover:text-green-400 transition-colors"
-            >
-              {isSignUp 
-                ? 'Já tem uma conta? Entre' 
-                : 'Não tem conta? Crie uma'
-              }
-            </button>
-          </div>
 
           <div className="mt-4 text-center">
             <button
