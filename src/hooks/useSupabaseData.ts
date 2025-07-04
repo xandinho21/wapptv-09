@@ -66,7 +66,20 @@ export const useAdminSettings = () => {
       }
       
       console.log('Admin settings fetched:', data);
-      return data as AdminSettings;
+      
+      // Type cast the JSONB fields to their expected types
+      const typedData: AdminSettings = {
+        id: data.id,
+        contacts: data.contacts,
+        reseller_contacts: data.reseller_contacts,
+        messages: data.messages as AdminSettings['messages'],
+        button_texts: data.button_texts as AdminSettings['button_texts'],
+        reseller_settings: data.reseller_settings as AdminSettings['reseller_settings'],
+        krator_price: data.krator_price,
+        popular_text: data.popular_text
+      };
+      
+      return typedData;
     },
   });
 };
