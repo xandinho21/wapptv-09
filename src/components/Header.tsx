@@ -1,107 +1,46 @@
 
-import React, { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-    setIsMenuOpen(false);
-  };
-
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-green-400">Wapp TV</h1>
+    <header className="bg-gray-900/95 backdrop-blur-sm border-b border-gray-800 sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">W</span>
+            </div>
+            <span className="text-2xl font-bold text-white">Wapp TV</span>
           </div>
-
-          {/* Desktop Navigation */}
+          
           <nav className="hidden md:flex items-center space-x-8">
-            <button
-              onClick={() => scrollToSection('inicio')}
-              className="text-gray-300 hover:text-green-400 transition-colors duration-200"
-            >
-              Início
-            </button>
-            <button
-              onClick={() => scrollToSection('planos')}
-              className="text-gray-300 hover:text-green-400 transition-colors duration-200"
-            >
+            <a href="#planos" className="text-gray-300 hover:text-green-400 transition-colors">
               Planos
-            </button>
-            <button
-              onClick={() => scrollToSection('krator')}
-              className="text-gray-300 hover:text-green-400 transition-colors duration-200"
-            >
+            </a>
+            <a href="#tutoriais" className="text-gray-300 hover:text-green-400 transition-colors">
+              Tutoriais
+            </a>
+            <a href="#krator" className="text-gray-300 hover:text-green-400 transition-colors">
               Krator
-            </button>
-            <button
-              onClick={() => scrollToSection('revenda')}
-              className="text-gray-300 hover:text-green-400 transition-colors duration-200"
+            </a>
+            <a href="#revendedor" className="text-gray-300 hover:text-green-400 transition-colors">
+              Seja Revendedor
+            </a>
+            <Link 
+              to="/auth"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
             >
-              Revenda
-            </button>
-            <button
-              onClick={() => scrollToSection('contato')}
-              className="text-gray-300 hover:text-green-400 transition-colors duration-200"
-            >
-              Contato
-            </button>
+              Admin
+            </Link>
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden text-gray-300 hover:text-green-400 transition-colors duration-200"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          <button className="md:hidden text-gray-300 hover:text-white">
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
           </button>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden bg-gray-800 border-t border-gray-700">
-            <nav className="flex flex-col py-4 space-y-2">
-              <button
-                onClick={() => scrollToSection('inicio')}
-                className="text-left px-4 py-2 text-gray-300 hover:text-green-400 hover:bg-gray-700 transition-colors duration-200"
-              >
-                Início
-              </button>
-              <button
-                onClick={() => scrollToSection('planos')}
-                className="text-left px-4 py-2 text-gray-300 hover:text-green-400 hover:bg-gray-700 transition-colors duration-200"
-              >
-                Planos
-              </button>
-              <button
-                onClick={() => scrollToSection('krator')}
-                className="text-left px-4 py-2 text-gray-300 hover:text-green-400 hover:bg-gray-700 transition-colors duration-200"
-              >
-                Krator
-              </button>
-              <button
-                onClick={() => scrollToSection('revenda')}
-                className="text-left px-4 py-2 text-gray-300 hover:text-green-400 hover:bg-gray-700 transition-colors duration-200"
-              >
-                Revenda
-              </button>
-              <button
-                onClick={() => scrollToSection('contato')}
-                className="text-left px-4 py-2 text-gray-300 hover:text-green-400 hover:bg-gray-700 transition-colors duration-200"
-              >
-                Contato
-              </button>
-            </nav>
-          </div>
-        )}
       </div>
     </header>
   );

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import {
   Sidebar,
   SidebarContent,
@@ -12,7 +13,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { MessageCircle, Settings, DollarSign, Star } from 'lucide-react';
+import { MessageCircle, Settings, DollarSign, Star, LogOut } from 'lucide-react';
 
 const menuItems = [
   {
@@ -44,8 +45,13 @@ const menuItems = [
 
 const AdminSidebar = () => {
   const { state } = useSidebar();
+  const { signOut } = useAuth();
   const location = useLocation();
   const isCollapsed = state === 'collapsed';
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   return (
     <Sidebar className={`${isCollapsed ? 'w-14' : 'w-64'} bg-gray-800 border-r border-gray-700`}>
@@ -73,6 +79,18 @@ const AdminSidebar = () => {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+              
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  onClick={handleSignOut}
+                  className="text-gray-300 hover:text-white hover:bg-red-600 cursor-pointer"
+                >
+                  <div className="flex items-center gap-3 px-4 py-2">
+                    <LogOut size={20} />
+                    {!isCollapsed && <span>Sair</span>}
+                  </div>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
