@@ -104,56 +104,71 @@ export const PublicDataProvider = ({ children }: { children: React.ReactNode }) 
   const { data: adminConfig, isLoading: configLoading } = useQuery({
     queryKey: ['public-admin-config'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('admin_configs' as any)
-        .select('*')
-        .limit(1)
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from('admin_configs' as any)
+          .select('*')
+          .limit(1)
+          .single();
 
-      if (error) {
-        console.error('Error fetching public admin config:', error);
+        if (error) {
+          console.error('Error fetching public admin config:', error);
+          return null;
+        }
+        return data;
+      } catch (err) {
+        console.error('Public admin config fetch error:', err);
         return null;
       }
-      return data;
     },
   });
 
   const { data: plans = [], isLoading: plansLoading } = useQuery({
     queryKey: ['public-plans'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('plans' as any)
-        .select('*')
-        .order('created_at');
+      try {
+        const { data, error } = await supabase
+          .from('plans' as any)
+          .select('*')
+          .order('created_at');
 
-      if (error) {
-        console.error('Error fetching public plans:', error);
+        if (error) {
+          console.error('Error fetching public plans:', error);
+          return [];
+        }
+        return data || [];
+      } catch (err) {
+        console.error('Public plans fetch error:', err);
         return [];
       }
-      return data || [];
     },
   });
 
   const { data: tutorials, isLoading: tutorialsLoading } = useQuery({
     queryKey: ['public-tutorials'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('tutorials' as any)
-        .select('*')
-        .order('created_at');
+      try {
+        const { data, error } = await supabase
+          .from('tutorials' as any)
+          .select('*')
+          .order('created_at');
 
-      if (error) {
-        console.error('Error fetching public tutorials:', error);
+        if (error) {
+          console.error('Error fetching public tutorials:', error);
+          return { wapp: [], krator: [] };
+        }
+
+        const wappTutorials = data?.filter((t: any) => t.type === 'wapp') || [];
+        const kratorTutorials = data?.filter((t: any) => t.type === 'krator') || [];
+
+        return {
+          wapp: wappTutorials,
+          krator: kratorTutorials
+        };
+      } catch (err) {
+        console.error('Public tutorials fetch error:', err);
         return { wapp: [], krator: [] };
       }
-
-      const wappTutorials = data?.filter((t: any) => t.type === 'wapp') || [];
-      const kratorTutorials = data?.filter((t: any) => t.type === 'krator') || [];
-
-      return {
-        wapp: wappTutorials,
-        krator: kratorTutorials
-      };
     },
   });
 

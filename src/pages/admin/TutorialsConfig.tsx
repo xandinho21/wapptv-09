@@ -9,6 +9,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Trash2, Plus, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 
+interface Tutorial {
+  id: string;
+  title: string;
+  image: string;
+  link: string;
+  type: 'wapp' | 'krator';
+}
+
 const TutorialsConfig = () => {
   const { adminData, updateTutorials } = useAdmin();
   const [wappTutorials, setWappTutorials] = useState(adminData.tutorials.wapp);
@@ -56,11 +64,12 @@ const TutorialsConfig = () => {
   };
 
   const addTutorial = (type: 'wapp' | 'krator') => {
-    const newTutorial = {
+    const newTutorial: Tutorial = {
       id: Date.now().toString(),
       title: '',
       image: '/placeholder.svg',
-      link: ''
+      link: '',
+      type
     };
 
     if (type === 'wapp') {
@@ -86,7 +95,7 @@ const TutorialsConfig = () => {
     toast.success('Configurações dos tutoriais salvas com sucesso!');
   };
 
-  const renderTutorialForm = (tutorials: any[], type: 'wapp' | 'krator') => (
+  const renderTutorialForm = (tutorials: Tutorial[], type: 'wapp' | 'krator') => (
     <div className="space-y-6">
       {tutorials.map((tutorial, index) => (
         <Card key={tutorial.id} className="bg-gray-800 border-gray-700">

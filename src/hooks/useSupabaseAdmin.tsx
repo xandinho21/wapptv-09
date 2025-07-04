@@ -60,59 +60,64 @@ export const useSupabaseAdmin = () => {
     queryFn: async () => {
       if (!user?.id) return null;
       
-      const { data, error } = await supabase
-        .from('admin_configs' as any)
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching admin config:', error);
-        
-        // If no config exists, create one with default values
-        const { data: newConfig, error: insertError } = await supabase
+      try {
+        const { data, error } = await supabase
           .from('admin_configs' as any)
-          .insert([{ 
-            user_id: user.id,
-            contacts: ['+5519993075627', '+5519995753398'],
-            reseller_contacts: ['+5519993075627'],
-            messages: {
-              default: 'Olá! Gostaria de contratar um plano da Wapp TV. Podem me ajudar?',
-              krator: 'Olá! Gostaria de contratar um plano da Wapp TV com o sistema Krator. Podem me ajudar?',
-              contact: 'Olá! Gostaria de mais informações sobre a Wapp TV.',
-              trial4h: 'Olá! Gostaria de solicitar um teste grátis de 4 horas da Wapp TV. Podem me ajudar?',
-              trial1h: 'Olá! Gostaria de solicitar um teste grátis de 1 hora do sistema Krator. Podem me ajudar?',
-              reseller: 'Olá! Gostaria de informações sobre como me tornar um revendedor da Wapp TV. Podem me ajudar?'
-            },
-            button_texts: {
-              trial4h: 'Teste Grátis 4h',
-              trial1h: 'Teste Grátis 1h',
-              reseller: 'Quero ser um revendedor'
-            },
-            reseller_settings: {
-              showButton: true,
-              creditPrices: [
-                { credits: 10, price: 'R$ 11,00' },
-                { credits: 30, price: 'R$ 10,00' },
-                { credits: 50, price: 'R$ 8,00' },
-                { credits: 100, price: 'R$ 7,00' },
-                { credits: 500, price: 'R$ 6,00' }
-              ]
-            },
-            krator_price: 'R$ 25,00',
-            popular_text: 'MAIS POPULAR'
-          }])
-          .select()
+          .select('*')
+          .eq('user_id', user.id)
           .single();
 
-        if (insertError) {
-          console.error('Error creating admin config:', insertError);
-          return null;
-        }
-        return newConfig;
-      }
+        if (error && error.code !== 'PGRST116') {
+          console.error('Error fetching admin config:', error);
+          
+          // If no config exists, create one with default values
+          const { data: newConfig, error: insertError } = await supabase
+            .from('admin_configs' as any)
+            .insert([{ 
+              user_id: user.id,
+              contacts: ['+5519993075627', '+5519995753398'],
+              reseller_contacts: ['+5519993075627'],
+              messages: {
+                default: 'Olá! Gostaria de contratar um plano da Wapp TV. Podem me ajudar?',
+                krator: 'Olá! Gostaria de contratar um plano da Wapp TV com o sistema Krator. Podem me ajudar?',
+                contact: 'Olá! Gostaria de mais informações sobre a Wapp TV.',
+                trial4h: 'Olá! Gostaria de solicitar um teste grátis de 4 horas da Wapp TV. Podem me ajudar?',
+                trial1h: 'Olá! Gostaria de solicitar um teste grátis de 1 hora do sistema Krator. Podem me ajudar?',
+                reseller: 'Olá! Gostaria de informações sobre como me tornar um revendedor da Wapp TV. Podem me ajudar?'
+              },
+              button_texts: {
+                trial4h: 'Teste Grátis 4h',
+                trial1h: 'Teste Grátis 1h',
+                reseller: 'Quero ser um revendedor'
+              },
+              reseller_settings: {
+                showButton: true,
+                creditPrices: [
+                  { credits: 10, price: 'R$ 11,00' },
+                  { credits: 30, price: 'R$ 10,00' },
+                  { credits: 50, price: 'R$ 8,00' },
+                  { credits: 100, price: 'R$ 7,00' },
+                  { credits: 500, price: 'R$ 6,00' }
+                ]
+              },
+              krator_price: 'R$ 25,00',
+              popular_text: 'MAIS POPULAR'
+            }])
+            .select()
+            .single();
 
-      return data;
+          if (insertError) {
+            console.error('Error creating admin config:', insertError);
+            return null;
+          }
+          return newConfig;
+        }
+
+        return data;
+      } catch (err) {
+        console.error('Admin config fetch error:', err);
+        return null;
+      }
     },
     enabled: !!user?.id,
   });
@@ -123,18 +128,23 @@ export const useSupabaseAdmin = () => {
     queryFn: async () => {
       if (!user?.id) return [];
       
-      const { data, error } = await supabase
-        .from('plans' as any)
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at');
+      try {
+        const { data, error } = await supabase
+          .from('plans' as any)
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at');
 
-      if (error) {
-        console.error('Error fetching plans:', error);
+        if (error) {
+          console.error('Error fetching plans:', error);
+          return [];
+        }
+
+        return data || [];
+      } catch (err) {
+        console.error('Plans fetch error:', err);
         return [];
       }
-
-      return data || [];
     },
     enabled: !!user?.id,
   });
@@ -145,24 +155,29 @@ export const useSupabaseAdmin = () => {
     queryFn: async () => {
       if (!user?.id) return { wapp: [], krator: [] };
       
-      const { data, error } = await supabase
-        .from('tutorials' as any)
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at');
+      try {
+        const { data, error } = await supabase
+          .from('tutorials' as any)
+          .select('*')
+          .eq('user_id', user.id)
+          .order('created_at');
 
-      if (error) {
-        console.error('Error fetching tutorials:', error);
+        if (error) {
+          console.error('Error fetching tutorials:', error);
+          return { wapp: [], krator: [] };
+        }
+
+        const wappTutorials = data?.filter((t: any) => t.type === 'wapp') || [];
+        const kratorTutorials = data?.filter((t: any) => t.type === 'krator') || [];
+
+        return {
+          wapp: wappTutorials,
+          krator: kratorTutorials
+        };
+      } catch (err) {
+        console.error('Tutorials fetch error:', err);
         return { wapp: [], krator: [] };
       }
-
-      const wappTutorials = data?.filter((t: any) => t.type === 'wapp') || [];
-      const kratorTutorials = data?.filter((t: any) => t.type === 'krator') || [];
-
-      return {
-        wapp: wappTutorials,
-        krator: kratorTutorials
-      };
     },
     enabled: !!user?.id,
   });
