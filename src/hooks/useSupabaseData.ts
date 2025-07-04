@@ -137,7 +137,7 @@ export const useUpdateAdminSettings = () => {
       const { data, error } = await supabase
         .from('admin_settings')
         .update(updates)
-        .eq('id', (await supabase.from('admin_settings').select('id').single()).data?.id)
+        .eq('id', updates.id)
         .select()
         .single();
       
