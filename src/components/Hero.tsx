@@ -1,5 +1,4 @@
 import React from 'react';
-
 const Hero = () => {
   const scrollToPlans = () => {
     const element = document.getElementById('planos');
@@ -9,10 +8,8 @@ const Hero = () => {
       });
     }
   };
-
-  return (
-    <section id="inicio" className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-green-900 flex items-center justify-center pt-16">
-      <div className="container mx-auto px-4 text-center">
+  return <section id="inicio" className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-green-900 flex items-center justify-center pt-16">
+      <div className="container mx-auto px-4 text-center my-[31px]">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
             Experimente o <span className="text-green-400">Melhor</span> do Streaming com{' '}
@@ -51,8 +48,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Hero;
