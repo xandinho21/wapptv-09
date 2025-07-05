@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useSupabaseAdmin } from '../hooks/useSupabaseAdmin';
+import { usePublicDataContext } from './PublicDataContext';
 
 interface Plan {
   id: string;
@@ -168,23 +170,17 @@ const ADMIN_PASSWORD = 'admin123';
 
 export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [adminData, setAdminData] = useState<AdminData>(DEFAULT_ADMIN_DATA);
+  const { data: publicData, refetch } = usePublicDataContext();
+  const supabaseAdmin = useSupabaseAdmin();
+
+  // Use public data as admin data since it's the same data
+  const adminData = publicData;
 
   useEffect(() => {
-    // Carregar dados do localStorage
+    // Check authentication from localStorage
     const storedAuth = localStorage.getItem('adminAuth');
-    const storedData = localStorage.getItem('adminData');
-    
     if (storedAuth === 'true') {
       setIsAuthenticated(true);
-    }
-    
-    if (storedData) {
-      try {
-        setAdminData(JSON.parse(storedData));
-      } catch (error) {
-        console.error('Erro ao carregar dados admin:', error);
-      }
     }
   }, []);
 
@@ -202,64 +198,85 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem('adminAuth');
   };
 
-  const updateContacts = (contacts: string[]) => {
-    const newData = { ...adminData, contacts };
-    setAdminData(newData);
-    localStorage.setItem('adminData', JSON.stringify(newData));
+  const updateContacts = async (contacts: string[]) => {
+    try {
+      await supabaseAdmin.updateContacts(contacts);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating contacts:', error);
+    }
   };
 
-  const updateResellerContacts = (resellerContacts: string[]) => {
-    const newData = { ...adminData, resellerContacts };
-    setAdminData(newData);
-    localStorage.setItem('adminData', JSON.stringify(newData));
+  const updateResellerContacts = async (contacts: string[]) => {
+    try {
+      await supabaseAdmin.updateResellerContacts(contacts);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating reseller contacts:', error);
+    }
   };
 
-  const updateMessages = (messages: AdminData['messages']) => {
-    const newData = { ...adminData, messages };
-    setAdminData(newData);
-    localStorage.setItem('adminData', JSON.stringify(newData));
+  const updateMessages = async (messages: AdminData['messages']) => {
+    try {
+      await supabaseAdmin.updateMessages(messages);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating messages:', error);
+    }
   };
 
-  const updateButtonTexts = (buttonTexts: AdminData['buttonTexts']) => {
-    const newData = { ...adminData, buttonTexts };
-    setAdminData(newData);
-    localStorage.setItem('adminData', JSON.stringify(newData));
+  const updateButtonTexts = async (buttonTexts: AdminData['buttonTexts']) => {
+    try {
+      await supabaseAdmin.updateButtonTexts(buttonTexts);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating button texts:', error);
+    }
   };
 
-  const updateResellerSettings = (resellerSettings: AdminData['resellerSettings']) => {
-    const newData = { ...adminData, resellerSettings };
-    setAdminData(newData);
-    localStorage.setItem('adminData', JSON.stringify(newData));
+  const updateResellerSettings = async (resellerSettings: AdminData['resellerSettings']) => {
+    try {
+      await supabaseAdmin.updateResellerSettings(resellerSettings);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating reseller settings:', error);
+    }
   };
 
-  const updateKratorPrice = (kratorPrice: string) => {
-    const newData = { ...adminData, kratorPrice };
-    setAdminData(newData);
-    localStorage.setItem('adminData', JSON.stringify(newData));
+  const updateKratorPrice = async (kratorPrice: string) => {
+    try {
+      await supabaseAdmin.updateKratorPrice(kratorPrice);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating krator price:', error);
+    }
   };
 
-  const updatePlans = (plans: Plan[]) => {
-    const newData = { ...adminData, plans };
-    setAdminData(newData);
-    localStorage.setItem('adminData', JSON.stringify(newData));
+  const updatePlans = async (plans: Plan[]) => {
+    try {
+      await supabaseAdmin.updatePlans(plans);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating plans:', error);
+    }
   };
 
-  const updatePopularText = (popularText: string) => {
-    const newData = { ...adminData, popularText };
-    setAdminData(newData);
-    localStorage.setItem('adminData', JSON.stringify(newData));
+  const updatePopularText = async (popularText: string) => {
+    try {
+      await supabaseAdmin.updatePopularText(popularText);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating popular text:', error);
+    }
   };
 
-  const updateTutorials = (type: 'wapp' | 'krator', tutorials: Tutorial[]) => {
-    const newData = { 
-      ...adminData, 
-      tutorials: {
-        ...adminData.tutorials,
-        [type]: tutorials
-      }
-    };
-    setAdminData(newData);
-    localStorage.setItem('adminData', JSON.stringify(newData));
+  const updateTutorials = async (type: 'wapp' | 'krator', tutorials: Tutorial[]) => {
+    try {
+      await supabaseAdmin.updateTutorials(type, tutorials);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating tutorials:', error);
+    }
   };
 
   return (

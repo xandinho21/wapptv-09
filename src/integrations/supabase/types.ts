@@ -9,6 +9,138 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      admin_settings: {
+        Row: {
+          created_at: string
+          id: string
+          key: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          key: string
+          updated_at?: string
+          value: Json
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          key?: string
+          updated_at?: string
+          value?: Json
+        }
+        Relationships: []
+      }
+      button_texts: {
+        Row: {
+          created_at: string
+          id: string
+          key: string
+          text: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          key: string
+          text: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          key?: string
+          text?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      contacts: {
+        Row: {
+          created_at: string
+          id: string
+          is_reseller: boolean
+          phone_number: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_reseller?: boolean
+          phone_number: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_reseller?: boolean
+          phone_number?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      plans: {
+        Row: {
+          created_at: string
+          features: Json
+          id: string
+          name: string
+          period: string
+          popular: boolean
+          price: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          features?: Json
+          id?: string
+          name: string
+          period?: string
+          popular?: boolean
+          price: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          features?: Json
+          id?: string
+          name?: string
+          period?: string
+          popular?: boolean
+          price?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null
@@ -27,6 +159,63 @@ export type Database = {
           email?: string | null
           id?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      reseller_settings: {
+        Row: {
+          created_at: string
+          credit_prices: Json
+          id: string
+          show_button: boolean
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          credit_prices?: Json
+          id?: string
+          show_button?: boolean
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          credit_prices?: Json
+          id?: string
+          show_button?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tutorials: {
+        Row: {
+          created_at: string
+          id: string
+          image: string
+          link: string
+          sort_order: number
+          title: string
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image: string
+          link: string
+          sort_order?: number
+          title: string
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image?: string
+          link?: string
+          sort_order?: number
+          title?: string
+          type?: string
+          updated_at?: string
         }
         Relationships: []
       }

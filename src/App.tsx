@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminProvider } from "./contexts/AdminContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import { PublicDataProvider } from "./contexts/PublicDataContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -24,30 +25,32 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
-        <AdminProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/admin/dashboard" element={
-                <ProtectedRoute>
-                  <AdminLayout />
-                </ProtectedRoute>
-              }>
-                <Route index element={<WhatsappConfig />} />
-                <Route path="whatsapp" element={<WhatsappConfig />} />
-                <Route path="buttons" element={<ButtonsConfig />} />
-                <Route path="plans" element={<PlansConfig />} />
-                <Route path="tutorials" element={<TutorialsConfig />} />
-                <Route path="pricing" element={<PricingConfig />} />
-                <Route path="settings" element={<AdminSettings />} />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </AdminProvider>
+        <PublicDataProvider>
+          <AdminProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/admin/dashboard" element={
+                  <ProtectedRoute>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }>
+                  <Route index element={<WhatsappConfig />} />
+                  <Route path="whatsapp" element={<WhatsappConfig />} />
+                  <Route path="buttons" element={<ButtonsConfig />} />
+                  <Route path="plans" element={<PlansConfig />} />
+                  <Route path="tutorials" element={<TutorialsConfig />} />
+                  <Route path="pricing" element={<PricingConfig />} />
+                  <Route path="settings" element={<AdminSettings />} />
+                </Route>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </AdminProvider>
+        </PublicDataProvider>
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>

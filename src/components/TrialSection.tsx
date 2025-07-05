@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { useAdmin } from '../hooks/useAdmin';
+import { usePublicAdmin } from '../hooks/useAdmin';
 
 const TrialSection = () => {
-  const { adminData } = useAdmin();
+  const { adminData } = usePublicAdmin();
 
   const handleTrialClick = () => {
     const randomContact = adminData.contacts[Math.floor(Math.random() * adminData.contacts.length)];

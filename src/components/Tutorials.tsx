@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useAdmin } from '../hooks/useAdmin';
+import { usePublicAdmin } from '../hooks/useAdmin';
 import {
   Carousel,
   CarouselContent,
@@ -14,7 +14,7 @@ interface TutorialsProps {
 }
 
 const Tutorials: React.FC<TutorialsProps> = ({ type }) => {
-  const { adminData } = useAdmin();
+  const { adminData } = usePublicAdmin();
   const tutorials = adminData.tutorials[type];
 
   if (!tutorials || tutorials.length === 0) {

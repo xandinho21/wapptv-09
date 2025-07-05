@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useAdmin } from '../hooks/useAdmin';
+import { usePublicAdmin } from '../hooks/useAdmin';
 
 const ResellerSection = () => {
-  const { adminData } = useAdmin();
+  const { adminData } = usePublicAdmin();
   const [showCreditPrices, setShowCreditPrices] = useState(false);
 
   const handleResellerButtonClick = () => {
