@@ -39,16 +39,16 @@ const Tutorials: React.FC<TutorialsProps> = ({ type }) => {
               align: "start",
               loop: true,
             }}
-            className="w-full max-w-5xl px-0 mx-auto"
+            className="w-full max-w-6xl mx-auto relative"
           >
-            <CarouselContent className="-ml-2 md:-ml-4 py-[10px] mx-[25px]">
+            <CarouselContent className="-ml-2 md:-ml-4 py-[10px]">
               {tutorials.map((tutorial) => (
                 <CarouselItem key={tutorial.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
                   <a
                     href={tutorial.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block mx-0"
+                    className="block"
                   >
                     <div className={`${cardBg} backdrop-blur-sm rounded-xl p-6 border ${borderColor} transition-all duration-300 hover:scale-105 h-full`}>
                       <div className="aspect-square mb-4 overflow-hidden rounded-lg bg-gray-700">
@@ -66,8 +66,8 @@ const Tutorials: React.FC<TutorialsProps> = ({ type }) => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="text-white border-gray-600 bg-gray-800/50 hover:bg-gray-700 mx-[60px]" />
-            <CarouselNext className="text-white border-gray-600 bg-gray-800/50 hover:bg-gray-700 text-center mx-[60px]" />
+            <CarouselPrevious className="text-white border-gray-600 bg-gray-800/50 hover:bg-gray-700 absolute left-4" />
+            <CarouselNext className="text-white border-gray-600 bg-gray-800/50 hover:bg-gray-700 absolute right-4" />
           </Carousel>
         </div>
       </div>
