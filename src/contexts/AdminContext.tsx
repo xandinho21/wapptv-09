@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useSupabaseAdmin } from '../hooks/useSupabaseAdmin';
 import { usePublicDataContext } from './PublicDataContext';
@@ -51,6 +50,16 @@ interface AdminData {
   };
   siteName: string;
   siteLogoUrl: string;
+  seo: {
+    title: string;
+    description: string;
+    keywords: string;
+    ogTitle: string;
+    ogDescription: string;
+    ogImage: string;
+    twitterTitle: string;
+    twitterDescription: string;
+  };
 }
 
 interface AdminContextType {
@@ -69,6 +78,8 @@ interface AdminContextType {
   updateTutorials: (type: 'wapp' | 'krator', tutorials: Tutorial[]) => void;
   updateSiteName: (name: string) => void;
   updateSiteLogo: (file: File) => Promise<string>;
+  updateSeoSettings: (seoData: AdminData['seo']) => void;
+  updateSeoImage: (file: File) => Promise<string>;
 }
 
 export const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -170,7 +181,17 @@ const DEFAULT_ADMIN_DATA: AdminData = {
     ]
   },
   siteName: 'Wapp TV',
-  siteLogoUrl: ''
+  siteLogoUrl: '',
+  seo: {
+    title: 'Wapp TV - O Melhor da IPTV',
+    description: 'Experimente o melhor da IPTV com Wapp TV. Planos a partir de R$ 25,00 com o novo sistema Krator. Teste grátis disponível!',
+    keywords: 'IPTV, Wapp TV, Krator, streaming, televisão online, planos IPTV, teste grátis',
+    ogTitle: 'Wapp TV - O Melhor da IPTV',
+    ogDescription: 'Experimente o melhor da IPTV com Wapp TV. Planos a partir de R$ 25,00 com o novo sistema Krator.',
+    ogImage: '',
+    twitterTitle: 'Wapp TV - O Melhor da IPTV',
+    twitterDescription: 'Experimente o melhor da IPTV com Wapp TV. Planos a partir de R$ 25,00 com o novo sistema Krator.'
+  }
 };
 
 const ADMIN_PASSWORD = 'admin123';
@@ -306,6 +327,26 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updateSeoSettings = async (seoData: AdminData['seo']) => {
+    try {
+      await supabaseAdmin.updateSeoSettings(seoData);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating SEO settings:', error);
+    }
+  };
+
+  const updateSeoImage = async (file: File): Promise<string> => {
+    try {
+      const imageUrl = await supabaseAdmin.updateSeoImage(file);
+      refetch(); // Refresh public data
+      return imageUrl;
+    } catch (error) {
+      console.error('Error updating SEO image:', error);
+      throw error;
+    }
+  };
+
   return (
     <AdminContext.Provider value={{
       isAuthenticated,
@@ -322,7 +363,9 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       updatePopularText,
       updateTutorials,
       updateSiteName,
-      updateSiteLogo
+      updateSiteLogo,
+      updateSeoSettings,
+      updateSeoImage
     }}>
       {children}
     </AdminContext.Provider>

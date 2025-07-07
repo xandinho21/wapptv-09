@@ -17,6 +17,7 @@ import PlansConfig from "./pages/admin/PlansConfig";
 import PricingConfig from "./pages/admin/PricingConfig";
 import AdminSettings from "./pages/admin/AdminSettings";
 import SiteConfig from "./pages/admin/SiteConfig";
+import SeoConfig from "./pages/admin/SeoConfig";
 import NotFound from "./pages/NotFound";
 import TutorialsConfig from "./pages/admin/TutorialsConfig";
 
