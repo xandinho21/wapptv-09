@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+
+import React from 'react';
+import { Users, DollarSign, Star, ArrowRight } from 'lucide-react';
 import { usePublicAdmin } from '../hooks/useAdmin';
 
 const ResellerSection = () => {
   const { adminData } = usePublicAdmin();
-  const [showCreditPrices, setShowCreditPrices] = useState(false);
 
-  const handleResellerButtonClick = () => {
-    setShowCreditPrices(!showCreditPrices);
-  };
-
-  const handleCreditPurchase = (credits: number) => {
-    const randomContact = adminData.resellerContacts[Math.floor(Math.random() * adminData.resellerContacts.length)];
-    const message = encodeURIComponent(`${adminData.messages.reseller} Gostaria de comprar ${credits} créditos.`);
-    window.open(`https://wa.me/${randomContact}?text=${message}`, '_blank');
+  const openWhatsApp = () => {
+    const message = encodeURIComponent(adminData.messages.reseller);
+    const phoneNumber = adminData.resellerContacts[0]?.replace(/\D/g, '');
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
+    window.open(whatsappUrl, '_blank');
   };
 
   if (!adminData.resellerSettings.showButton) {
@@ -20,46 +18,82 @@ const ResellerSection = () => {
   }
 
   return (
-    <section id="revenda" className="py-12 bg-gray-800">
+    <section id="revendedor" className="py-20 bg-gray-800">
       <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-white mb-4">
+            Seja um Revendedor {adminData.siteName}
+          </h2>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Faça parte da nossa rede de revendedores e tenha uma fonte extra de renda
+            vendendo nossos produtos com excelente suporte e comissões atrativas.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Users className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">Suporte Completo</h3>
+            <p className="text-gray-300">
+              Oferecemos suporte técnico e comercial para você e seus clientes
+            </p>
+          </div>
+
+          <div className="text-center">
+            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <DollarSign className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">Comissões Atrativas</h3>
+            <p className="text-gray-300">
+              Ganhe comissões competitivas em cada venda realizada
+            </p>
+          </div>
+
+          <div className="text-center">
+            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Star className="w-8 h-8 text-white" />
+            </div>
+            <h3 className="text-xl font-semibold text-white mb-2">Produtos de Qualidade</h3>
+            <p className="text-gray-300">
+              Venda produtos testados e aprovados por milhares de clientes
+            </p>
+          </div>
+        </div>
+
+        {adminData.resellerSettings.creditPrices.length > 0 && (
+          <div className="bg-gray-900 rounded-lg p-8 mb-12">
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">
+              Tabela de Preços para Revendedores
+            </h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {adminData.resellerSettings.creditPrices.map((item, index) => (
+                <div key={index} className="bg-gray-800 rounded-lg p-6 text-center">
+                  <div className="text-3xl font-bold text-green-400 mb-2">
+                    {item.credits}
+                  </div>
+                  <div className="text-gray-300 mb-2">créditos</div>
+                  <div className="text-xl font-semibold text-white">
+                    {item.price}
+                  </div>
+                  <div className="text-sm text-gray-400 mt-2">
+                    por crédito
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="text-center">
           <button
-            onClick={handleResellerButtonClick}
-            className="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+            onClick={openWhatsApp}
+            className="bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-colors inline-flex items-center gap-2"
           >
             {adminData.buttonTexts.reseller}
+            <ArrowRight className="w-5 h-5" />
           </button>
-
-          {showCreditPrices && (
-            <div className="mt-8 bg-gradient-to-r from-green-600 to-green-800 rounded-2xl p-8 border border-green-400/30">
-              <h3 className="text-3xl font-bold text-white mb-4">
-                Tabela de Créditos para Revenda
-              </h3>
-              <p className="text-green-100 mb-6">
-                Valores dos créditos do servidor <strong>Wplay</strong>. Observe que quanto maior a quantidade de créditos comprados, 
-                menor o valor do investimento por crédito, e, consequentemente, maior seu lucro na venda!
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-                {adminData.resellerSettings.creditPrices.map((item, index) => (
-                  <div key={index} className="bg-green-700/50 backdrop-blur-sm rounded-xl p-6 border border-green-400/30 transition-all duration-300 hover:scale-105">
-                    <div className="text-center mb-4">
-                      <div className="text-2xl font-bold text-white mb-2">{item.credits} Créditos</div>
-                      <div className="text-xl font-bold text-green-200">{item.price}</div>
-                      <div className="text-green-300 text-sm">por crédito</div>
-                    </div>
-                    
-                    <button 
-                      onClick={() => handleCreditPurchase(item.credits)}
-                      className="w-full py-3 px-4 rounded-lg font-bold text-sm transition-all duration-300 bg-green-300 hover:bg-green-200 text-green-900 shadow-lg hover:shadow-green-300/25"
-                    >
-                      Comprar {item.credits} Créditos
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </section>

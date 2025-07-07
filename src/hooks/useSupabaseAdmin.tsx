@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -245,6 +244,75 @@ export const useSupabaseAdmin = () => {
     }
   };
 
+  // SEO settings
+  const updateSeoSettings = async (seoData: {
+    title: string;
+    description: string;
+    keywords: string;
+    ogTitle: string;
+    ogDescription: string;
+    ogImage: string;
+    twitterTitle: string;
+    twitterDescription: string;
+  }) => {
+    try {
+      const seoUpdates = [
+        { key: 'seo_title', value: JSON.stringify(seoData.title) },
+        { key: 'seo_description', value: JSON.stringify(seoData.description) },
+        { key: 'seo_keywords', value: JSON.stringify(seoData.keywords) },
+        { key: 'seo_og_title', value: JSON.stringify(seoData.ogTitle) },
+        { key: 'seo_og_description', value: JSON.stringify(seoData.ogDescription) },
+        { key: 'seo_og_image', value: JSON.stringify(seoData.ogImage) },
+        { key: 'seo_twitter_title', value: JSON.stringify(seoData.twitterTitle) },
+        { key: 'seo_twitter_description', value: JSON.stringify(seoData.twitterDescription) }
+      ];
+
+      for (const setting of seoUpdates) {
+        await supabase
+          .from('admin_settings')
+          .upsert(setting, { onConflict: 'key' });
+      }
+    } catch (error) {
+      console.error('Error updating SEO settings:', error);
+      throw error;
+    }
+  };
+
+  const updateSeoImage = async (file: File) => {
+    try {
+      // Delete old SEO image if exists
+      const { data: files } = await supabase.storage.from('logos').list('seo/');
+      if (files && files.length > 0) {
+        await supabase.storage.from('logos').remove(files.map(f => `seo/${f.name}`));
+      }
+
+      // Upload new SEO image
+      const fileExt = file.name.split('.').pop();
+      const fileName = `seo/og-image.${fileExt}`;
+      
+      const { data, error } = await supabase.storage
+        .from('logos')
+        .upload(fileName, file, { upsert: true });
+
+      if (error) throw error;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('logos')
+        .getPublicUrl(fileName);
+
+      // Update SEO image URL in settings
+      await supabase
+        .from('admin_settings')
+        .upsert({ key: 'seo_og_image', value: JSON.stringify(publicUrl) }, { onConflict: 'key' });
+
+      return publicUrl;
+    } catch (error) {
+      console.error('Error updating SEO image:', error);
+      throw error;
+    }
+  };
+
   return {
     updateContacts,
     updateResellerContacts,
@@ -256,6 +324,8 @@ export const useSupabaseAdmin = () => {
     updateSiteLogo,
     updatePlans,
     updateTutorials,
-    updateResellerSettings
+    updateResellerSettings,
+    updateSeoSettings,
+    updateSeoImage
   };
 };

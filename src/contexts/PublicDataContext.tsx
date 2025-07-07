@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext } from 'react';
 import { usePublicData } from '../hooks/usePublicData';
 
@@ -50,6 +49,16 @@ interface PublicData {
   };
   siteName: string;
   siteLogoUrl: string;
+  seo: {
+    title: string;
+    description: string;
+    keywords: string;
+    ogTitle: string;
+    ogDescription: string;
+    ogImage: string;
+    twitterTitle: string;
+    twitterDescription: string;
+  };
 }
 
 interface PublicDataContextType {

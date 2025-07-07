@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -50,6 +49,16 @@ interface PublicData {
   };
   siteName: string;
   siteLogoUrl: string;
+  seo: {
+    title: string;
+    description: string;
+    keywords: string;
+    ogTitle: string;
+    ogDescription: string;
+    ogImage: string;
+    twitterTitle: string;
+    twitterDescription: string;
+  };
 }
 
 const DEFAULT_PUBLIC_DATA: PublicData = {
@@ -86,7 +95,17 @@ const DEFAULT_PUBLIC_DATA: PublicData = {
     krator: []
   },
   siteName: 'Wapp TV',
-  siteLogoUrl: ''
+  siteLogoUrl: '',
+  seo: {
+    title: 'Wapp TV - O Melhor da IPTV',
+    description: 'Experimente o melhor da IPTV com Wapp TV. Planos a partir de R$ 25,00 com o novo sistema Krator. Teste grátis disponível!',
+    keywords: 'IPTV, Wapp TV, Krator, streaming, televisão online, planos IPTV, teste grátis',
+    ogTitle: 'Wapp TV - O Melhor da IPTV',
+    ogDescription: 'Experimente o melhor da IPTV com Wapp TV. Planos a partir de R$ 25,00 com o novo sistema Krator.',
+    ogImage: '',
+    twitterTitle: 'Wapp TV - O Melhor da IPTV',
+    twitterDescription: 'Experimente o melhor da IPTV com Wapp TV. Planos a partir de R$ 25,00 com o novo sistema Krator.'
+  }
 };
 
 export const usePublicData = () => {
@@ -200,7 +219,17 @@ export const usePublicData = () => {
           krator: kratorTutorials
         },
         siteName: settingsMap.site_name || DEFAULT_PUBLIC_DATA.siteName,
-        siteLogoUrl: settingsMap.site_logo_url || DEFAULT_PUBLIC_DATA.siteLogoUrl
+        siteLogoUrl: settingsMap.site_logo_url || DEFAULT_PUBLIC_DATA.siteLogoUrl,
+        seo: {
+          title: settingsMap.seo_title || DEFAULT_PUBLIC_DATA.seo.title,
+          description: settingsMap.seo_description || DEFAULT_PUBLIC_DATA.seo.description,
+          keywords: settingsMap.seo_keywords || DEFAULT_PUBLIC_DATA.seo.keywords,
+          ogTitle: settingsMap.seo_og_title || DEFAULT_PUBLIC_DATA.seo.ogTitle,
+          ogDescription: settingsMap.seo_og_description || DEFAULT_PUBLIC_DATA.seo.ogDescription,
+          ogImage: settingsMap.seo_og_image || DEFAULT_PUBLIC_DATA.seo.ogImage,
+          twitterTitle: settingsMap.seo_twitter_title || DEFAULT_PUBLIC_DATA.seo.twitterTitle,
+          twitterDescription: settingsMap.seo_twitter_description || DEFAULT_PUBLIC_DATA.seo.twitterDescription
+        }
       });
     } catch (error) {
       console.error('Error fetching public data:', error);

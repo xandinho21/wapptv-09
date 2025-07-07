@@ -45,6 +45,7 @@ const App = () => (
                   <Route path="plans" element={<PlansConfig />} />
                   <Route path="tutorials" element={<TutorialsConfig />} />
                   <Route path="pricing" element={<PricingConfig />} />
+                  <Route path="seo" element={<SeoConfig />} />
                   <Route path="site" element={<SiteConfig />} />
                   <Route path="settings" element={<AdminSettings />} />
                 </Route>

@@ -42,6 +42,11 @@ const menuItems = [
     icon: DollarSign,
   },
   {
+    title: 'Configurações de SEO',
+    url: '/admin/dashboard/seo',
+    icon: Globe,
+  },
+  {
     title: 'Configurações do Site',
     url: '/admin/dashboard/site',
     icon: Globe,
