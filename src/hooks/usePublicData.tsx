@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -47,6 +48,8 @@ interface PublicData {
     wapp: Tutorial[];
     krator: Tutorial[];
   };
+  siteName: string;
+  siteLogoUrl: string;
 }
 
 const DEFAULT_PUBLIC_DATA: PublicData = {
@@ -81,7 +84,9 @@ const DEFAULT_PUBLIC_DATA: PublicData = {
   tutorials: {
     wapp: [],
     krator: []
-  }
+  },
+  siteName: 'Wapp TV',
+  siteLogoUrl: ''
 };
 
 export const usePublicData = () => {
@@ -193,7 +198,9 @@ export const usePublicData = () => {
         tutorials: {
           wapp: wappTutorials,
           krator: kratorTutorials
-        }
+        },
+        siteName: settingsMap.site_name || DEFAULT_PUBLIC_DATA.siteName,
+        siteLogoUrl: settingsMap.site_logo_url || DEFAULT_PUBLIC_DATA.siteLogoUrl
       });
     } catch (error) {
       console.error('Error fetching public data:', error);

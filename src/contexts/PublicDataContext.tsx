@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext } from 'react';
 import { usePublicData } from '../hooks/usePublicData';
 
@@ -47,6 +48,8 @@ interface PublicData {
     wapp: Tutorial[];
     krator: Tutorial[];
   };
+  siteName: string;
+  siteLogoUrl: string;
 }
 
 interface PublicDataContextType {

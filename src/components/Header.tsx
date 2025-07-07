@@ -2,12 +2,22 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { usePublicAdmin } from '../hooks/useAdmin';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { adminData } = usePublicAdmin();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsMobileMenuOpen(false);
+    }
   };
 
   return (
@@ -15,25 +25,47 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">W</span>
-            </div>
-            <span className="text-2xl font-bold text-white">Wapp TV</span>
+            {adminData.siteLogoUrl ? (
+              <img 
+                src={adminData.siteLogoUrl} 
+                alt={adminData.siteName} 
+                className="w-8 h-8 rounded-lg object-cover"
+              />
+            ) : (
+              <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">
+                  {adminData.siteName.charAt(0)}
+                </span>
+              </div>
+            )}
+            <span className="text-2xl font-bold text-white">{adminData.siteName}</span>
           </div>
           
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#planos" className="text-gray-300 hover:text-green-400 transition-colors">
+            <button 
+              onClick={() => scrollToSection('planos')}
+              className="text-gray-300 hover:text-green-400 transition-colors"
+            >
               Planos
-            </a>
-            <a href="#tutoriais" className="text-gray-300 hover:text-green-400 transition-colors">
+            </button>
+            <button 
+              onClick={() => scrollToSection('tutoriais')}
+              className="text-gray-300 hover:text-green-400 transition-colors"
+            >
               Tutoriais
-            </a>
-            <a href="#krator" className="text-gray-300 hover:text-green-400 transition-colors">
+            </button>
+            <button 
+              onClick={() => scrollToSection('krator')}
+              className="text-gray-300 hover:text-green-400 transition-colors"
+            >
               Krator
-            </a>
-            <a href="#revendedor" className="text-gray-300 hover:text-green-400 transition-colors">
+            </button>
+            <button 
+              onClick={() => scrollToSection('revendedor')}
+              className="text-gray-300 hover:text-green-400 transition-colors"
+            >
               Seja Revendedor
-            </a>
+            </button>
             <Link 
               to="/auth"
               className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
@@ -58,34 +90,30 @@ const Header = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-gray-800">
             <nav className="flex flex-col space-y-4 mt-4">
-              <a 
-                href="#planos" 
-                className="text-gray-300 hover:text-green-400 transition-colors py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
+              <button 
+                onClick={() => scrollToSection('planos')}
+                className="text-gray-300 hover:text-green-400 transition-colors py-2 text-left"
               >
                 Planos
-              </a>
-              <a 
-                href="#tutoriais" 
-                className="text-gray-300 hover:text-green-400 transition-colors py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => scrollToSection('tutoriais')}
+                className="text-gray-300 hover:text-green-400 transition-colors py-2 text-left"
               >
                 Tutoriais
-              </a>
-              <a 
-                href="#krator" 
-                className="text-gray-300 hover:text-green-400 transition-colors py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => scrollToSection('krator')}
+                className="text-gray-300 hover:text-green-400 transition-colors py-2 text-left"
               >
                 Krator
-              </a>
-              <a 
-                href="#revendedor" 
-                className="text-gray-300 hover:text-green-400 transition-colors py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => scrollToSection('revendedor')}
+                className="text-gray-300 hover:text-green-400 transition-colors py-2 text-left"
               >
                 Seja Revendedor
-              </a>
+              </button>
               <Link 
                 to="/auth"
                 className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors inline-block text-center"

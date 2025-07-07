@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useSupabaseAdmin } from '../hooks/useSupabaseAdmin';
 import { usePublicDataContext } from './PublicDataContext';
@@ -48,6 +49,8 @@ interface AdminData {
     wapp: Tutorial[];
     krator: Tutorial[];
   };
+  siteName: string;
+  siteLogoUrl: string;
 }
 
 interface AdminContextType {
@@ -64,6 +67,8 @@ interface AdminContextType {
   updatePlans: (plans: Plan[]) => void;
   updatePopularText: (text: string) => void;
   updateTutorials: (type: 'wapp' | 'krator', tutorials: Tutorial[]) => void;
+  updateSiteName: (name: string) => void;
+  updateSiteLogo: (file: File) => Promise<string>;
 }
 
 export const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -163,7 +168,9 @@ const DEFAULT_ADMIN_DATA: AdminData = {
         link: 'https://example.com/krator1'
       }
     ]
-  }
+  },
+  siteName: 'Wapp TV',
+  siteLogoUrl: ''
 };
 
 const ADMIN_PASSWORD = 'admin123';
@@ -279,6 +286,26 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updateSiteName = async (siteName: string) => {
+    try {
+      await supabaseAdmin.updateSiteName(siteName);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating site name:', error);
+    }
+  };
+
+  const updateSiteLogo = async (file: File): Promise<string> => {
+    try {
+      const logoUrl = await supabaseAdmin.updateSiteLogo(file);
+      refetch(); // Refresh public data
+      return logoUrl;
+    } catch (error) {
+      console.error('Error updating site logo:', error);
+      throw error;
+    }
+  };
+
   return (
     <AdminContext.Provider value={{
       isAuthenticated,
@@ -293,7 +320,9 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       updateKratorPrice,
       updatePlans,
       updatePopularText,
-      updateTutorials
+      updateTutorials,
+      updateSiteName,
+      updateSiteLogo
     }}>
       {children}
     </AdminContext.Provider>

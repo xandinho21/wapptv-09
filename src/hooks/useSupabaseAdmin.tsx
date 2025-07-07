@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -116,6 +117,52 @@ export const useSupabaseAdmin = () => {
     }
   };
 
+  const updateSiteName = async (name: string) => {
+    try {
+      await supabase
+        .from('admin_settings')
+        .upsert({ key: 'site_name', value: JSON.stringify(name) }, { onConflict: 'key' });
+    } catch (error) {
+      console.error('Error updating site name:', error);
+      throw error;
+    }
+  };
+
+  const updateSiteLogo = async (file: File) => {
+    try {
+      // Delete old logo if exists
+      const { data: files } = await supabase.storage.from('logos').list();
+      if (files && files.length > 0) {
+        await supabase.storage.from('logos').remove(files.map(f => f.name));
+      }
+
+      // Upload new logo
+      const fileExt = file.name.split('.').pop();
+      const fileName = `logo.${fileExt}`;
+      
+      const { data, error } = await supabase.storage
+        .from('logos')
+        .upload(fileName, file, { upsert: true });
+
+      if (error) throw error;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('logos')
+        .getPublicUrl(fileName);
+
+      // Update logo URL in settings
+      await supabase
+        .from('admin_settings')
+        .upsert({ key: 'site_logo_url', value: JSON.stringify(publicUrl) }, { onConflict: 'key' });
+
+      return publicUrl;
+    } catch (error) {
+      console.error('Error updating site logo:', error);
+      throw error;
+    }
+  };
+
   // Plans
   const updatePlans = async (plans: Plan[]) => {
     try {
@@ -192,6 +239,8 @@ export const useSupabaseAdmin = () => {
     updateButtonTexts,
     updateKratorPrice,
     updatePopularText,
+    updateSiteName,
+    updateSiteLogo,
     updatePlans,
     updateTutorials,
     updateResellerSettings
