@@ -190,8 +190,14 @@ export const useSupabaseAdmin = () => {
   // Tutorials
   const updateTutorials = async (type: 'wapp' | 'krator', tutorials: Tutorial[]) => {
     try {
+      console.log(`Atualizando tutoriais ${type}:`, tutorials);
+      
       // Delete existing tutorials of this type
-      await supabase.from('tutorials').delete().eq('type', type);
+      const { error: deleteError } = await supabase.from('tutorials').delete().eq('type', type);
+      if (deleteError) {
+        console.error('Erro ao deletar tutoriais existentes:', deleteError);
+        throw deleteError;
+      }
       
       // Insert new tutorials
       const tutorialData = tutorials.map((tutorial, index) => ({
@@ -204,8 +210,15 @@ export const useSupabaseAdmin = () => {
       }));
       
       if (tutorialData.length > 0) {
-        await supabase.from('tutorials').insert(tutorialData);
+        console.log('Inserindo dados:', tutorialData);
+        const { error: insertError } = await supabase.from('tutorials').insert(tutorialData);
+        if (insertError) {
+          console.error('Erro ao inserir tutoriais:', insertError);
+          throw insertError;
+        }
       }
+      
+      console.log(`Tutoriais ${type} salvos com sucesso`);
     } catch (error) {
       console.error('Error updating tutorials:', error);
       throw error;

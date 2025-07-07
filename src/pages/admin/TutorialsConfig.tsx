@@ -63,7 +63,7 @@ const TutorialsConfig = () => {
 
   const addTutorial = (type: 'wapp' | 'krator') => {
     const newTutorial = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       title: '',
       image: '/placeholder.svg',
       link: ''
@@ -86,10 +86,29 @@ const TutorialsConfig = () => {
     }
   };
 
-  const handleSave = () => {
-    updateTutorials('wapp', wappTutorials);
-    updateTutorials('krator', kratorTutorials);
-    toast.success('Configurações dos tutoriais salvas com sucesso!');
+  const handleSave = async () => {
+    try {
+      // Validate tutorials before saving
+      const allTutorials = [...wappTutorials, ...kratorTutorials];
+      const invalidTutorials = allTutorials.filter(t => !t.title.trim() || !t.link.trim());
+      
+      if (invalidTutorials.length > 0) {
+        toast.error('Por favor, preencha título e link para todos os tutoriais');
+        return;
+      }
+
+      console.log('Salvando tutoriais:', { wappTutorials, kratorTutorials });
+      
+      await Promise.all([
+        updateTutorials('wapp', wappTutorials),
+        updateTutorials('krator', kratorTutorials)
+      ]);
+      
+      toast.success('Configurações dos tutoriais salvas com sucesso!');
+    } catch (error) {
+      console.error('Erro ao salvar tutoriais:', error);
+      toast.error('Erro ao salvar configurações. Tente novamente.');
+    }
   };
 
   const renderTutorialForm = (tutorials: any[], type: 'wapp' | 'krator') => (
