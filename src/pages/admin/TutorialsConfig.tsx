@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAdmin } from '../../hooks/useAdmin';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,6 +13,12 @@ const TutorialsConfig = () => {
   const { adminData, updateTutorials } = useAdmin();
   const [wappTutorials, setWappTutorials] = useState(adminData.tutorials.wapp);
   const [kratorTutorials, setKratorTutorials] = useState(adminData.tutorials.krator);
+
+  // Sync local state with adminData when it changes
+  useEffect(() => {
+    setWappTutorials(adminData.tutorials.wapp);
+    setKratorTutorials(adminData.tutorials.krator);
+  }, [adminData.tutorials.wapp, adminData.tutorials.krator]);
 
   const handleImageUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
