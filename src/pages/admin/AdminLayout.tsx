@@ -3,8 +3,11 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import AdminSidebar from '../../components/AdminSidebar';
+import { usePublicDataContext } from '../../contexts/PublicDataContext';
 
 const AdminLayout = () => {
+  const { data } = usePublicDataContext();
+  
   return (
     <SidebarProvider>
       <div className="min-h-screen bg-gray-900 flex w-full">
@@ -14,7 +17,7 @@ const AdminLayout = () => {
             <div className="flex items-center gap-4">
               <SidebarTrigger className="text-gray-300 hover:text-white" />
               <div>
-                <h1 className="text-2xl font-bold text-green-400">Wapp TV Admin</h1>
+                <h1 className="text-2xl font-bold text-green-400">{data.siteName} Admin</h1>
                 <p className="text-gray-400">Painel de Administração</p>
               </div>
             </div>

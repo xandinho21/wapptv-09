@@ -13,7 +13,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { MessageCircle, Settings, DollarSign, Star, LogOut, User } from 'lucide-react';
+import { MessageCircle, Settings, DollarSign, Star, LogOut, User, Globe } from 'lucide-react';
 
 const menuItems = [
   {
@@ -40,6 +40,11 @@ const menuItems = [
     title: 'Tabela de Preços',
     url: '/admin/dashboard/pricing',
     icon: DollarSign,
+  },
+  {
+    title: 'Configurações do Site',
+    url: '/admin/dashboard/site',
+    icon: Globe,
   },
   {
     title: 'Configurações Admin',

@@ -18,6 +18,8 @@ const SiteConfig = () => {
   const handleSiteNameUpdate = async () => {
     try {
       await updateSiteName(siteName);
+      // Update document title
+      document.title = `${siteName} - O Melhor da IPTV`;
       toast({
         title: "Nome do site atualizado",
         description: "O nome do site foi atualizado com sucesso.",
@@ -28,6 +30,33 @@ const SiteConfig = () => {
         description: "Erro ao atualizar o nome do site.",
         variant: "destructive",
       });
+    }
+  };
+
+  const handleFaviconUpload = async (file: File) => {
+    try {
+      setUploading(true);
+      const publicUrl = await updateSiteLogo(file);
+      
+      // Update favicon
+      const link = document.querySelector("link[rel*='icon']") as HTMLLinkElement || document.createElement('link');
+      link.type = 'image/x-icon';
+      link.rel = 'shortcut icon';
+      link.href = publicUrl;
+      document.getElementsByTagName('head')[0].appendChild(link);
+      
+      toast({
+        title: "Favicon atualizado",
+        description: "O favicon do site foi atualizado com sucesso.",
+      });
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Erro ao fazer upload do favicon.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -119,32 +148,41 @@ const SiteConfig = () => {
           </CardContent>
         </Card>
 
-        {/* Logo do Site */}
+        {/* Logo do Site / Favicon */}
         <Card className="bg-gray-800 border-gray-700">
           <CardHeader>
-            <CardTitle className="text-green-400">Logotipo</CardTitle>
+            <CardTitle className="text-green-400">Logotipo / Favicon</CardTitle>
             <CardDescription className="text-gray-400">
-              O logo que aparece no cabeçalho do site (JPEG, PNG, SVG ou WebP - máximo 2MB)
+              O logo que aparece no cabeçalho do site e como favicon (JPEG, PNG, SVG ou WebP - máximo 2MB)
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Preview do logo atual */}
             {adminData.siteLogoUrl && (
               <div>
-                <Label className="text-gray-300">Logo Atual</Label>
-                <div className="mt-2 p-4 bg-gray-700 rounded-lg inline-block">
+                <Label className="text-gray-300">Logo/Favicon Atual</Label>
+                <div className="mt-2 p-4 bg-gray-700 rounded-lg inline-flex items-center gap-4">
                   <img
                     src={adminData.siteLogoUrl}
                     alt="Logo atual"
                     className="h-16 w-auto object-contain"
                   />
+                  <div className="text-gray-400 text-sm">
+                    <p>Logo (cabeçalho)</p>
+                    <img
+                      src={adminData.siteLogoUrl}
+                      alt="Favicon atual"
+                      className="h-4 w-4 object-contain mt-1"
+                    />
+                    <p>Favicon (16x16px)</p>
+                  </div>
                 </div>
               </div>
             )}
 
             {/* Upload de novo logo */}
             <div>
-              <Label htmlFor="logoFile" className="text-gray-300">Novo Logo</Label>
+              <Label htmlFor="logoFile" className="text-gray-300">Novo Logo/Favicon</Label>
               <div className="mt-2">
                 <input
                   id="logoFile"
@@ -170,23 +208,44 @@ const SiteConfig = () => {
               </div>
             </div>
 
-            <Button
-              onClick={handleLogoUpload}
-              disabled={!logoFile || uploading}
-              className="bg-green-600 hover:bg-green-700"
-            >
-              {uploading ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Enviando...
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4 mr-2" />
-                  Salvar Logo
-                </>
-              )}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={handleLogoUpload}
+                disabled={!logoFile || uploading}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                {uploading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    Salvar Logo
+                  </>
+                )}
+              </Button>
+              
+              <Button
+                onClick={() => logoFile && handleFaviconUpload(logoFile)}
+                disabled={!logoFile || uploading}
+                variant="outline"
+                className="border-gray-600 text-gray-300 hover:bg-gray-700"
+              >
+                {uploading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-300 mr-2"></div>
+                    Enviando...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    Definir como Favicon
+                  </>
+                )}
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
