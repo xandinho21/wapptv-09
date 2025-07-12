@@ -20,6 +20,9 @@ import SiteConfig from "./pages/admin/SiteConfig";
 import SeoConfig from "./pages/admin/SeoConfig";
 import NotFound from "./pages/NotFound";
 import TutorialsConfig from "./pages/admin/TutorialsConfig";
+import ContentConfig from "./pages/admin/ContentConfig";
+import KratorConfig from "./pages/admin/KratorConfig";
+import ResellerConfig from "./pages/admin/ResellerConfig";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +50,9 @@ const App = () => (
                   <Route path="tutorials" element={<TutorialsConfig />} />
                   <Route path="pricing" element={<PricingConfig />} />
                   <Route path="seo" element={<SeoConfig />} />
+                  <Route path="content" element={<ContentConfig />} />
+                  <Route path="krator" element={<KratorConfig />} />
+                  <Route path="reseller" element={<ResellerConfig />} />
                   <Route path="site" element={<SiteConfig />} />
                   <Route path="settings" element={<AdminSettings />} />
                 </Route>

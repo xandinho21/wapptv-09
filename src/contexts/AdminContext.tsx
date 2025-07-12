@@ -60,6 +60,74 @@ interface AdminData {
     twitterTitle: string;
     twitterDescription: string;
   };
+  content: {
+    hero: {
+      title: string;
+      subtitle: string;
+      buttonText: string;
+      priceText: string;
+      initialPrice: string;
+      card1Title: string;
+      card1Subtitle: string;
+      card2Title: string;
+      card2Subtitle: string;
+      card3Title: string;
+      card3Subtitle: string;
+    };
+    trial: {
+      title: string;
+      subtitle: string;
+    };
+    krator: {
+      mainTitle: string;
+      mainSubtitle: string;
+      whatTitle: string;
+      description: string;
+      features: string[];
+      performanceTitle: string;
+      performanceText: string;
+      stabilityTitle: string;
+      stabilityText: string;
+      qualityTitle: string;
+      qualityText: string;
+      planSectionTitle: string;
+      planName: string;
+      planFeatures: string[];
+      trialTitle: string;
+      trialDuration: string;
+      trialSubtitle: string;
+      trialDescription: string;
+      trialFeature: string;
+    };
+    reseller: {
+      title: string;
+      subtitle: string;
+      supportTitle: string;
+      supportText: string;
+      commissionTitle: string;
+      commissionText: string;
+      qualityTitle: string;
+      qualityText: string;
+      priceTableTitle: string;
+      creditsText: string;
+      perCreditText: string;
+    };
+    footer: {
+      companyName: string;
+      companyDescription: string;
+      copyright: string;
+      linksTitle: string;
+      contactTitle: string;
+      linkInicio: string;
+      linkPlanos: string;
+      linkKrator: string;
+      linkSupport: string;
+      whatsappButton: string;
+      activationText: string;
+      socialTitle: string;
+      tagline: string;
+    };
+  };
 }
 
 interface AdminContextType {
@@ -80,6 +148,7 @@ interface AdminContextType {
   updateSiteLogo: (file: File) => Promise<string>;
   updateSeoSettings: (seoData: AdminData['seo']) => void;
   updateSeoImage: (file: File) => Promise<string>;
+  updateContentSettings: (section: keyof AdminData['content'], data: any) => void;
 }
 
 export const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -191,10 +260,86 @@ const DEFAULT_ADMIN_DATA: AdminData = {
     ogImage: '',
     twitterTitle: 'Wapp TV - O Melhor da IPTV',
     twitterDescription: 'Experimente o melhor da IPTV com Wapp TV. Planos a partir de R$ 25,00 com o novo sistema Krator.'
+  },
+  content: {
+    hero: {
+      title: 'Experimente o Melhor do Streaming',
+      subtitle: 'Entretenimento de qualidade com tecnologia avançada. Desfrute de milhares de canais, filmes e séries com a melhor qualidade de streaming.',
+      buttonText: 'Ver Planos',
+      priceText: 'A partir de',
+      initialPrice: 'R$ 25,00',
+      card1Title: 'Streaming',
+      card1Subtitle: 'Qualidade Premium',
+      card2Title: 'Suporte',
+      card2Subtitle: 'Pelo Whatsapp',
+      card3Title: '15.000+',
+      card3Subtitle: 'Conteúdos Disponíveis'
+    },
+    trial: {
+      title: 'Experimente Antes de Comprar',
+      subtitle: 'Teste nossa plataforma gratuitamente por 4 horas e veja a qualidade do nosso serviço'
+    },
+    krator: {
+      mainTitle: 'Conheça o Novo Sistema Krator',
+      mainSubtitle: 'Tecnologia revolucionária que transforma sua experiência de entretenimento',
+      whatTitle: 'O que é o Krator?',
+      description: 'O Krator é nosso sistema proprietário de streaming que garante a melhor qualidade de imagem, estabilidade de conexão e experiência de usuário incomparável. Desenvolvido especialmente para oferecer entretenimento sem interrupções.',
+      features: ['Streaming em tempo real otimizado', 'Qualidade adaptativa automática', 'Cache inteligente para maior velocidade', 'Interface intuitiva e responsiva'],
+      performanceTitle: 'Performance Superior',
+      performanceText: 'Velocidade de carregamento 3x mais rápida comparado aos sistemas tradicionais',
+      stabilityTitle: 'Estabilidade Garantida',
+      stabilityText: '99.9% de uptime com servidores redundantes para máxima disponibilidade',
+      qualityTitle: 'Qualidade Adaptativa',
+      qualityText: 'Ajuste automático da qualidade baseado na sua conexão para melhor experiência',
+      planSectionTitle: 'Plano com Sistema Krator',
+      planName: 'Krator 1 Tela',
+      planFeatures: ['1 Tela simultânea', 'Sistema Krator incluído', 'Alta qualidade', 'Streaming otimizado', 'Suporte via whatsapp'],
+      trialTitle: 'Teste Grátis',
+      trialDuration: '1 Hora',
+      trialSubtitle: 'Sistema Krator',
+      trialDescription: 'Experimente o sistema Krator gratuitamente e veja a diferença na qualidade do streaming.',
+      trialFeature: 'Acesso completo por 1 hora'
+    },
+    reseller: {
+      title: 'Seja um Revendedor',
+      subtitle: 'Faça parte da nossa rede de revendedores e tenha uma fonte extra de renda vendendo nossos produtos com excelente suporte e comissões atrativas.',
+      supportTitle: 'Suporte Completo',
+      supportText: 'Oferecemos suporte técnico e comercial para você e seus clientes',
+      commissionTitle: 'Comissões Atrativas',
+      commissionText: 'Ganhe comissões competitivas em cada venda realizada',
+      qualityTitle: 'Produtos de Qualidade',
+      qualityText: 'Venda produtos testados e aprovados por milhares de clientes',
+      priceTableTitle: 'Tabela de Preços para Revendedores',
+      creditsText: 'créditos',
+      perCreditText: 'por crédito'
+    },
+    footer: {
+      companyName: 'Wapp TV',
+      companyDescription: 'A melhor experiência em streaming com tecnologia avançada. Entretenimento de qualidade para toda a família.',
+      copyright: '© 2025 Wapp TV. Todos os direitos reservados.',
+      linksTitle: 'Links Úteis',
+      contactTitle: 'Contato',
+      linkInicio: 'Início',
+      linkPlanos: 'Planos',
+      linkKrator: 'Sistema Krator',
+      linkSupport: 'Suporte Técnico',
+      whatsappButton: 'Falar no WhatsApp',
+      activationText: '⚡ Ativação imediata',
+      socialTitle: 'Redes Sociais',
+      tagline: 'Wapp TV - Transformando sua experiência de entretenimento'
+    }
   }
 };
 
 const ADMIN_PASSWORD = 'admin123';
+
+export const useAdminContext = () => {
+  const context = useContext(AdminContext);
+  if (context === undefined) {
+    throw new Error('useAdminContext must be used within an AdminProvider');
+  }
+  return context;
+};
 
 export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -347,6 +492,15 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updateContentSettings = async (section: keyof AdminData['content'], data: any) => {
+    try {
+      await supabaseAdmin.updateContentSettings(section, data);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating content settings:', error);
+    }
+  };
+
   return (
     <AdminContext.Provider value={{
       isAuthenticated,
@@ -365,7 +519,8 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       updateSiteName,
       updateSiteLogo,
       updateSeoSettings,
-      updateSeoImage
+      updateSeoImage,
+      updateContentSettings
     }}>
       {children}
     </AdminContext.Provider>

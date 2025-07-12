@@ -59,6 +59,74 @@ interface PublicData {
     twitterTitle: string;
     twitterDescription: string;
   };
+  content: {
+    hero: {
+      title: string;
+      subtitle: string;
+      buttonText: string;
+      priceText: string;
+      initialPrice: string;
+      card1Title: string;
+      card1Subtitle: string;
+      card2Title: string;
+      card2Subtitle: string;
+      card3Title: string;
+      card3Subtitle: string;
+    };
+    trial: {
+      title: string;
+      subtitle: string;
+    };
+    krator: {
+      mainTitle: string;
+      mainSubtitle: string;
+      whatTitle: string;
+      description: string;
+      features: string[];
+      performanceTitle: string;
+      performanceText: string;
+      stabilityTitle: string;
+      stabilityText: string;
+      qualityTitle: string;
+      qualityText: string;
+      planSectionTitle: string;
+      planName: string;
+      planFeatures: string[];
+      trialTitle: string;
+      trialDuration: string;
+      trialSubtitle: string;
+      trialDescription: string;
+      trialFeature: string;
+    };
+    reseller: {
+      title: string;
+      subtitle: string;
+      supportTitle: string;
+      supportText: string;
+      commissionTitle: string;
+      commissionText: string;
+      qualityTitle: string;
+      qualityText: string;
+      priceTableTitle: string;
+      creditsText: string;
+      perCreditText: string;
+    };
+    footer: {
+      companyName: string;
+      companyDescription: string;
+      copyright: string;
+      linksTitle: string;
+      contactTitle: string;
+      linkInicio: string;
+      linkPlanos: string;
+      linkKrator: string;
+      linkSupport: string;
+      whatsappButton: string;
+      activationText: string;
+      socialTitle: string;
+      tagline: string;
+    };
+  };
 }
 
 interface PublicDataContextType {

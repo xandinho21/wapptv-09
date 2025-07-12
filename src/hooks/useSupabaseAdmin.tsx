@@ -313,6 +313,34 @@ export const useSupabaseAdmin = () => {
     }
   };
 
+  const updateContentSettings = async (section: string, data: any) => {
+    try {
+      const updates = [];
+      
+      // Convert section data to individual admin_settings entries
+      for (const [key, value] of Object.entries(data)) {
+        updates.push({
+          key: `${section}_${key}`,
+          value: JSON.stringify(value)
+        });
+      }
+
+      const { error } = await supabase
+        .from('admin_settings')
+        .upsert(updates, {
+          onConflict: 'key'
+        });
+
+      if (error) {
+        console.error('Error updating content settings:', error);
+        throw error;
+      }
+    } catch (error) {
+      console.error('Error updating content settings:', error);
+      throw error;
+    }
+  };
+
   return {
     updateContacts,
     updateResellerContacts,
@@ -326,6 +354,7 @@ export const useSupabaseAdmin = () => {
     updateTutorials,
     updateResellerSettings,
     updateSeoSettings,
-    updateSeoImage
+    updateSeoImage,
+    updateContentSettings
   };
 };
