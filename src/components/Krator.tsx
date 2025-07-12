@@ -1,9 +1,11 @@
 
 import React from 'react';
 import { usePublicAdmin } from '../hooks/useAdmin';
+import { usePublicDataContext } from '../contexts/PublicDataContext';
 
 const Krator = () => {
   const { adminData } = usePublicAdmin();
+  const { data: publicData } = usePublicDataContext();
 
   const handleBuyClick = () => {
     const randomContact = adminData.contacts[Math.floor(Math.random() * adminData.contacts.length)];
@@ -29,21 +31,19 @@ const Krator = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Conheça o Novo Sistema <span className="text-purple-400">Krator</span>
+              {publicData.content.krator.mainTitle} <span className="text-purple-400">Krator</span>
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Tecnologia revolucionária que transforma sua experiência de entretenimento
+              {publicData.content.krator.mainSubtitle}
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-purple-400/30">
-                <h3 className="text-3xl font-bold text-white mb-6">O que é o Krator?</h3>
+                <h3 className="text-3xl font-bold text-white mb-6">{publicData.content.krator.whatTitle}</h3>
                 <p className="text-gray-300 text-lg leading-relaxed mb-6">
-                  O Krator é nosso sistema proprietário de streaming que garante a melhor qualidade de imagem,
-                  estabilidade de conexão e experiência de usuário incomparável. Desenvolvido especialmente
-                  para oferecer entretenimento sem interrupções.
+                  {publicData.content.krator.description}
                 </p>
                 
                 <div className="space-y-4">

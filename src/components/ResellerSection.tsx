@@ -2,9 +2,11 @@
 import React from 'react';
 import { Users, DollarSign, Star, ArrowRight } from 'lucide-react';
 import { usePublicAdmin } from '../hooks/useAdmin';
+import { usePublicDataContext } from '../contexts/PublicDataContext';
 
 const ResellerSection = () => {
   const { adminData } = usePublicAdmin();
+  const { data: publicData } = usePublicDataContext();
 
   const openWhatsApp = () => {
     const message = encodeURIComponent(adminData.messages.reseller);
@@ -22,11 +24,10 @@ const ResellerSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-4">
-            Seja um Revendedor {adminData.siteName}
+            {publicData.content.reseller.title} {adminData.siteName}
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Faça parte da nossa rede de revendedores e tenha uma fonte extra de renda
-            vendendo nossos produtos com excelente suporte e comissões atrativas.
+            {publicData.content.reseller.subtitle}
           </p>
         </div>
 
@@ -35,9 +36,9 @@ const ResellerSection = () => {
             <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-white mb-2">Suporte Completo</h3>
+            <h3 className="text-xl font-semibold text-white mb-2">{publicData.content.reseller.supportTitle}</h3>
             <p className="text-gray-300">
-              Oferecemos suporte técnico e comercial para você e seus clientes
+              {publicData.content.reseller.supportText}
             </p>
           </div>
 
@@ -45,9 +46,9 @@ const ResellerSection = () => {
             <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
               <DollarSign className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-white mb-2">Comissões Atrativas</h3>
+            <h3 className="text-xl font-semibold text-white mb-2">{publicData.content.reseller.commissionTitle}</h3>
             <p className="text-gray-300">
-              Ganhe comissões competitivas em cada venda realizada
+              {publicData.content.reseller.commissionText}
             </p>
           </div>
 
@@ -55,9 +56,9 @@ const ResellerSection = () => {
             <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
               <Star className="w-8 h-8 text-white" />
             </div>
-            <h3 className="text-xl font-semibold text-white mb-2">Produtos de Qualidade</h3>
+            <h3 className="text-xl font-semibold text-white mb-2">{publicData.content.reseller.qualityTitle}</h3>
             <p className="text-gray-300">
-              Venda produtos testados e aprovados por milhares de clientes
+              {publicData.content.reseller.qualityText}
             </p>
           </div>
         </div>
@@ -65,7 +66,7 @@ const ResellerSection = () => {
         {adminData.resellerSettings.creditPrices.length > 0 && (
           <div className="bg-gray-900 rounded-lg p-8 mb-12">
             <h3 className="text-2xl font-bold text-white mb-6 text-center">
-              Tabela de Preços para Revendedores
+              {publicData.content.reseller.priceTableTitle}
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {adminData.resellerSettings.creditPrices.map((item, index) => (

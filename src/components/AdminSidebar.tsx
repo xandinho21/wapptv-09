@@ -13,7 +13,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { MessageCircle, Settings, DollarSign, Star, LogOut, User, Globe } from 'lucide-react';
+import { MessageCircle, Settings, DollarSign, Star, LogOut, User, Globe, FileText, Zap, Users } from 'lucide-react';
 
 const menuItems = [
   {
@@ -40,6 +40,21 @@ const menuItems = [
     title: 'Tabela de Preços',
     url: '/admin/dashboard/pricing',
     icon: DollarSign,
+  },
+  {
+    title: 'Configurar Conteúdo',
+    url: '/admin/dashboard/content',
+    icon: FileText,
+  },
+  {
+    title: 'Configurar Krator',
+    url: '/admin/dashboard/krator',
+    icon: Zap,
+  },
+  {
+    title: 'Configurar Revendedores',
+    url: '/admin/dashboard/reseller',
+    icon: Users,
   },
   {
     title: 'Configurações de SEO',

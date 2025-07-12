@@ -1,9 +1,11 @@
 
 import React from 'react';
 import { usePublicAdmin } from '../hooks/useAdmin';
+import { usePublicDataContext } from '../contexts/PublicDataContext';
 
 const TrialSection = () => {
   const { adminData } = usePublicAdmin();
+  const { data: publicData } = usePublicDataContext();
 
   const handleTrialClick = () => {
     const randomContact = adminData.contacts[Math.floor(Math.random() * adminData.contacts.length)];
@@ -17,10 +19,10 @@ const TrialSection = () => {
         <div className="max-w-4xl mx-auto text-center">
           <div className="bg-gradient-to-r from-green-600 to-green-800 rounded-2xl p-8 border border-green-400/30">
             <h3 className="text-3xl font-bold text-white mb-4">
-              Experimente Antes de Comprar
+              {publicData.content.trial.title}
             </h3>
             <p className="text-xl text-green-100 mb-6">
-              Teste nossa plataforma gratuitamente por 4 horas e veja a qualidade do nosso serviço
+              {publicData.content.trial.subtitle}
             </p>
             <button
               onClick={handleTrialClick}
