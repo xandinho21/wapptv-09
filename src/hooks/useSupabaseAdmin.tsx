@@ -341,6 +341,21 @@ export const useSupabaseAdmin = () => {
     }
   };
 
+  // Social Links
+  const updateSocialLinks = async (socialLinks: { facebook: string; instagram: string; youtube: string }) => {
+    try {
+      await supabase
+        .from('admin_settings')
+        .upsert({
+          key: 'social_links',
+          value: socialLinks
+        });
+    } catch (error) {
+      console.error('Error updating social links:', error);
+      throw error;
+    }
+  };
+
   return {
     updateContacts,
     updateResellerContacts,
@@ -355,6 +370,7 @@ export const useSupabaseAdmin = () => {
     updateResellerSettings,
     updateSeoSettings,
     updateSeoImage,
-    updateContentSettings
+    updateContentSettings,
+    updateSocialLinks
   };
 };

@@ -73,15 +73,21 @@ const Footer = () => {
             <div className="mt-6">
               <h5 className="text-lg font-bold text-white mb-3">{publicData.content.footer.socialTitle}</h5>
               <div className="flex space-x-4">
-                <div className="w-10 h-10 bg-gray-700 hover:bg-green-500 rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
-                  <span className="text-white font-bold">F</span>
-                </div>
-                <div className="w-10 h-10 bg-gray-700 hover:bg-green-500 rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
-                  <span className="text-white font-bold">I</span>
-                </div>
-                <div className="w-10 h-10 bg-gray-700 hover:bg-green-500 rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
-                  <span className="text-white font-bold">Y</span>
-                </div>
+                {adminData.socialLinks?.facebook && (
+                  <a href={adminData.socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-700 hover:bg-green-500 rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
+                    <span className="text-white font-bold">F</span>
+                  </a>
+                )}
+                {adminData.socialLinks?.instagram && (
+                  <a href={adminData.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-700 hover:bg-green-500 rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
+                    <span className="text-white font-bold">I</span>
+                  </a>
+                )}
+                {adminData.socialLinks?.youtube && (
+                  <a href={adminData.socialLinks.youtube} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-700 hover:bg-green-500 rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
+                    <span className="text-white font-bold">Y</span>
+                  </a>
+                )}
               </div>
             </div>
           </div>

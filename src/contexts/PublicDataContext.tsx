@@ -40,6 +40,11 @@ interface PublicData {
       price: string;
     }[];
   };
+  socialLinks: {
+    facebook: string;
+    instagram: string;
+    youtube: string;
+  };
   kratorPrice: string;
   plans: Plan[];
   popularText: string;

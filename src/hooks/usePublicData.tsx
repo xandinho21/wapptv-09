@@ -40,6 +40,11 @@ interface PublicData {
       price: string;
     }[];
   };
+  socialLinks: {
+    facebook: string;
+    instagram: string;
+    youtube: string;
+  };
   kratorPrice: string;
   plans: Plan[];
   popularText: string;
@@ -154,6 +159,11 @@ const DEFAULT_PUBLIC_DATA: PublicData = {
       { credits: 100, price: 'R$ 7,00' },
       { credits: 500, price: 'R$ 6,00' }
     ]
+  },
+  socialLinks: {
+    facebook: '',
+    instagram: '',
+    youtube: ''
   },
   kratorPrice: 'R$ 25,00',
   plans: [],
@@ -356,6 +366,7 @@ export const usePublicData = () => {
         },
         siteName: settingsMap.site_name || DEFAULT_PUBLIC_DATA.siteName,
         siteLogoUrl: settingsMap.site_logo_url || DEFAULT_PUBLIC_DATA.siteLogoUrl,
+        socialLinks: settingsMap.social_links || DEFAULT_PUBLIC_DATA.socialLinks,
         seo: {
           title: settingsMap.seo_title || DEFAULT_PUBLIC_DATA.seo.title,
           description: settingsMap.seo_description || DEFAULT_PUBLIC_DATA.seo.description,

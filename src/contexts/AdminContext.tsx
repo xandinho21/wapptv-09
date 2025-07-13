@@ -41,6 +41,11 @@ interface AdminData {
       price: string;
     }[];
   };
+  socialLinks: {
+    facebook: string;
+    instagram: string;
+    youtube: string;
+  };
   kratorPrice: string;
   plans: Plan[];
   popularText: string;
@@ -149,6 +154,7 @@ interface AdminContextType {
   updateSeoSettings: (seoData: AdminData['seo']) => void;
   updateSeoImage: (file: File) => Promise<string>;
   updateContentSettings: (section: keyof AdminData['content'], data: any) => void;
+  updateSocialLinks: (socialLinks: AdminData['socialLinks']) => void;
 }
 
 export const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -178,6 +184,11 @@ const DEFAULT_ADMIN_DATA: AdminData = {
       { credits: 100, price: 'R$ 7,00' },
       { credits: 500, price: 'R$ 6,00' }
     ]
+  },
+  socialLinks: {
+    facebook: '',
+    instagram: '',
+    youtube: ''
   },
   kratorPrice: 'R$ 25,00',
   plans: [
@@ -501,6 +512,15 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updateSocialLinks = async (socialLinks: AdminData['socialLinks']) => {
+    try {
+      await supabaseAdmin.updateSocialLinks(socialLinks);
+      refetch(); // Refresh public data
+    } catch (error) {
+      console.error('Error updating social links:', error);
+    }
+  };
+
   return (
     <AdminContext.Provider value={{
       isAuthenticated,
@@ -520,7 +540,8 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
       updateSiteLogo,
       updateSeoSettings,
       updateSeoImage,
-      updateContentSettings
+      updateContentSettings,
+      updateSocialLinks
     }}>
       {children}
     </AdminContext.Provider>

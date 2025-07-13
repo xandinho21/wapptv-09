@@ -9,12 +9,17 @@ import { useToast } from '@/hooks/use-toast';
 import { MessageSquare, TestTube, Users, Eye, EyeOff } from 'lucide-react';
 
 const ButtonsConfig = () => {
-  const { adminData, updateMessages, updateButtonTexts, updateResellerSettings } = useAdmin();
+  const { adminData, updateMessages, updateButtonTexts, updateResellerSettings, updateSocialLinks } = useAdmin();
   const { toast } = useToast();
 
   const [messages, setMessages] = useState(adminData.messages);
   const [buttonTexts, setButtonTexts] = useState(adminData.buttonTexts);
   const [resellerSettings, setResellerSettings] = useState(adminData.resellerSettings);
+  const [socialLinks, setSocialLinks] = useState({
+    facebook: adminData.socialLinks?.facebook || '',
+    instagram: adminData.socialLinks?.instagram || '',
+    youtube: adminData.socialLinks?.youtube || ''
+  });
 
   const handleSaveMessages = () => {
     updateMessages(messages);
@@ -37,6 +42,14 @@ const ButtonsConfig = () => {
     toast({
       title: "Configurações de revendedores atualizadas!",
       description: "As configurações foram salvas com sucesso.",
+    });
+  };
+
+  const handleSaveSocialLinks = () => {
+    updateSocialLinks(socialLinks);
+    toast({
+      title: "Links das redes sociais atualizados!",
+      description: "Os links foram salvos com sucesso.",
     });
   };
 
@@ -159,6 +172,50 @@ const ButtonsConfig = () => {
 
             <Button onClick={handleSaveButtonTexts} className="w-full bg-green-500 hover:bg-green-600">
               Salvar Textos dos Botões
+            </Button>
+          </div>
+        </div>
+
+        {/* Redes Sociais */}
+        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+          <div className="flex items-center gap-2 mb-6">
+            <MessageSquare className="text-green-400" size={24} />
+            <h2 className="text-xl font-bold text-white">Links das Redes Sociais</h2>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <Label className="text-gray-300">Link do Facebook</Label>
+              <Input
+                value={socialLinks.facebook}
+                onChange={(e) => setSocialLinks({ ...socialLinks, facebook: e.target.value })}
+                className="mt-2 bg-gray-700 border-gray-600 text-white"
+                placeholder="https://facebook.com/seu-perfil"
+              />
+            </div>
+
+            <div>
+              <Label className="text-gray-300">Link do Instagram</Label>
+              <Input
+                value={socialLinks.instagram}
+                onChange={(e) => setSocialLinks({ ...socialLinks, instagram: e.target.value })}
+                className="mt-2 bg-gray-700 border-gray-600 text-white"
+                placeholder="https://instagram.com/seu-perfil"
+              />
+            </div>
+
+            <div>
+              <Label className="text-gray-300">Link do YouTube</Label>
+              <Input
+                value={socialLinks.youtube}
+                onChange={(e) => setSocialLinks({ ...socialLinks, youtube: e.target.value })}
+                className="mt-2 bg-gray-700 border-gray-600 text-white"
+                placeholder="https://youtube.com/seu-canal"
+              />
+            </div>
+
+            <Button onClick={handleSaveSocialLinks} className="w-full bg-green-500 hover:bg-green-600">
+              Salvar Links das Redes Sociais
             </Button>
           </div>
         </div>
