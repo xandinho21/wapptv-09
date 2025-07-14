@@ -6,6 +6,8 @@ const Footer = () => {
   const { adminData } = usePublicAdmin();
   const { data: publicData } = usePublicDataContext();
 
+  console.log('Footer - adminData.socialLinks:', adminData.socialLinks);
+
   const handleContactClick = () => {
     const randomContact = adminData.contacts[Math.floor(Math.random() * adminData.contacts.length)];
     const message = encodeURIComponent(adminData.messages.contact);
