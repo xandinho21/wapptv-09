@@ -3,14 +3,17 @@ import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Palette, Check, Settings } from "lucide-react";
+import { Palette, Check, Settings, Trash2 } from "lucide-react";
 import { useTheme, ThemeSettings } from "@/hooks/useTheme";
 import ThemeCustomizationModal from "@/components/ThemeCustomizationModal";
+import DeleteThemeDialog from "@/components/DeleteThemeDialog";
 
 export default function ThemesConfig() {
-  const { themes, activeTheme, loading, activateTheme, updateTheme, duplicateTheme, applyTheme } = useTheme();
+  const { themes, activeTheme, loading, activateTheme, updateTheme, duplicateTheme, deleteTheme, applyTheme } = useTheme();
   const [selectedTheme, setSelectedTheme] = useState<ThemeSettings | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [themeToDelete, setThemeToDelete] = useState<ThemeSettings | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const handleCustomizeTheme = (theme: ThemeSettings) => {
     setSelectedTheme(theme);
@@ -29,6 +32,15 @@ export default function ThemesConfig() {
 
   const handlePreviewTheme = (theme: ThemeSettings) => {
     applyTheme(theme);
+  };
+
+  const handleDeleteTheme = (theme: ThemeSettings) => {
+    setThemeToDelete(theme);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = (themeId: string, themeName: string) => {
+    deleteTheme(themeId, themeName);
   };
 
   if (loading) {
@@ -128,6 +140,16 @@ export default function ThemesConfig() {
                   <Settings className="h-4 w-4 mr-2" />
                   Personalizar
                 </Button>
+
+                <Button
+                  variant="outline"
+                  onClick={() => handleDeleteTheme(theme)}
+                  disabled={theme.is_active}
+                  className="w-full bg-gray-700 border-gray-600 text-gray-200 hover:bg-red-600 hover:text-white hover:border-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Excluir Tema
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -161,6 +183,16 @@ export default function ThemesConfig() {
         onSave={handleSaveTheme}
         onDuplicate={handleDuplicateTheme}
         onPreview={handlePreviewTheme}
+      />
+
+      <DeleteThemeDialog
+        theme={themeToDelete}
+        isOpen={isDeleteDialogOpen}
+        onClose={() => {
+          setIsDeleteDialogOpen(false);
+          setThemeToDelete(null);
+        }}
+        onConfirm={handleConfirmDelete}
       />
     </div>
   );

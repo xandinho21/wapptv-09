@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -150,6 +151,42 @@ export const useTheme = () => {
     }
   };
 
+  const deleteTheme = async (themeId: string, themeName: string) => {
+    try {
+      // Check if theme is active
+      const themeToDelete = themes.find(theme => theme.id === themeId);
+      if (themeToDelete?.is_active) {
+        toast({
+          title: "Erro",
+          description: "Não é possível excluir o tema ativo. Ative outro tema primeiro.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const { error } = await supabase
+        .from('theme_settings')
+        .delete()
+        .eq('id', themeId);
+
+      if (error) throw error;
+
+      await fetchThemes();
+      
+      toast({
+        title: "Tema Excluído",
+        description: `Tema "${themeName}" foi excluído com sucesso!`,
+      });
+    } catch (error) {
+      console.error('Error deleting theme:', error);
+      toast({
+        title: "Erro",
+        description: "Erro ao excluir tema",
+        variant: "destructive",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchThemes();
   }, []);
@@ -161,6 +198,7 @@ export const useTheme = () => {
     activateTheme,
     updateTheme,
     duplicateTheme,
+    deleteTheme,
     fetchThemes,
     applyTheme,
   };
