@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -36,9 +35,9 @@ export const useTheme = () => {
       // Transform data to ensure all required properties exist with defaults
       const transformedData = data?.map(theme => ({
         ...theme,
-        highlight_button_bg_color: theme.highlight_button_bg_color || '217.2 32.6% 17.5%',
-        highlight_button_text_color: theme.highlight_button_text_color || '0 0% 100%',
-        highlight_button_hover_color: theme.highlight_button_hover_color || '217.2 32.6% 15%',
+        highlight_button_bg_color: (theme as any).highlight_button_bg_color || '217.2 32.6% 17.5%',
+        highlight_button_text_color: (theme as any).highlight_button_text_color || '0 0% 100%',
+        highlight_button_hover_color: (theme as any).highlight_button_hover_color || '217.2 32.6% 15%',
       })) || [];
 
       setThemes(transformedData);
