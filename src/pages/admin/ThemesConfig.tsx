@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -122,7 +123,7 @@ export default function ThemesConfig() {
                 <Button
                   variant="outline"
                   onClick={() => handleCustomizeTheme(theme)}
-                  className="w-full border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white"
+                  className="w-full bg-gray-700 border-gray-600 text-gray-200 hover:bg-green-600 hover:text-white hover:border-green-600"
                 >
                   <Settings className="h-4 w-4 mr-2" />
                   Personalizar
