@@ -102,7 +102,7 @@ const ContentConfig = () => {
                     <Input value={heroData.title} onChange={e => setHeroData({
                     ...heroData,
                     title: e.target.value
-                  })} placeholder="Experimente o Melhor do Streaming" />
+                  })} placeholder="Experimente o Melhor do Streaming" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                   
                   <div>
@@ -110,7 +110,7 @@ const ContentConfig = () => {
                     <Input value={heroData.buttonText} onChange={e => setHeroData({
                     ...heroData,
                     buttonText: e.target.value
-                  })} placeholder="Ver Planos" />
+                  })} placeholder="Ver Planos" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                 </div>
 
@@ -119,7 +119,7 @@ const ContentConfig = () => {
                   <Textarea value={heroData.subtitle} onChange={e => setHeroData({
                   ...heroData,
                   subtitle: e.target.value
-                })} placeholder="Entretenimento de qualidade..." rows={3} />
+                })} placeholder="Entretenimento de qualidade..." rows={3} className="bg-gray-700 border-gray-600 text-white" />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -128,7 +128,7 @@ const ContentConfig = () => {
                     <Input value={heroData.priceText} onChange={e => setHeroData({
                     ...heroData,
                     priceText: e.target.value
-                  })} placeholder="A partir de" />
+                  })} placeholder="A partir de" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                   
                   <div>
@@ -136,7 +136,7 @@ const ContentConfig = () => {
                     <Input value={heroData.initialPrice} onChange={e => setHeroData({
                     ...heroData,
                     initialPrice: e.target.value
-                  })} placeholder="R$ 25,00" />
+                  })} placeholder="R$ 25,00" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                 </div>
 
@@ -146,12 +146,12 @@ const ContentConfig = () => {
                     <Input value={heroData.card1Title} onChange={e => setHeroData({
                     ...heroData,
                     card1Title: e.target.value
-                  })} placeholder="Streaming" />
+                  })} placeholder="Streaming" className="bg-gray-700 border-gray-600 text-white" />
                     <label className="block text-sm font-medium mb-2 mt-2">Card 1 - Subtítulo</label>
                     <Input value={heroData.card1Subtitle} onChange={e => setHeroData({
                     ...heroData,
                     card1Subtitle: e.target.value
-                  })} placeholder="Qualidade Premium" />
+                  })} placeholder="Qualidade Premium" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                   
                   <div>
@@ -159,12 +159,12 @@ const ContentConfig = () => {
                     <Input value={heroData.card2Title} onChange={e => setHeroData({
                     ...heroData,
                     card2Title: e.target.value
-                  })} placeholder="Suporte" />
+                  })} placeholder="Suporte" className="bg-gray-700 border-gray-600 text-white" />
                     <label className="block text-sm font-medium mb-2 mt-2">Card 2 - Subtítulo</label>
                     <Input value={heroData.card2Subtitle} onChange={e => setHeroData({
                     ...heroData,
                     card2Subtitle: e.target.value
-                  })} placeholder="Pelo Whatsapp" />
+                  })} placeholder="Pelo Whatsapp" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                   
                   <div>
@@ -172,12 +172,12 @@ const ContentConfig = () => {
                     <Input value={heroData.card3Title} onChange={e => setHeroData({
                     ...heroData,
                     card3Title: e.target.value
-                  })} placeholder="15.000+" />
+                  })} placeholder="15.000+" className="bg-gray-700 border-gray-600 text-white" />
                     <label className="block text-sm font-medium mb-2 mt-2">Card 3 - Subtítulo</label>
                     <Input value={heroData.card3Subtitle} onChange={e => setHeroData({
                     ...heroData,
                     card3Subtitle: e.target.value
-                  })} placeholder="Conteúdos Disponíveis" />
+                  })} placeholder="Conteúdos Disponíveis" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                 </div>
 
