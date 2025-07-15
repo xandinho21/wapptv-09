@@ -90,8 +90,8 @@ const ContentConfig = () => {
 
         <TabsContent value="hero">
           <Card className="bg-gray-800 border-gray-700">
-            <CardHeader>
-              <CardTitle>Configurações da Seção Hero</CardTitle>
+            <CardHeader className="bg-[4ade80]">
+              <CardTitle className="text-[16a34a] text-green-400">Configurações da Seção Hero</CardTitle>
               <CardDescription>Configure os textos da primeira seção do site</CardDescription>
             </CardHeader>
             <CardContent>
