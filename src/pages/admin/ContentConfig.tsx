@@ -82,7 +82,7 @@ const ContentConfig = () => {
       </div>
 
       <Tabs defaultValue="hero" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-3 bg-[4ade80] bg-gray-800">
           <TabsTrigger value="hero" className="text-base text-slate-500 bg-slate-50">Seção Hero</TabsTrigger>
           <TabsTrigger value="trial">Seção Trial</TabsTrigger>
           <TabsTrigger value="footer">Rodapé</TabsTrigger>
