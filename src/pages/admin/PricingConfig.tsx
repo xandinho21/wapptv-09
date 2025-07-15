@@ -98,7 +98,7 @@ const PricingConfig = () => {
         <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
           <div className="flex items-center gap-2 mb-6">
             <DollarSign className="text-green-400" size={24} />
-            <h2 className="text-xl font-bold text-white">Preços Wapp TV</h2>
+            <h2 className="text-xl font-bold text-white">Preços Wapp TV (EM BREVE)</h2>
           </div>
 
           <div className="space-y-4">
