@@ -16,13 +16,13 @@ const Tutorials: React.FC<TutorialsProps> = ({ type }) => {
   }
 
   const isKrator = type === 'krator';
-  const bgClass = isKrator ? 'bg-gradient-to-br from-purple-900 via-purple-800 to-gray-900' : 'bg-gray-800';
-  const titleColor = isKrator ? 'text-purple-400' : 'text-theme-primary';
-  const cardBg = isKrator ? 'bg-purple-800/30' : 'bg-theme-primary/30';
-  const borderColor = isKrator ? 'border-purple-400/20' : 'border-theme-accent/20';
+  const bgClass = isKrator ? '' : 'bg-gray-800';
+  const titleColor = isKrator ? 'text-krator-primary' : 'text-theme-primary';
+  const cardBg = isKrator ? 'bg-krator-secondary/30' : 'bg-theme-primary/30';
+  const borderColor = isKrator ? 'border-krator-primary/20' : 'border-theme-accent/20';
 
   return (
-    <section id="tutoriais" className={`py-16 ${bgClass}`}>
+    <section id="tutoriais" className={`py-16 ${bgClass}`} style={isKrator ? { background: `linear-gradient(135deg, hsl(var(--krator-secondary) / 0.9), hsl(var(--krator-primary) / 0.7), hsl(217.2 32.6% 17.5%))` } : {}}>
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">

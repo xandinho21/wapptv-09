@@ -66,6 +66,10 @@ export default {
 					primary: 'hsl(var(--theme-primary))',
 					secondary: 'hsl(var(--theme-secondary))',
 					accent: 'hsl(var(--theme-accent))'
+				},
+				krator: {
+					primary: 'hsl(var(--krator-primary))',
+					secondary: 'hsl(var(--krator-secondary))'
 				}
 			},
 			borderRadius: {
