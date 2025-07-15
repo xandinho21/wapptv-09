@@ -17,9 +17,9 @@ const Tutorials: React.FC<TutorialsProps> = ({ type }) => {
 
   const isKrator = type === 'krator';
   const bgClass = isKrator ? 'bg-gradient-to-br from-purple-900 via-purple-800 to-gray-900' : 'bg-gray-800';
-  const titleColor = isKrator ? 'text-purple-400' : 'text-green-400';
-  const cardBg = isKrator ? 'bg-purple-800/30' : 'bg-green-800/30';
-  const borderColor = isKrator ? 'border-purple-400/20' : 'border-green-400/20';
+  const titleColor = isKrator ? 'text-purple-400' : 'text-theme-primary';
+  const cardBg = isKrator ? 'bg-purple-800/30' : 'bg-theme-primary/30';
+  const borderColor = isKrator ? 'border-purple-400/20' : 'border-theme-accent/20';
 
   return (
     <section id="tutoriais" className={`py-16 ${bgClass}`}>

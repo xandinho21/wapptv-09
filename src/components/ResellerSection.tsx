@@ -33,7 +33,7 @@ const ResellerSection = () => {
 
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           <div className="text-center">
-            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-theme-primary rounded-full flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8 text-white" />
             </div>
             <h3 className="text-xl font-semibold text-white mb-2">{publicData.content.reseller.supportTitle}</h3>
@@ -43,7 +43,7 @@ const ResellerSection = () => {
           </div>
 
           <div className="text-center">
-            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-theme-primary rounded-full flex items-center justify-center mx-auto mb-4">
               <DollarSign className="w-8 h-8 text-white" />
             </div>
             <h3 className="text-xl font-semibold text-white mb-2">{publicData.content.reseller.commissionTitle}</h3>
@@ -53,7 +53,7 @@ const ResellerSection = () => {
           </div>
 
           <div className="text-center">
-            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-theme-primary rounded-full flex items-center justify-center mx-auto mb-4">
               <Star className="w-8 h-8 text-white" />
             </div>
             <h3 className="text-xl font-semibold text-white mb-2">{publicData.content.reseller.qualityTitle}</h3>
@@ -70,10 +70,10 @@ const ResellerSection = () => {
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {adminData.resellerSettings.creditPrices.map((item, index) => (
-                <div key={index} className="bg-gray-800 rounded-lg p-6 text-center">
-                  <div className="text-3xl font-bold text-green-400 mb-2">
-                    {item.credits}
-                  </div>
+                 <div key={index} className="bg-gray-800 rounded-lg p-6 text-center">
+                   <div className="text-3xl font-bold text-theme-primary mb-2">
+                     {item.credits}
+                   </div>
                   <div className="text-gray-300 mb-2">créditos</div>
                   <div className="text-xl font-semibold text-white">
                     {item.price}
@@ -90,7 +90,7 @@ const ResellerSection = () => {
         <div className="text-center">
           <button
             onClick={openWhatsApp}
-            className="bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-colors inline-flex items-center gap-2"
+            className="bg-theme-primary hover:bg-theme-secondary text-white font-semibold py-4 px-8 rounded-lg text-lg transition-colors inline-flex items-center gap-2"
           >
             {adminData.buttonTexts.reseller}
             <ArrowRight className="w-5 h-5" />
