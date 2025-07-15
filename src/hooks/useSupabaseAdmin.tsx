@@ -272,6 +272,17 @@ export const useSupabaseAdmin = () => {
           .from('admin_settings')
           .upsert(setting, { onConflict: 'key' });
       }
+
+      // Call edge function to update index.html with new SEO data
+      try {
+        const { error: functionError } = await supabase.functions.invoke('update-seo-html');
+        if (functionError) {
+          console.error('Error calling update-seo-html function:', functionError);
+        }
+      } catch (functionCallError) {
+        console.error('Error invoking SEO update function:', functionCallError);
+        // Don't throw here as the main SEO data was saved successfully
+      }
     } catch (error) {
       console.error('Error updating SEO settings:', error);
       throw error;
