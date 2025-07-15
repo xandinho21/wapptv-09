@@ -85,7 +85,7 @@ const KratorConfig = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Configurações da Seção Krator</CardTitle>
+          <CardTitle>Configurações da Seção destaque</CardTitle>
           <CardDescription>Configure todos os textos relacionados ao sistema Krator</CardDescription>
         </CardHeader>
         <CardContent>
