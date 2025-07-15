@@ -80,7 +80,7 @@ const ButtonsConfig = () => {
             </div>
 
             <div>
-                <Label className="text-gray-300">Mensagem Destaque</Label>
+                <Label className="text-gray-300">Mensagem do plano Destaque</Label>
               <Textarea
                 value={messages.krator}
                 onChange={(e) => setMessages({ ...messages, krator: e.target.value })}
