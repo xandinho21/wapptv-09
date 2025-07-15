@@ -13,7 +13,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { MessageCircle, Settings, DollarSign, Star, LogOut, User, Globe, FileText, Zap, Users } from 'lucide-react';
+import { MessageCircle, Settings, DollarSign, Star, LogOut, User, Globe, FileText, Zap, Users, Palette } from 'lucide-react';
 
 const menuItems = [
   {
@@ -65,6 +65,11 @@ const menuItems = [
     title: 'Configurações do Site',
     url: '/admin/dashboard/site',
     icon: Globe,
+  },
+  {
+    title: 'Temas',
+    url: '/admin/dashboard/themes',
+    icon: Palette,
   },
   {
     title: 'Configurações Admin',

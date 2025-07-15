@@ -191,6 +191,48 @@ export type Database = {
         }
         Relationships: []
       }
+      theme_settings: {
+        Row: {
+          accent_color: string
+          created_at: string
+          id: string
+          is_active: boolean
+          krator_primary_color: string
+          krator_secondary_color: string
+          name: string
+          primary_color: string
+          secondary_color: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          accent_color: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          krator_primary_color: string
+          krator_secondary_color: string
+          name: string
+          primary_color: string
+          secondary_color: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          accent_color?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          krator_primary_color?: string
+          krator_secondary_color?: string
+          name?: string
+          primary_color?: string
+          secondary_color?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       tutorials: {
         Row: {
           created_at: string

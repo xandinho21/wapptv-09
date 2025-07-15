@@ -17,15 +17,25 @@ serve(async (req) => {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljdnVvbnhqYXNndmJ1cXB4YmNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1OTY2MzksImV4cCI6MjA2NzE3MjYzOX0.HXhuZu6ThhW9-LvsMxw7oIKEjcJ73IBLHV1CZAaOxqk'
     );
 
-    // Fetch current SEO settings from database
-    const { data: seoSettings, error } = await supabaseClient
-      .from('admin_settings')
-      .select('*')
-      .in('key', [
-        'seo_title', 'seo_description', 'seo_keywords',
-        'seo_og_title', 'seo_og_description', 'seo_og_image',
-        'seo_twitter_title', 'seo_twitter_description'
-      ]);
+    // Fetch current SEO settings and active theme from database
+    const [seoResult, themeResult] = await Promise.all([
+      supabaseClient
+        .from('admin_settings')
+        .select('*')
+        .in('key', [
+          'seo_title', 'seo_description', 'seo_keywords',
+          'seo_og_title', 'seo_og_description', 'seo_og_image',
+          'seo_twitter_title', 'seo_twitter_description'
+        ]),
+      supabaseClient
+        .from('theme_settings')
+        .select('*')
+        .eq('is_active', true)
+        .single()
+    ]);
+
+    const { data: seoSettings, error } = seoResult;
+    const { data: activeTheme, error: themeError } = themeResult;
 
     if (error) {
       console.error('Error fetching SEO settings:', error);
@@ -35,11 +45,28 @@ serve(async (req) => {
       });
     }
 
+    if (themeError) {
+      console.error('Error fetching theme:', themeError);
+    }
+
     // Convert array to object for easier access
     const seoData: Record<string, string> = {};
     seoSettings?.forEach(setting => {
       seoData[setting.key] = typeof setting.value === 'string' ? setting.value : String(setting.value || '');
     });
+
+    // Generate theme CSS variables
+    let themeStyles = '';
+    if (activeTheme) {
+      themeStyles = `\n    <style>
+      :root {
+        --primary: ${activeTheme.primary_color};
+        --secondary: ${activeTheme.secondary_color};
+        --accent: ${activeTheme.accent_color};
+        --krator-primary: ${activeTheme.krator_primary_color};
+        --krator-secondary: ${activeTheme.krator_secondary_color};
+      }
+    </style>`;
 
     // Read current index.html
     const indexPath = './index.html';
@@ -177,6 +204,19 @@ serve(async (req) => {
         /<meta name="twitter:image" content=".*?"/i,
         `<meta name="twitter:image" content="${seoData.seo_og_image}"`
       );
+    }
+
+    // Add theme styles to head if theme is available
+    if (themeStyles) {
+      // Add theme styles after favicon but before closing head tag
+      const faviconRegex = /(<link[^>]*rel="icon"[^>]*>)/i;
+      const headCloseRegex = /(<\/head>)/i;
+      
+      if (faviconRegex.test(updatedHtml)) {
+        updatedHtml = updatedHtml.replace(faviconRegex, `$1${themeStyles}`);
+      } else if (headCloseRegex.test(updatedHtml)) {
+        updatedHtml = updatedHtml.replace(headCloseRegex, `${themeStyles}\n  $1`);
+      }
     }
 
     // Write updated HTML back to file

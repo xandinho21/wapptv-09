@@ -23,6 +23,7 @@ import TutorialsConfig from "./pages/admin/TutorialsConfig";
 import ContentConfig from "./pages/admin/ContentConfig";
 import KratorConfig from "./pages/admin/KratorConfig";
 import ResellerConfig from "./pages/admin/ResellerConfig";
+import ThemesConfig from "./pages/admin/ThemesConfig";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App = () => (
                   <Route path="krator" element={<KratorConfig />} />
                   <Route path="reseller" element={<ResellerConfig />} />
                   <Route path="site" element={<SiteConfig />} />
+                  <Route path="themes" element={<ThemesConfig />} />
                   <Route path="settings" element={<AdminSettings />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />

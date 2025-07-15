@@ -1,5 +1,6 @@
 import React, { createContext, useContext } from 'react';
 import { usePublicData } from '../hooks/usePublicData';
+import { useTheme } from '../hooks/useTheme';
 
 interface Plan {
   id: string;
@@ -144,6 +145,9 @@ const PublicDataContext = createContext<PublicDataContextType | undefined>(undef
 
 export const PublicDataProvider = ({ children }: { children: React.ReactNode }) => {
   const publicDataState = usePublicData();
+  
+  // Initialize theme system
+  useTheme();
 
   return (
     <PublicDataContext.Provider value={publicDataState}>

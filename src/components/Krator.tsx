@@ -23,7 +23,7 @@ const Krator = () => {
     price: adminData.kratorPrice,
     features: ['1 Tela simultânea', 'Sistema Krator incluído', 'Alta qualidade', 'Streaming otimizado', 'Suporte via whatsapp']
   };
-  return <section id="krator" className="py-20 bg-gradient-to-br from-purple-900 via-purple-800 to-gray-900">
+  return <section id="krator" className="py-20" style={{ background: `linear-gradient(135deg, hsl(var(--krator-primary) / 0.8), hsl(var(--krator-secondary) / 0.9), hsl(217.2 32.6% 17.5%))` }}>
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
