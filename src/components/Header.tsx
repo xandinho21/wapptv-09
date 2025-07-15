@@ -32,7 +32,7 @@ const Header = () => {
                 className="w-8 h-8 rounded-lg object-cover"
               />
             ) : (
-              <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-theme-secondary rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">
                   {adminData.siteName.charAt(0)}
                 </span>
@@ -44,31 +44,31 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-8">
             <button 
               onClick={() => scrollToSection('planos')}
-              className="text-gray-300 hover:text-green-400 transition-colors"
+              className="text-gray-300 hover:text-theme-accent transition-colors"
             >
               Planos
             </button>
             <button 
               onClick={() => scrollToSection('tutoriais')}
-              className="text-gray-300 hover:text-green-400 transition-colors"
+              className="text-gray-300 hover:text-theme-accent transition-colors"
             >
               Tutoriais
             </button>
             <button 
               onClick={() => scrollToSection('krator')}
-              className="text-gray-300 hover:text-green-400 transition-colors"
+              className="text-gray-300 hover:text-theme-accent transition-colors"
             >
               Krator
             </button>
             <button 
               onClick={() => scrollToSection('revendedor')}
-              className="text-gray-300 hover:text-green-400 transition-colors"
+              className="text-gray-300 hover:text-theme-accent transition-colors"
             >
               Seja Revendedor
             </button>
             <Link 
               to="/auth"
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
+              className="bg-theme-secondary hover:bg-theme-accent text-white px-4 py-2 rounded-lg transition-colors"
             >
               Admin
             </Link>
@@ -92,31 +92,31 @@ const Header = () => {
             <nav className="flex flex-col space-y-4 mt-4">
               <button 
                 onClick={() => scrollToSection('planos')}
-                className="text-gray-300 hover:text-green-400 transition-colors py-2 text-left"
+                className="text-gray-300 hover:text-theme-accent transition-colors py-2 text-left"
               >
                 Planos
               </button>
               <button 
                 onClick={() => scrollToSection('tutoriais')}
-                className="text-gray-300 hover:text-green-400 transition-colors py-2 text-left"
+                className="text-gray-300 hover:text-theme-accent transition-colors py-2 text-left"
               >
                 Tutoriais
               </button>
               <button 
                 onClick={() => scrollToSection('krator')}
-                className="text-gray-300 hover:text-green-400 transition-colors py-2 text-left"
+                className="text-gray-300 hover:text-theme-accent transition-colors py-2 text-left"
               >
                 Krator
               </button>
               <button 
                 onClick={() => scrollToSection('revendedor')}
-                className="text-gray-300 hover:text-green-400 transition-colors py-2 text-left"
+                className="text-gray-300 hover:text-theme-accent transition-colors py-2 text-left"
               >
                 Seja Revendedor
               </button>
               <Link 
                 to="/auth"
-                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors inline-block text-center"
+                className="bg-theme-secondary hover:bg-theme-accent text-white px-4 py-2 rounded-lg transition-colors inline-block text-center"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Admin

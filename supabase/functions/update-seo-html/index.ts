@@ -60,9 +60,9 @@ serve(async (req) => {
     if (activeTheme) {
       themeStyles = `\n    <style>
       :root {
-        --primary: ${activeTheme.primary_color};
-        --secondary: ${activeTheme.secondary_color};
-        --accent: ${activeTheme.accent_color};
+        --theme-primary: ${activeTheme.primary_color};
+        --theme-secondary: ${activeTheme.secondary_color};
+        --theme-accent: ${activeTheme.accent_color};
         --krator-primary: ${activeTheme.krator_primary_color};
         --krator-secondary: ${activeTheme.krator_secondary_color};
       }

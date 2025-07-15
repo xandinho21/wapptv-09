@@ -51,9 +51,9 @@ export const useTheme = () => {
     const root = document.documentElement;
     
     // Apply main theme colors
-    root.style.setProperty('--primary', theme.primary_color);
-    root.style.setProperty('--secondary', theme.secondary_color);
-    root.style.setProperty('--accent', theme.accent_color);
+    root.style.setProperty('--theme-primary', theme.primary_color);
+    root.style.setProperty('--theme-secondary', theme.secondary_color);
+    root.style.setProperty('--theme-accent', theme.accent_color);
     
     // Apply Krator-specific colors
     root.style.setProperty('--krator-primary', theme.krator_primary_color);
