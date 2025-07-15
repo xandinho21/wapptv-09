@@ -67,6 +67,7 @@ serve(async (req) => {
         --krator-secondary: ${activeTheme.krator_secondary_color};
       }
     </style>`;
+    }
 
     // Read current index.html
     const indexPath = './index.html';
