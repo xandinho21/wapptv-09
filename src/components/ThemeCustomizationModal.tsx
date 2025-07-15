@@ -241,6 +241,60 @@ export default function ThemeCustomizationModal({
             </div>
           </div>
 
+          {/* Krator Trial Button Colors */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-gray-300">Botão de Teste Krator</h3>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label className="text-gray-300">Cor de Fundo</Label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={hslToHex(editedTheme.krator_trial_button_bg_color)}
+                    onChange={(e) => handleColorChange('krator_trial_button_bg_color', e.target.value)}
+                    className="w-12 h-10 rounded border border-gray-600"
+                  />
+                  <div 
+                    className="w-8 h-8 rounded border border-gray-600"
+                    style={{ backgroundColor: `hsl(${editedTheme.krator_trial_button_bg_color})` }}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-gray-300">Cor do Texto</Label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={hslToHex(editedTheme.krator_trial_button_text_color)}
+                    onChange={(e) => handleColorChange('krator_trial_button_text_color', e.target.value)}
+                    className="w-12 h-10 rounded border border-gray-600"
+                  />
+                  <div 
+                    className="w-8 h-8 rounded border border-gray-600"
+                    style={{ backgroundColor: `hsl(${editedTheme.krator_trial_button_text_color})` }}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-gray-300">Cor do Hover</Label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={hslToHex(editedTheme.krator_trial_button_hover_color)}
+                    onChange={(e) => handleColorChange('krator_trial_button_hover_color', e.target.value)}
+                    className="w-12 h-10 rounded border border-gray-600"
+                  />
+                  <div 
+                    className="w-8 h-8 rounded border border-gray-600"
+                    style={{ backgroundColor: `hsl(${editedTheme.krator_trial_button_hover_color})` }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Duplicate Section */}
           {!showDuplicateInput ? (
             <Button

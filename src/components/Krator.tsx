@@ -125,7 +125,21 @@ const Krator = () => {
                     </div>
                   </div>
 
-                  <button onClick={handleTrialClick} className="w-full py-3 px-6 rounded-lg font-bold text-lg transition-all duration-300 bg-krator-secondary hover:bg-krator-secondary/80 text-white shadow-lg" style={{ boxShadow: `0 10px 25px -5px hsl(var(--krator-secondary) / 0.25)` }}>
+                  <button 
+                    onClick={handleTrialClick} 
+                    className="w-full py-3 px-6 rounded-lg font-bold text-lg transition-all duration-300 shadow-lg"
+                    style={{ 
+                      backgroundColor: `hsl(var(--krator-trial-button-bg))`,
+                      color: `hsl(var(--krator-trial-button-text))`,
+                      boxShadow: `0 10px 25px -5px hsl(var(--krator-trial-button-bg) / 0.25)`
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = `hsl(var(--krator-trial-button-hover))`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = `hsl(var(--krator-trial-button-bg))`;
+                    }}
+                  >
                     {adminData.buttonTexts.trial1h}
                   </button>
                 </div>

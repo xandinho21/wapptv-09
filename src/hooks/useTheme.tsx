@@ -13,6 +13,9 @@ export interface ThemeSettings {
   accent_color: string;
   krator_primary_color: string;
   krator_secondary_color: string;
+  krator_trial_button_bg_color: string;
+  krator_trial_button_text_color: string;
+  krator_trial_button_hover_color: string;
 }
 
 export const useTheme = () => {
@@ -59,6 +62,11 @@ export const useTheme = () => {
     // Apply Krator-specific colors
     root.style.setProperty('--krator-primary', theme.krator_primary_color);
     root.style.setProperty('--krator-secondary', theme.krator_secondary_color);
+    
+    // Apply Krator trial button colors
+    root.style.setProperty('--krator-trial-button-bg', theme.krator_trial_button_bg_color);
+    root.style.setProperty('--krator-trial-button-text', theme.krator_trial_button_text_color);
+    root.style.setProperty('--krator-trial-button-hover', theme.krator_trial_button_hover_color);
   };
 
   const activateTheme = async (themeId: string) => {
@@ -131,6 +139,9 @@ export const useTheme = () => {
           accent_color: originalTheme.accent_color,
           krator_primary_color: originalTheme.krator_primary_color,
           krator_secondary_color: originalTheme.krator_secondary_color,
+          krator_trial_button_bg_color: originalTheme.krator_trial_button_bg_color,
+          krator_trial_button_text_color: originalTheme.krator_trial_button_text_color,
+          krator_trial_button_hover_color: originalTheme.krator_trial_button_hover_color,
         });
 
       if (error) throw error;

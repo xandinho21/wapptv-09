@@ -199,6 +199,9 @@ export type Database = {
           is_active: boolean
           krator_primary_color: string
           krator_secondary_color: string
+          krator_trial_button_bg_color: string
+          krator_trial_button_hover_color: string
+          krator_trial_button_text_color: string
           name: string
           primary_color: string
           secondary_color: string
@@ -212,6 +215,9 @@ export type Database = {
           is_active?: boolean
           krator_primary_color: string
           krator_secondary_color: string
+          krator_trial_button_bg_color?: string
+          krator_trial_button_hover_color?: string
+          krator_trial_button_text_color?: string
           name: string
           primary_color: string
           secondary_color: string
@@ -225,6 +231,9 @@ export type Database = {
           is_active?: boolean
           krator_primary_color?: string
           krator_secondary_color?: string
+          krator_trial_button_bg_color?: string
+          krator_trial_button_hover_color?: string
+          krator_trial_button_text_color?: string
           name?: string
           primary_color?: string
           secondary_color?: string
