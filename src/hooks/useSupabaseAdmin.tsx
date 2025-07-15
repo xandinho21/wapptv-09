@@ -349,7 +349,7 @@ export const useSupabaseAdmin = () => {
         .upsert({
           key: 'social_links',
           value: socialLinks
-        });
+        }, { onConflict: 'key' });
     } catch (error) {
       console.error('Error updating social links:', error);
       throw error;
