@@ -56,7 +56,7 @@ const ResellerConfig = () => {
                 ...resellerData,
                 title: e.target.value
               })} placeholder="Seja um Revendedor" />
-                <p className="text-sm text-gray-500 mt-1">Use {'{siteName}'} para inserir o nome do site automaticamente</p>
+                
               </div>
               
               <div>
