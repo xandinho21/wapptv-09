@@ -114,9 +114,9 @@ const KratorConfig = () => {
 
             {/* Descrição do que é o Krator */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Descrição do Krator</h3>
+              <h3 className="text-lg font-semibold">Descrição do Plano destaque</h3>
               <div>
-                <label className="block text-sm font-medium mb-2">Título "O que é o Krator?"</label>
+                <label className="block text-sm font-medium mb-2">Título</label>
                 <Input value={kratorData.whatTitle} onChange={e => setKratorData({
                 ...kratorData,
                 whatTitle: e.target.value
@@ -136,7 +136,7 @@ const KratorConfig = () => {
             <div className="space-y-4">
               <h3 className="text-lg font-semibold">Características do Sistema</h3>
               <div>
-                <label className="block text-sm font-medium mb-2">Recursos do Krator</label>
+                <label className="block text-sm font-medium mb-2">Tipo lista - Colocar recursos</label>
                 {kratorData.features.map((feature, index) => <div key={index} className="flex gap-2 mb-2">
                     <Input value={feature} onChange={e => updateFeature(index, e.target.value)} placeholder="Digite uma característica..." />
                     <Button type="button" variant="outline" size="sm" onClick={() => removeFeature(index)}>
@@ -197,7 +197,7 @@ const KratorConfig = () => {
 
             {/* Seção do plano */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Seção do Plano Krator</h3>
+              <h3 className="text-lg font-semibold">Seção do Plano destaque</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium mb-2">Título da Seção</label>
