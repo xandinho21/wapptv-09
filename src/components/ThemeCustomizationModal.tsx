@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -129,7 +130,7 @@ export default function ThemeCustomizationModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[600px] bg-gray-800 border-gray-700">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto bg-gray-800 border-gray-700">
         <DialogHeader>
           <DialogTitle className="text-green-400">Personalizar Tema</DialogTitle>
           <DialogDescription className="text-gray-300">
@@ -235,6 +236,60 @@ export default function ThemeCustomizationModal({
                   <div 
                     className="w-8 h-8 rounded border border-gray-600"
                     style={{ backgroundColor: `hsl(${editedTheme.krator_secondary_color})` }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Highlight Button Colors */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium text-gray-300">Botão de Destaque</h3>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Label className="text-gray-300">Cor de Fundo</Label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={hslToHex(editedTheme.highlight_button_bg_color)}
+                    onChange={(e) => handleColorChange('highlight_button_bg_color', e.target.value)}
+                    className="w-12 h-10 rounded border border-gray-600"
+                  />
+                  <div 
+                    className="w-8 h-8 rounded border border-gray-600"
+                    style={{ backgroundColor: `hsl(${editedTheme.highlight_button_bg_color})` }}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-gray-300">Cor do Texto</Label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={hslToHex(editedTheme.highlight_button_text_color)}
+                    onChange={(e) => handleColorChange('highlight_button_text_color', e.target.value)}
+                    className="w-12 h-10 rounded border border-gray-600"
+                  />
+                  <div 
+                    className="w-8 h-8 rounded border border-gray-600"
+                    style={{ backgroundColor: `hsl(${editedTheme.highlight_button_text_color})` }}
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-gray-300">Cor do Hover</Label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="color"
+                    value={hslToHex(editedTheme.highlight_button_hover_color)}
+                    onChange={(e) => handleColorChange('highlight_button_hover_color', e.target.value)}
+                    className="w-12 h-10 rounded border border-gray-600"
+                  />
+                  <div 
+                    className="w-8 h-8 rounded border border-gray-600"
+                    style={{ backgroundColor: `hsl(${editedTheme.highlight_button_hover_color})` }}
                   />
                 </div>
               </div>
