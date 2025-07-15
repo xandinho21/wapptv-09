@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { useTheme } from '@/hooks/useTheme';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +14,6 @@ const Auth = () => {
   const { signIn, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { activeTheme } = useTheme();
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -57,44 +55,19 @@ const Auth = () => {
   };
 
   return (
-    <div 
-      className="min-h-screen flex items-center justify-center"
-      style={{
-        background: `linear-gradient(135deg, 
-          hsl(var(--theme-secondary) / 0.9), 
-          hsl(var(--theme-primary) / 0.8), 
-          hsl(var(--theme-accent) / 0.7))`
-      }}
-    >
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-green-900 flex items-center justify-center">
       <div className="w-full max-w-md">
-        <div 
-          className="rounded-2xl p-8 border shadow-2xl backdrop-blur-sm"
-          style={{
-            backgroundColor: `hsl(var(--theme-secondary) / 0.1)`,
-            borderColor: `hsl(var(--theme-primary) / 0.3)`
-          }}
-        >
+        <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-2xl">
           <div className="text-center mb-8">
-            <h1 
-              className="text-3xl font-bold mb-2"
-              style={{ color: `hsl(var(--theme-primary))` }}
-            >
-              Wapp TV
-            </h1>
-            <p 
-              className="opacity-80"
-              style={{ color: `hsl(var(--theme-primary))` }}
-            >
+            <h1 className="text-3xl font-bold text-green-400 mb-2">Wapp TV</h1>
+            <p className="text-gray-300">
               Login Administrativo
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <Label 
-                htmlFor="email" 
-                style={{ color: `hsl(var(--theme-primary))` }}
-              >
+              <Label htmlFor="email" className="text-gray-300">
                 Email
               </Label>
               <Input
@@ -102,21 +75,14 @@ const Auth = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-2 border-0 text-white placeholder:text-white/60"
-                style={{
-                  backgroundColor: `hsl(var(--theme-secondary) / 0.2)`,
-                  borderColor: `hsl(var(--theme-primary) / 0.3)`
-                }}
+                className="mt-2 bg-gray-700 border-gray-600 text-white"
                 placeholder="admin@email.com"
                 required
               />
             </div>
 
             <div>
-              <Label 
-                htmlFor="password"
-                style={{ color: `hsl(var(--theme-primary))` }}
-              >
+              <Label htmlFor="password" className="text-gray-300">
                 Senha
               </Label>
               <Input
@@ -124,11 +90,7 @@ const Auth = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-2 border-0 text-white placeholder:text-white/60"
-                style={{
-                  backgroundColor: `hsl(var(--theme-secondary) / 0.2)`,
-                  borderColor: `hsl(var(--theme-primary) / 0.3)`
-                }}
+                className="mt-2 bg-gray-700 border-gray-600 text-white"
                 placeholder="Digite sua senha"
                 required
               />
@@ -137,17 +99,7 @@ const Auth = () => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full text-white font-bold py-3 border-0 transition-all duration-300"
-              style={{
-                backgroundColor: `hsl(var(--theme-primary))`,
-                color: 'white'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = `hsl(var(--theme-accent))`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = `hsl(var(--theme-primary))`;
-              }}
+              className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3"
             >
               {isLoading ? 'Entrando...' : 'Entrar'}
             </Button>
@@ -156,16 +108,7 @@ const Auth = () => {
           <div className="mt-4 text-center">
             <button
               onClick={() => navigate('/')}
-              className="transition-colors duration-300"
-              style={{ 
-                color: `hsl(var(--theme-primary) / 0.7)`,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = `hsl(var(--theme-primary))`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = `hsl(var(--theme-primary) / 0.7)`;
-              }}
+              className="text-gray-400 hover:text-green-400 transition-colors"
             >
               ← Voltar ao site
             </button>
