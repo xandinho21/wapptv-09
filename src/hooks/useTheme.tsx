@@ -92,6 +92,64 @@ export const useTheme = () => {
     }
   };
 
+  const updateTheme = async (themeId: string, updates: Partial<ThemeSettings>) => {
+    try {
+      const { error } = await supabase
+        .from('theme_settings')
+        .update(updates)
+        .eq('id', themeId);
+
+      if (error) throw error;
+
+      await fetchThemes();
+      
+      toast({
+        title: "Tema Atualizado",
+        description: "As alterações foram salvas com sucesso!",
+      });
+    } catch (error) {
+      console.error('Error updating theme:', error);
+      toast({
+        title: "Erro",
+        description: "Erro ao atualizar tema",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const duplicateTheme = async (originalTheme: ThemeSettings, newName: string) => {
+    try {
+      const { error } = await supabase
+        .from('theme_settings')
+        .insert({
+          name: newName,
+          slug: newName.toLowerCase().replace(/\s+/g, '-'),
+          is_active: false,
+          primary_color: originalTheme.primary_color,
+          secondary_color: originalTheme.secondary_color,
+          accent_color: originalTheme.accent_color,
+          krator_primary_color: originalTheme.krator_primary_color,
+          krator_secondary_color: originalTheme.krator_secondary_color,
+        });
+
+      if (error) throw error;
+
+      await fetchThemes();
+      
+      toast({
+        title: "Tema Duplicado",
+        description: `Tema "${newName}" criado com sucesso!`,
+      });
+    } catch (error) {
+      console.error('Error duplicating theme:', error);
+      toast({
+        title: "Erro",
+        description: "Erro ao duplicar tema",
+        variant: "destructive",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchThemes();
   }, []);
@@ -101,6 +159,9 @@ export const useTheme = () => {
     activeTheme,
     loading,
     activateTheme,
+    updateTheme,
+    duplicateTheme,
     fetchThemes,
+    applyTheme,
   };
 };

@@ -1,11 +1,34 @@
+import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Palette, Check } from "lucide-react";
-import { useTheme } from "@/hooks/useTheme";
+import { Palette, Check, Settings } from "lucide-react";
+import { useTheme, ThemeSettings } from "@/hooks/useTheme";
+import ThemeCustomizationModal from "@/components/ThemeCustomizationModal";
 
 export default function ThemesConfig() {
-  const { themes, activeTheme, loading, activateTheme } = useTheme();
+  const { themes, activeTheme, loading, activateTheme, updateTheme, duplicateTheme, applyTheme } = useTheme();
+  const [selectedTheme, setSelectedTheme] = useState<ThemeSettings | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCustomizeTheme = (theme: ThemeSettings) => {
+    setSelectedTheme(theme);
+    setIsModalOpen(true);
+  };
+
+  const handleSaveTheme = (updates: Partial<ThemeSettings>) => {
+    if (selectedTheme) {
+      updateTheme(selectedTheme.id, updates);
+    }
+  };
+
+  const handleDuplicateTheme = (originalTheme: ThemeSettings, newName: string) => {
+    duplicateTheme(originalTheme, newName);
+  };
+
+  const handlePreviewTheme = (theme: ThemeSettings) => {
+    applyTheme(theme);
+  };
 
   if (loading) {
     return (
@@ -87,13 +110,24 @@ export default function ThemesConfig() {
                 </div>
               </div>
 
-              <Button
-                onClick={() => activateTheme(theme.id)}
-                disabled={theme.is_active}
-                className="w-full bg-green-600 hover:bg-green-700 text-white"
-              >
-                {theme.is_active ? 'Tema Ativo' : 'Aplicar Tema'}
-              </Button>
+              <div className="space-y-2">
+                <Button
+                  onClick={() => activateTheme(theme.id)}
+                  disabled={theme.is_active}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white"
+                >
+                  {theme.is_active ? 'Tema Ativo' : 'Aplicar Tema'}
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => handleCustomizeTheme(theme)}
+                  className="w-full border-blue-600 text-blue-400 hover:bg-blue-600 hover:text-white"
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  Personalizar
+                </Button>
+              </div>
             </CardContent>
           </Card>
         ))}
@@ -112,6 +146,21 @@ export default function ThemesConfig() {
           </ul>
         </CardContent>
       </Card>
+
+      <ThemeCustomizationModal
+        theme={selectedTheme}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedTheme(null);
+          if (activeTheme) {
+            applyTheme(activeTheme);
+          }
+        }}
+        onSave={handleSaveTheme}
+        onDuplicate={handleDuplicateTheme}
+        onPreview={handlePreviewTheme}
+      />
     </div>
   );
 }

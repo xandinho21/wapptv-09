@@ -72,11 +72,6 @@ const menuItems = [
     icon: Palette,
   },
   {
-    title: 'Tema Krator',
-    url: '/admin/dashboard/krator-theme',
-    icon: Zap,
-  },
-  {
     title: 'Configurações Admin',
     url: '/admin/dashboard/settings',
     icon: User,
