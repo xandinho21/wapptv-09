@@ -79,13 +79,13 @@ const KratorConfig = () => {
   };
   return <div className="space-y-6">
       <div>
-        
-        
+        <h1 className="text-3xl font-bold text-green-400">Configurações do Krator</h1>
+        <p className="text-gray-400 mt-2">Configure todos os textos relacionados ao sistema Krator</p>
       </div>
 
-      <Card>
+      <Card className="bg-gray-800 border-gray-700">
         <CardHeader>
-          <CardTitle>Configurações da Seção destaque</CardTitle>
+          <CardTitle className="text-green-400">Configurações da Seção destaque</CardTitle>
           <CardDescription>Configure todos os textos relacionados ao sistema Krator</CardDescription>
         </CardHeader>
         <CardContent>
@@ -99,7 +99,7 @@ const KratorConfig = () => {
                   <Input value={kratorData.mainTitle} onChange={e => setKratorData({
                   ...kratorData,
                   mainTitle: e.target.value
-                })} placeholder="Conheça o Novo Sistema Krator" />
+                })} placeholder="Conheça o Novo Sistema Krator" className="bg-gray-700 border-gray-600 text-white" />
                 </div>
                 
                 <div>
@@ -107,7 +107,7 @@ const KratorConfig = () => {
                   <Input value={kratorData.mainSubtitle} onChange={e => setKratorData({
                   ...kratorData,
                   mainSubtitle: e.target.value
-                })} placeholder="Tecnologia revolucionária..." />
+                })} placeholder="Tecnologia revolucionária..." className="bg-gray-700 border-gray-600 text-white" />
                 </div>
               </div>
             </div>
@@ -120,7 +120,7 @@ const KratorConfig = () => {
                 <Input value={kratorData.whatTitle} onChange={e => setKratorData({
                 ...kratorData,
                 whatTitle: e.target.value
-              })} placeholder="O que é o Krator?" />
+              })} placeholder="O que é o Krator?" className="bg-gray-700 border-gray-600 text-white" />
               </div>
               
               <div>
@@ -128,7 +128,7 @@ const KratorConfig = () => {
                 <Textarea value={kratorData.description} onChange={e => setKratorData({
                 ...kratorData,
                 description: e.target.value
-              })} placeholder="O Krator é nosso sistema proprietário..." rows={4} />
+              })} placeholder="O Krator é nosso sistema proprietário..." rows={4} className="bg-gray-700 border-gray-600 text-white" />
               </div>
             </div>
 
@@ -138,7 +138,7 @@ const KratorConfig = () => {
               <div>
                 <label className="block text-sm font-medium mb-2">Tipo lista - Colocar recursos</label>
                 {kratorData.features.map((feature, index) => <div key={index} className="flex gap-2 mb-2">
-                    <Input value={feature} onChange={e => updateFeature(index, e.target.value)} placeholder="Digite uma característica..." />
+                    <Input value={feature} onChange={e => updateFeature(index, e.target.value)} placeholder="Digite uma característica..." className="bg-gray-700 border-gray-600 text-white" />
                     <Button type="button" variant="outline" size="sm" onClick={() => removeFeature(index)}>
                       <X className="w-4 h-4" />
                     </Button>
@@ -159,12 +159,12 @@ const KratorConfig = () => {
                   <Input value={kratorData.performanceTitle} onChange={e => setKratorData({
                   ...kratorData,
                   performanceTitle: e.target.value
-                })} placeholder="Performance Superior" />
+                })} placeholder="Performance Superior" className="bg-gray-700 border-gray-600 text-white" />
                   <label className="block text-sm font-medium mb-2 mt-2">Performance - Texto</label>
                   <Textarea value={kratorData.performanceText} onChange={e => setKratorData({
                   ...kratorData,
                   performanceText: e.target.value
-                })} placeholder="Velocidade de carregamento..." rows={3} />
+                })} placeholder="Velocidade de carregamento..." rows={3} className="bg-gray-700 border-gray-600 text-white" />
                 </div>
                 
                 <div>
@@ -172,12 +172,12 @@ const KratorConfig = () => {
                   <Input value={kratorData.stabilityTitle} onChange={e => setKratorData({
                   ...kratorData,
                   stabilityTitle: e.target.value
-                })} placeholder="Estabilidade Garantida" />
+                })} placeholder="Estabilidade Garantida" className="bg-gray-700 border-gray-600 text-white" />
                   <label className="block text-sm font-medium mb-2 mt-2">Estabilidade - Texto</label>
                   <Textarea value={kratorData.stabilityText} onChange={e => setKratorData({
                   ...kratorData,
                   stabilityText: e.target.value
-                })} placeholder="99.9% de uptime..." rows={3} />
+                })} placeholder="99.9% de uptime..." rows={3} className="bg-gray-700 border-gray-600 text-white" />
                 </div>
                 
                 <div>
@@ -185,12 +185,12 @@ const KratorConfig = () => {
                   <Input value={kratorData.qualityTitle} onChange={e => setKratorData({
                   ...kratorData,
                   qualityTitle: e.target.value
-                })} placeholder="Qualidade Adaptativa" />
+                })} placeholder="Qualidade Adaptativa" className="bg-gray-700 border-gray-600 text-white" />
                   <label className="block text-sm font-medium mb-2 mt-2">Qualidade - Texto</label>
                   <Textarea value={kratorData.qualityText} onChange={e => setKratorData({
                   ...kratorData,
                   qualityText: e.target.value
-                })} placeholder="Ajuste automático..." rows={3} />
+                })} placeholder="Ajuste automático..." rows={3} className="bg-gray-700 border-gray-600 text-white" />
                 </div>
               </div>
             </div>
@@ -204,7 +204,7 @@ const KratorConfig = () => {
                   <Input value={kratorData.planSectionTitle} onChange={e => setKratorData({
                   ...kratorData,
                   planSectionTitle: e.target.value
-                })} placeholder="Plano com Sistema Krator" />
+                })} placeholder="Plano com Sistema Krator" className="bg-gray-700 border-gray-600 text-white" />
                 </div>
                 
                 <div>
@@ -212,14 +212,14 @@ const KratorConfig = () => {
                   <Input value={kratorData.planName} onChange={e => setKratorData({
                   ...kratorData,
                   planName: e.target.value
-                })} placeholder="Krator 1 Tela" />
+                })} placeholder="Krator 1 Tela" className="bg-gray-700 border-gray-600 text-white" />
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-2">Recursos do Plano</label>
                 {kratorData.planFeatures.map((feature, index) => <div key={index} className="flex gap-2 mb-2">
-                    <Input value={feature} onChange={e => updatePlanFeature(index, e.target.value)} placeholder="Digite um recurso do plano..." />
+                    <Input value={feature} onChange={e => updatePlanFeature(index, e.target.value)} placeholder="Digite um recurso do plano..." className="bg-gray-700 border-gray-600 text-white" />
                     <Button type="button" variant="outline" size="sm" onClick={() => removePlanFeature(index)}>
                       <X className="w-4 h-4" />
                     </Button>
@@ -240,7 +240,7 @@ const KratorConfig = () => {
                   <Input value={kratorData.trialTitle} onChange={e => setKratorData({
                   ...kratorData,
                   trialTitle: e.target.value
-                })} placeholder="Teste Grátis" />
+                })} placeholder="Teste Grátis" className="bg-gray-700 border-gray-600 text-white" />
                 </div>
                 
                 <div>
@@ -248,7 +248,7 @@ const KratorConfig = () => {
                   <Input value={kratorData.trialDuration} onChange={e => setKratorData({
                   ...kratorData,
                   trialDuration: e.target.value
-                })} placeholder="1 Hora" />
+                })} placeholder="1 Hora" className="bg-gray-700 border-gray-600 text-white" />
                 </div>
                 
                 <div>
@@ -256,7 +256,7 @@ const KratorConfig = () => {
                   <Input value={kratorData.trialSubtitle} onChange={e => setKratorData({
                   ...kratorData,
                   trialSubtitle: e.target.value
-                })} placeholder="Sistema Krator" />
+                })} placeholder="Sistema Krator" className="bg-gray-700 border-gray-600 text-white" />
                 </div>
               </div>
 
@@ -266,7 +266,7 @@ const KratorConfig = () => {
                   <Textarea value={kratorData.trialDescription} onChange={e => setKratorData({
                   ...kratorData,
                   trialDescription: e.target.value
-                })} placeholder="Experimente o sistema Krator..." rows={3} />
+                })} placeholder="Experimente o sistema Krator..." rows={3} className="bg-gray-700 border-gray-600 text-white" />
                 </div>
                 
                 <div>
@@ -274,7 +274,7 @@ const KratorConfig = () => {
                   <Input value={kratorData.trialFeature} onChange={e => setKratorData({
                   ...kratorData,
                   trialFeature: e.target.value
-                })} placeholder="Acesso completo por 1 hora" />
+                })} placeholder="Acesso completo por 1 hora" className="bg-gray-700 border-gray-600 text-white" />
                 </div>
               </div>
             </div>

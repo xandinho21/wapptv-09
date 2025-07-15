@@ -36,13 +36,13 @@ const ResellerConfig = () => {
   };
   return <div className="space-y-6">
       <div>
-        
-        
+        <h1 className="text-3xl font-bold text-green-400">Configurações do Revendedor</h1>
+        <p className="text-gray-400 mt-2">Configure todos os textos relacionados aos revendedores</p>
       </div>
 
-      <Card>
+      <Card className="bg-gray-800 border-gray-700">
         <CardHeader>
-          <CardTitle>Configurações da Seção Revendedor</CardTitle>
+          <CardTitle className="text-green-400">Configurações da Seção Revendedor</CardTitle>
           <CardDescription>Configure todos os textos relacionados aos revendedores</CardDescription>
         </CardHeader>
         <CardContent>
@@ -55,7 +55,7 @@ const ResellerConfig = () => {
                 <Input value={resellerData.title} onChange={e => setResellerData({
                 ...resellerData,
                 title: e.target.value
-              })} placeholder="Seja um Revendedor" />
+              })} placeholder="Seja um Revendedor" className="bg-gray-700 border-gray-600 text-white" />
                 
               </div>
               
@@ -64,7 +64,7 @@ const ResellerConfig = () => {
                 <Textarea value={resellerData.subtitle} onChange={e => setResellerData({
                 ...resellerData,
                 subtitle: e.target.value
-              })} placeholder="Faça parte da nossa rede..." rows={3} />
+              })} placeholder="Faça parte da nossa rede..." rows={3} className="bg-gray-700 border-gray-600 text-white" />
               </div>
             </div>
 
@@ -77,12 +77,12 @@ const ResellerConfig = () => {
                   <Input value={resellerData.supportTitle} onChange={e => setResellerData({
                   ...resellerData,
                   supportTitle: e.target.value
-                })} placeholder="Suporte Completo" />
+                })} placeholder="Suporte Completo" className="bg-gray-700 border-gray-600 text-white" />
                   <label className="block text-sm font-medium mb-2 mt-2">Suporte - Texto</label>
                   <Textarea value={resellerData.supportText} onChange={e => setResellerData({
                   ...resellerData,
                   supportText: e.target.value
-                })} placeholder="Oferecemos suporte técnico..." rows={3} />
+                })} placeholder="Oferecemos suporte técnico..." rows={3} className="bg-gray-700 border-gray-600 text-white" />
                 </div>
                 
                 <div>
@@ -90,12 +90,12 @@ const ResellerConfig = () => {
                   <Input value={resellerData.commissionTitle} onChange={e => setResellerData({
                   ...resellerData,
                   commissionTitle: e.target.value
-                })} placeholder="Comissões Atrativas" />
+                })} placeholder="Comissões Atrativas" className="bg-gray-700 border-gray-600 text-white" />
                   <label className="block text-sm font-medium mb-2 mt-2">Comissões - Texto</label>
                   <Textarea value={resellerData.commissionText} onChange={e => setResellerData({
                   ...resellerData,
                   commissionText: e.target.value
-                })} placeholder="Ganhe comissões competitivas..." rows={3} />
+                })} placeholder="Ganhe comissões competitivas..." rows={3} className="bg-gray-700 border-gray-600 text-white" />
                 </div>
                 
                 <div>
@@ -103,12 +103,12 @@ const ResellerConfig = () => {
                   <Input value={resellerData.qualityTitle} onChange={e => setResellerData({
                   ...resellerData,
                   qualityTitle: e.target.value
-                })} placeholder="Produtos de Qualidade" />
+                })} placeholder="Produtos de Qualidade" className="bg-gray-700 border-gray-600 text-white" />
                   <label className="block text-sm font-medium mb-2 mt-2">Qualidade - Texto</label>
                   <Textarea value={resellerData.qualityText} onChange={e => setResellerData({
                   ...resellerData,
                   qualityText: e.target.value
-                })} placeholder="Venda produtos testados..." rows={3} />
+                })} placeholder="Venda produtos testados..." rows={3} className="bg-gray-700 border-gray-600 text-white" />
                 </div>
               </div>
             </div>
@@ -122,7 +122,7 @@ const ResellerConfig = () => {
                   <Input value={resellerData.priceTableTitle} onChange={e => setResellerData({
                   ...resellerData,
                   priceTableTitle: e.target.value
-                })} placeholder="Tabela de Preços para Revendedores" />
+                })} placeholder="Tabela de Preços para Revendedores" className="bg-gray-700 border-gray-600 text-white" />
                 </div>
                 
                 <div>
@@ -130,7 +130,7 @@ const ResellerConfig = () => {
                   <Input value={resellerData.creditsText} onChange={e => setResellerData({
                   ...resellerData,
                   creditsText: e.target.value
-                })} placeholder="créditos" />
+                })} placeholder="créditos" className="bg-gray-700 border-gray-600 text-white" />
                 </div>
                 
                 <div>
@@ -138,7 +138,7 @@ const ResellerConfig = () => {
                   <Input value={resellerData.perCreditText} onChange={e => setResellerData({
                   ...resellerData,
                   perCreditText: e.target.value
-                })} placeholder="por crédito" />
+                })} placeholder="por crédito" className="bg-gray-700 border-gray-600 text-white" />
                 </div>
               </div>
             </div>

@@ -77,21 +77,21 @@ const ContentConfig = () => {
   };
   return <div className="space-y-6">
       <div>
-        
-        
+        <h1 className="text-3xl font-bold text-green-400">Configurações de Conteúdo</h1>
+        <p className="text-gray-400 mt-2">Configure todos os textos e conteúdos do site</p>
       </div>
 
       <Tabs defaultValue="hero" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-[4ade80] bg-gray-800">
+        <TabsList className="grid w-full grid-cols-3 bg-gray-800">
           <TabsTrigger value="hero" className="data-[state=active]:bg-green-600">Seção Hero</TabsTrigger>
-          <TabsTrigger value="trial">Seção Trial</TabsTrigger>
-          <TabsTrigger value="footer">Rodapé</TabsTrigger>
+          <TabsTrigger value="trial" className="data-[state=active]:bg-green-600">Seção Trial</TabsTrigger>
+          <TabsTrigger value="footer" className="data-[state=active]:bg-green-600">Rodapé</TabsTrigger>
         </TabsList>
 
         <TabsContent value="hero">
           <Card className="bg-gray-800 border-gray-700">
-            <CardHeader className="bg-[4ade80]">
-              <CardTitle className="text-[16a34a] text-green-400">Configurações da Seção Hero</CardTitle>
+            <CardHeader>
+              <CardTitle className="text-green-400">Configurações da Seção Hero</CardTitle>
               <CardDescription>Configure os textos da primeira seção do site</CardDescription>
             </CardHeader>
             <CardContent>
@@ -190,9 +190,9 @@ const ContentConfig = () => {
         </TabsContent>
 
         <TabsContent value="trial">
-          <Card>
+          <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
-              <CardTitle>Configurações da Seção Trial</CardTitle>
+              <CardTitle className="text-green-400">Configurações da Seção Trial</CardTitle>
               <CardDescription>Configure os textos da seção de teste grátis</CardDescription>
             </CardHeader>
             <CardContent>
@@ -202,7 +202,7 @@ const ContentConfig = () => {
                   <Input value={trialData.title} onChange={e => setTrialData({
                   ...trialData,
                   title: e.target.value
-                })} placeholder="Experimente Antes de Comprar" />
+                })} placeholder="Experimente Antes de Comprar" className="bg-gray-700 border-gray-600 text-white" />
                 </div>
 
                 <div>
@@ -210,7 +210,7 @@ const ContentConfig = () => {
                   <Textarea value={trialData.subtitle} onChange={e => setTrialData({
                   ...trialData,
                   subtitle: e.target.value
-                })} placeholder="Teste nossa plataforma..." rows={3} />
+                })} placeholder="Teste nossa plataforma..." rows={3} className="bg-gray-700 border-gray-600 text-white" />
                 </div>
 
                 <Button type="submit" disabled={loading}>
@@ -222,9 +222,9 @@ const ContentConfig = () => {
         </TabsContent>
 
         <TabsContent value="footer">
-          <Card>
+          <Card className="bg-gray-800 border-gray-700">
             <CardHeader>
-              <CardTitle>Configurações do Rodapé</CardTitle>
+              <CardTitle className="text-green-400">Configurações do Rodapé</CardTitle>
               <CardDescription>Configure os textos do rodapé do site</CardDescription>
             </CardHeader>
             <CardContent>
@@ -235,7 +235,7 @@ const ContentConfig = () => {
                     <Input value={footerData.companyName} onChange={e => setFooterData({
                     ...footerData,
                     companyName: e.target.value
-                  })} placeholder="Wapp TV" />
+                  })} placeholder="Wapp TV" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                   
                   <div>
@@ -243,7 +243,7 @@ const ContentConfig = () => {
                     <Input value={footerData.copyright} onChange={e => setFooterData({
                     ...footerData,
                     copyright: e.target.value
-                  })} placeholder="© 2025 Wapp TV..." />
+                  })} placeholder="© 2025 Wapp TV..." className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                 </div>
 
@@ -252,7 +252,7 @@ const ContentConfig = () => {
                   <Textarea value={footerData.companyDescription} onChange={e => setFooterData({
                   ...footerData,
                   companyDescription: e.target.value
-                })} placeholder="A melhor experiência..." rows={3} />
+                })} placeholder="A melhor experiência..." rows={3} className="bg-gray-700 border-gray-600 text-white" />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -261,7 +261,7 @@ const ContentConfig = () => {
                     <Input value={footerData.linksTitle} onChange={e => setFooterData({
                     ...footerData,
                     linksTitle: e.target.value
-                  })} placeholder="Links Úteis" />
+                  })} placeholder="Links Úteis" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                   
                   <div>
@@ -269,7 +269,7 @@ const ContentConfig = () => {
                     <Input value={footerData.contactTitle} onChange={e => setFooterData({
                     ...footerData,
                     contactTitle: e.target.value
-                  })} placeholder="Contato" />
+                  })} placeholder="Contato" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                 </div>
 
@@ -279,7 +279,7 @@ const ContentConfig = () => {
                     <Input value={footerData.linkInicio} onChange={e => setFooterData({
                     ...footerData,
                     linkInicio: e.target.value
-                  })} placeholder="Início" />
+                  })} placeholder="Início" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                   
                   <div>
@@ -287,7 +287,7 @@ const ContentConfig = () => {
                     <Input value={footerData.linkPlanos} onChange={e => setFooterData({
                     ...footerData,
                     linkPlanos: e.target.value
-                  })} placeholder="Planos" />
+                  })} placeholder="Planos" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                   
                   <div>
@@ -295,7 +295,7 @@ const ContentConfig = () => {
                     <Input value={footerData.linkKrator} onChange={e => setFooterData({
                     ...footerData,
                     linkKrator: e.target.value
-                  })} placeholder="Sistema Krator" />
+                  })} placeholder="Sistema Krator" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                   
                   <div>
@@ -303,7 +303,7 @@ const ContentConfig = () => {
                     <Input value={footerData.linkSupport} onChange={e => setFooterData({
                     ...footerData,
                     linkSupport: e.target.value
-                  })} placeholder="Suporte Técnico" />
+                  })} placeholder="Suporte Técnico" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                 </div>
 
@@ -313,7 +313,7 @@ const ContentConfig = () => {
                     <Input value={footerData.whatsappButton} onChange={e => setFooterData({
                     ...footerData,
                     whatsappButton: e.target.value
-                  })} placeholder="Falar no WhatsApp" />
+                  })} placeholder="Falar no WhatsApp" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                   
                   <div>
@@ -321,7 +321,7 @@ const ContentConfig = () => {
                     <Input value={footerData.activationText} onChange={e => setFooterData({
                     ...footerData,
                     activationText: e.target.value
-                  })} placeholder="⚡ Ativação imediata" />
+                  })} placeholder="⚡ Ativação imediata" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                   
                   <div>
@@ -329,7 +329,7 @@ const ContentConfig = () => {
                     <Input value={footerData.socialTitle} onChange={e => setFooterData({
                     ...footerData,
                     socialTitle: e.target.value
-                  })} placeholder="Redes Sociais" />
+                  })} placeholder="Redes Sociais" className="bg-gray-700 border-gray-600 text-white" />
                   </div>
                 </div>
 
@@ -338,7 +338,7 @@ const ContentConfig = () => {
                   <Input value={footerData.tagline} onChange={e => setFooterData({
                   ...footerData,
                   tagline: e.target.value
-                })} placeholder="Wapp TV - Transformando sua experiência..." />
+                })} placeholder="Wapp TV - Transformando sua experiência..." className="bg-gray-700 border-gray-600 text-white" />
                 </div>
 
                 <Button type="submit" disabled={loading}>
