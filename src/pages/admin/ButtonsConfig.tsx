@@ -110,7 +110,7 @@ const ButtonsConfig = () => {
             </div>
 
             <div>
-              <Label className="text-gray-300">Mensagem teste 1 hora (Krator)</Label>
+              <Label className="text-gray-300">Mensagem teste do plano destaque</Label>
               <Textarea
                 value={messages.trial1h}
                 onChange={(e) => setMessages({ ...messages, trial1h: e.target.value })}
@@ -153,7 +153,7 @@ const ButtonsConfig = () => {
             </div>
 
             <div>
-              <Label className="text-gray-300">Texto botão teste 1 hora (Krator)</Label>
+              <Label className="text-gray-300">Texto botão teste do plano destaque</Label>
               <Input
                 value={buttonTexts.trial1h}
                 onChange={(e) => setButtonTexts({ ...buttonTexts, trial1h: e.target.value })}
