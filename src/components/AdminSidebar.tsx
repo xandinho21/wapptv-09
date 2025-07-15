@@ -47,7 +47,7 @@ const menuItems = [
     icon: FileText,
   },
   {
-    title: 'Configurar Krator',
+    title: 'Configurar plano destaque',
     url: '/admin/dashboard/krator',
     icon: Zap,
   },
