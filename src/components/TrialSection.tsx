@@ -26,17 +26,7 @@ const TrialSection = () => {
             </p>
             <button
               onClick={handleTrialClick}
-              className="font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
-              style={{
-                backgroundColor: `hsl(var(--highlight-button-bg))`,
-                color: `hsl(var(--highlight-button-text))`,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = `hsl(var(--highlight-button-hover))`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = `hsl(var(--highlight-button-bg))`;
-              }}
+              className="bg-white hover:bg-gray-100 text-theme-primary font-bold py-4 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
               {adminData.buttonTexts.trial4h}
             </button>

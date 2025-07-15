@@ -13,9 +13,6 @@ export interface ThemeSettings {
   accent_color: string;
   krator_primary_color: string;
   krator_secondary_color: string;
-  highlight_button_bg_color: string;
-  highlight_button_text_color: string;
-  highlight_button_hover_color: string;
 }
 
 export const useTheme = () => {
@@ -62,11 +59,6 @@ export const useTheme = () => {
     // Apply Krator-specific colors
     root.style.setProperty('--krator-primary', theme.krator_primary_color);
     root.style.setProperty('--krator-secondary', theme.krator_secondary_color);
-    
-    // Apply highlight button colors
-    root.style.setProperty('--highlight-button-bg', theme.highlight_button_bg_color);
-    root.style.setProperty('--highlight-button-text', theme.highlight_button_text_color);
-    root.style.setProperty('--highlight-button-hover', theme.highlight_button_hover_color);
   };
 
   const activateTheme = async (themeId: string) => {
@@ -139,9 +131,6 @@ export const useTheme = () => {
           accent_color: originalTheme.accent_color,
           krator_primary_color: originalTheme.krator_primary_color,
           krator_secondary_color: originalTheme.krator_secondary_color,
-          highlight_button_bg_color: originalTheme.highlight_button_bg_color,
-          highlight_button_text_color: originalTheme.highlight_button_text_color,
-          highlight_button_hover_color: originalTheme.highlight_button_hover_color,
         });
 
       if (error) throw error;
