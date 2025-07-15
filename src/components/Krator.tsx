@@ -1,37 +1,34 @@
-
 import React from 'react';
 import { usePublicAdmin } from '../hooks/useAdmin';
 import { usePublicDataContext } from '../contexts/PublicDataContext';
-
 const Krator = () => {
-  const { adminData } = usePublicAdmin();
-  const { data: publicData } = usePublicDataContext();
-
+  const {
+    adminData
+  } = usePublicAdmin();
+  const {
+    data: publicData
+  } = usePublicDataContext();
   const handleBuyClick = () => {
     const randomContact = adminData.contacts[Math.floor(Math.random() * adminData.contacts.length)];
     const message = encodeURIComponent(adminData.messages.krator);
     window.open(`https://wa.me/${randomContact}?text=${message}`, '_blank');
   };
-
   const handleTrialClick = () => {
     const randomContact = adminData.contacts[Math.floor(Math.random() * adminData.contacts.length)];
     const message = encodeURIComponent(adminData.messages.trial1h);
     window.open(`https://wa.me/${randomContact}?text=${message}`, '_blank');
   };
-
   const kratorPlan = {
     name: 'Krator 1 Tela',
     price: adminData.kratorPrice,
     features: ['1 Tela simultânea', 'Sistema Krator incluído', 'Alta qualidade', 'Streaming otimizado', 'Suporte via whatsapp']
   };
-
-  return (
-    <section id="krator" className="py-20 bg-gradient-to-br from-purple-900 via-purple-800 to-gray-900">
+  return <section id="krator" className="py-20 bg-gradient-to-br from-purple-900 via-purple-800 to-gray-900">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              {publicData.content.krator.mainTitle} <span className="text-purple-400">Krator</span>
+              {publicData.content.krator.mainTitle} 
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               {publicData.content.krator.mainSubtitle}
@@ -47,12 +44,10 @@ const Krator = () => {
                 </p>
                 
                 <div className="space-y-4">
-                  {['Streaming em tempo real otimizado', 'Qualidade adaptativa automática', 'Cache inteligente para maior velocidade', 'Interface intuitiva e responsiva'].map((feature, index) => (
-                    <div key={index} className="flex items-center">
+                  {['Streaming em tempo real otimizado', 'Qualidade adaptativa automática', 'Cache inteligente para maior velocidade', 'Interface intuitiva e responsiva'].map((feature, index) => <div key={index} className="flex items-center">
                       <div className="w-3 h-3 bg-purple-400 rounded-full mr-4"></div>
                       <span className="text-gray-300 text-base">{feature}</span>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
               </div>
             </div>
@@ -101,18 +96,13 @@ const Krator = () => {
                   </div>
 
                   <ul className="space-y-3 mb-6">
-                    {kratorPlan.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center text-purple-100">
+                    {kratorPlan.features.map((feature, featureIndex) => <li key={featureIndex} className="flex items-center text-purple-100">
                         <div className="w-2 h-2 bg-purple-300 rounded-full mr-3"></div>
                         {feature}
-                      </li>
-                    ))}
+                      </li>)}
                   </ul>
 
-                  <button 
-                    onClick={handleBuyClick} 
-                    className="w-full py-3 px-6 rounded-lg font-bold text-lg transition-all duration-300 bg-purple-300 hover:bg-purple-200 text-purple-900 shadow-lg hover:shadow-purple-300/25"
-                  >
+                  <button onClick={handleBuyClick} className="w-full py-3 px-6 rounded-lg font-bold text-lg transition-all duration-300 bg-purple-300 hover:bg-purple-200 text-purple-900 shadow-lg hover:shadow-purple-300/25">
                     Comprar
                   </button>
                 </div>
@@ -135,10 +125,7 @@ const Krator = () => {
                     </div>
                   </div>
 
-                  <button 
-                    onClick={handleTrialClick} 
-                    className="w-full py-3 px-6 rounded-lg font-bold text-lg transition-all duration-300 bg-purple-400 hover:bg-purple-300 text-purple-900 shadow-lg hover:shadow-purple-400/25"
-                  >
+                  <button onClick={handleTrialClick} className="w-full py-3 px-6 rounded-lg font-bold text-lg transition-all duration-300 bg-purple-400 hover:bg-purple-300 text-purple-900 shadow-lg hover:shadow-purple-400/25">
                     {adminData.buttonTexts.trial1h}
                   </button>
                 </div>
@@ -147,8 +134,6 @@ const Krator = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Krator;
