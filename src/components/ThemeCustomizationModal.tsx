@@ -246,7 +246,7 @@ export default function ThemeCustomizationModal({
             <Button
               variant="outline"
               onClick={() => setShowDuplicateInput(true)}
-              className="w-full border-gray-600 text-gray-300 hover:bg-gray-700"
+              className="w-full bg-gray-700 border-gray-600 text-gray-200 hover:bg-green-600 hover:text-white hover:border-green-600"
             >
               <Copy className="h-4 w-4 mr-2" />
               Duplicar Tema
@@ -261,13 +261,13 @@ export default function ThemeCustomizationModal({
                   placeholder="Nome do tema duplicado"
                   className="bg-gray-700 border-gray-600 text-white"
                 />
-                <Button onClick={handleDuplicate} className="bg-blue-600 hover:bg-blue-700">
+                <Button onClick={handleDuplicate} className="bg-green-600 hover:bg-green-700 text-white">
                   Criar
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={() => setShowDuplicateInput(false)}
-                  className="border-gray-600 text-gray-300 hover:bg-gray-700"
+                  className="bg-gray-700 border-gray-600 text-gray-200 hover:bg-green-600 hover:text-white hover:border-green-600"
                 >
                   Cancelar
                 </Button>
@@ -280,15 +280,19 @@ export default function ThemeCustomizationModal({
           <Button
             variant="outline"
             onClick={handleReset}
-            className="border-gray-600 text-gray-300 hover:bg-gray-700"
+            className="bg-gray-700 border-gray-600 text-gray-200 hover:bg-green-600 hover:text-white hover:border-green-600"
           >
             <RotateCcw className="h-4 w-4 mr-2" />
             Resetar
           </Button>
-          <Button variant="outline" onClick={onClose} className="border-gray-600 text-gray-300 hover:bg-gray-700">
+          <Button 
+            variant="outline" 
+            onClick={onClose} 
+            className="bg-gray-700 border-gray-600 text-gray-200 hover:bg-green-600 hover:text-white hover:border-green-600"
+          >
             Cancelar
           </Button>
-          <Button onClick={handleSave} className="bg-green-600 hover:bg-green-700">
+          <Button onClick={handleSave} className="bg-green-600 hover:bg-green-700 text-white">
             Salvar Alterações
           </Button>
         </DialogFooter>
