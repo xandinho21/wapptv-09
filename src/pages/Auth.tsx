@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { useTheme } from '@/hooks/useTheme';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -14,6 +15,7 @@ const Auth = () => {
   const { signIn, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { activeTheme } = useTheme();
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -55,11 +57,21 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-green-900 flex items-center justify-center">
+    <div 
+      className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 flex items-center justify-center"
+      style={{
+        background: `linear-gradient(to bottom right, rgb(17, 24, 39), rgb(31, 41, 55), ${activeTheme?.primary_color || '#14532d'})`
+      }}
+    >
       <div className="w-full max-w-md">
         <div className="bg-gray-800 rounded-2xl p-8 border border-gray-700 shadow-2xl">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-green-400 mb-2">Wapp TV</h1>
+            <h1 
+              className="text-3xl font-bold mb-2"
+              style={{ color: activeTheme?.primary_color || '#4ade80' }}
+            >
+              Wapp TV
+            </h1>
             <p className="text-gray-300">
               Login Administrativo
             </p>
@@ -99,7 +111,22 @@ const Auth = () => {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3"
+              className="w-full text-white font-bold py-3"
+              style={{
+                backgroundColor: activeTheme?.primary_color || '#22c55e'
+              }}
+              onMouseEnter={(e) => {
+                if (activeTheme?.primary_color) {
+                  const color = activeTheme.primary_color;
+                  // Create a darker shade for hover
+                  e.currentTarget.style.backgroundColor = color + 'dd';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTheme?.primary_color) {
+                  e.currentTarget.style.backgroundColor = activeTheme.primary_color;
+                }
+              }}
             >
               {isLoading ? 'Entrando...' : 'Entrar'}
             </Button>
@@ -108,7 +135,15 @@ const Auth = () => {
           <div className="mt-4 text-center">
             <button
               onClick={() => navigate('/')}
-              className="text-gray-400 hover:text-green-400 transition-colors"
+              className="text-gray-400 transition-colors"
+              onMouseEnter={(e) => {
+                if (activeTheme?.primary_color) {
+                  e.currentTarget.style.color = activeTheme.primary_color;
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = '#9ca3af';
+              }}
             >
               ← Voltar ao site
             </button>
