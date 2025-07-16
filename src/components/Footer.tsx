@@ -1,19 +1,19 @@
 import React from 'react';
 import { usePublicAdmin } from '../hooks/useAdmin';
 import { usePublicDataContext } from '../contexts/PublicDataContext';
-
 const Footer = () => {
-  const { adminData } = usePublicAdmin();
-  const { data: publicData } = usePublicDataContext();
-
+  const {
+    adminData
+  } = usePublicAdmin();
+  const {
+    data: publicData
+  } = usePublicDataContext();
   console.log('Footer - adminData.socialLinks:', adminData.socialLinks);
-
   const handleContactClick = () => {
     const randomContact = adminData.contacts[Math.floor(Math.random() * adminData.contacts.length)];
     const message = encodeURIComponent(adminData.messages.contact);
     window.open(`https://wa.me/${randomContact}?text=${message}`, '_blank');
   };
-
   return <footer id="contato" className="bg-gray-900 border-t border-gray-800">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -75,21 +75,15 @@ const Footer = () => {
             <div className="mt-6">
               <h5 className="text-lg font-bold text-white mb-3">{publicData.content.footer.socialTitle}</h5>
               <div className="flex space-x-4">
-                {adminData.socialLinks?.facebook && (
-                  <a href={adminData.socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-700 hover:bg-theme-secondary rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
+                {adminData.socialLinks?.facebook && <a href={adminData.socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-700 hover:bg-theme-secondary rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
                     <span className="text-white font-bold">F</span>
-                  </a>
-                )}
-                {adminData.socialLinks?.instagram && (
-                  <a href={adminData.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-700 hover:bg-theme-secondary rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
+                  </a>}
+                {adminData.socialLinks?.instagram && <a href={adminData.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-700 hover:bg-theme-secondary rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
                     <span className="text-white font-bold">I</span>
-                  </a>
-                )}
-                {adminData.socialLinks?.youtube && (
-                  <a href={adminData.socialLinks.youtube} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-700 hover:bg-theme-secondary rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
-                    <span className="text-white font-bold">Youtube</span>
-                  </a>
-                )}
+                  </a>}
+                {adminData.socialLinks?.youtube && <a href={adminData.socialLinks.youtube} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-700 hover:bg-theme-secondary rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
+                    <span className="text-white font-bold">Y</span>
+                  </a>}
               </div>
             </div>
           </div>
@@ -103,5 +97,4 @@ const Footer = () => {
       </div>
     </footer>;
 };
-
 export default Footer;
