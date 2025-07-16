@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AdminProvider } from "./contexts/AdminContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { PublicDataProvider } from "./contexts/PublicDataContext";
+import { TenantProvider } from "./contexts/TenantContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -24,6 +25,7 @@ import ContentConfig from "./pages/admin/ContentConfig";
 import KratorConfig from "./pages/admin/KratorConfig";
 import ResellerConfig from "./pages/admin/ResellerConfig";
 import ThemesConfig from "./pages/admin/ThemesConfig";
+import TenantsConfig from "./pages/admin/TenantsConfig";
 
 
 const queryClient = new QueryClient();
@@ -31,9 +33,10 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <AuthProvider>
-        <PublicDataProvider>
-          <AdminProvider>
+      <TenantProvider>
+        <AuthProvider>
+          <PublicDataProvider>
+            <AdminProvider>
             <Toaster />
             <Sonner />
             <BrowserRouter>
@@ -57,15 +60,17 @@ const App = () => (
                   <Route path="reseller" element={<ResellerConfig />} />
                   <Route path="site" element={<SiteConfig />} />
                   <Route path="themes" element={<ThemesConfig />} />
+                  <Route path="tenants" element={<TenantsConfig />} />
                   
                   <Route path="settings" element={<AdminSettings />} />
                 </Route>
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
-          </AdminProvider>
-        </PublicDataProvider>
-      </AuthProvider>
+            </AdminProvider>
+          </PublicDataProvider>
+        </AuthProvider>
+      </TenantProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
