@@ -15,7 +15,7 @@ const Auth = () => {
   const { signIn, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { activeTheme } = useTheme();
+  const { activeTheme, convertHslToValidColor } = useTheme();
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -60,7 +60,7 @@ const Auth = () => {
     <div 
       className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 flex items-center justify-center"
       style={{
-        background: `linear-gradient(to bottom right, rgb(17, 24, 39), rgb(31, 41, 55), ${activeTheme?.primary_color || '#14532d'})`
+        background: `linear-gradient(to bottom right, rgb(17, 24, 39), rgb(31, 41, 55), ${activeTheme?.primary_color ? convertHslToValidColor(activeTheme.primary_color) : '#14532d'})`
       }}
     >
       <div className="w-full max-w-md">
@@ -68,7 +68,7 @@ const Auth = () => {
           <div className="text-center mb-8">
             <h1 
               className="text-3xl font-bold mb-2"
-              style={{ color: activeTheme?.primary_color || '#4ade80' }}
+              style={{ color: activeTheme?.primary_color ? convertHslToValidColor(activeTheme.primary_color) : '#4ade80' }}
             >
               Wapp TV
             </h1>
@@ -113,18 +113,22 @@ const Auth = () => {
               disabled={isLoading}
               className="w-full text-white font-bold py-3"
               style={{
-                backgroundColor: activeTheme?.primary_color || '#22c55e'
+                backgroundColor: activeTheme?.primary_color ? convertHslToValidColor(activeTheme.primary_color) : '#22c55e'
               }}
               onMouseEnter={(e) => {
                 if (activeTheme?.primary_color) {
-                  const color = activeTheme.primary_color;
-                  // Create a darker shade for hover
-                  e.currentTarget.style.backgroundColor = color + 'dd';
+                  const color = convertHslToValidColor(activeTheme.primary_color);
+                  // Create a darker shade for hover by reducing lightness
+                  const darkerColor = color.replace(/(\d+)%\)$/, (match, lightness) => {
+                    const newLightness = Math.max(0, parseInt(lightness) - 10);
+                    return `${newLightness}%)`;
+                  });
+                  e.currentTarget.style.backgroundColor = darkerColor;
                 }
               }}
               onMouseLeave={(e) => {
                 if (activeTheme?.primary_color) {
-                  e.currentTarget.style.backgroundColor = activeTheme.primary_color;
+                  e.currentTarget.style.backgroundColor = convertHslToValidColor(activeTheme.primary_color);
                 }
               }}
             >
@@ -138,7 +142,7 @@ const Auth = () => {
               className="text-gray-400 transition-colors"
               onMouseEnter={(e) => {
                 if (activeTheme?.primary_color) {
-                  e.currentTarget.style.color = activeTheme.primary_color;
+                  e.currentTarget.style.color = convertHslToValidColor(activeTheme.primary_color);
                 }
               }}
               onMouseLeave={(e) => {

@@ -51,22 +51,39 @@ export const useTheme = () => {
     }
   };
 
+  // Utility function to convert HSL string to valid CSS hsl() format
+  const convertHslToValidColor = (hslString: string) => {
+    // If it's already in hsl() format, return as is
+    if (hslString.startsWith('hsl(')) return hslString;
+    
+    // If it's in "0 74% 50%" format, convert to "hsl(0, 74%, 50%)"
+    if (hslString.includes('%')) {
+      const parts = hslString.trim().split(' ');
+      if (parts.length === 3) {
+        return `hsl(${parts[0]}, ${parts[1]}, ${parts[2]})`;
+      }
+    }
+    
+    // If it's a hex color or other format, return as is
+    return hslString;
+  };
+
   const applyTheme = (theme: ThemeSettings) => {
     const root = document.documentElement;
     
     // Apply main theme colors
-    root.style.setProperty('--theme-primary', theme.primary_color);
-    root.style.setProperty('--theme-secondary', theme.secondary_color);
-    root.style.setProperty('--theme-accent', theme.accent_color);
+    root.style.setProperty('--theme-primary', convertHslToValidColor(theme.primary_color));
+    root.style.setProperty('--theme-secondary', convertHslToValidColor(theme.secondary_color));
+    root.style.setProperty('--theme-accent', convertHslToValidColor(theme.accent_color));
     
     // Apply Krator-specific colors
-    root.style.setProperty('--krator-primary', theme.krator_primary_color);
-    root.style.setProperty('--krator-secondary', theme.krator_secondary_color);
+    root.style.setProperty('--krator-primary', convertHslToValidColor(theme.krator_primary_color));
+    root.style.setProperty('--krator-secondary', convertHslToValidColor(theme.krator_secondary_color));
     
     // Apply Krator trial button colors
-    root.style.setProperty('--krator-trial-button-bg', theme.krator_trial_button_bg_color);
-    root.style.setProperty('--krator-trial-button-text', theme.krator_trial_button_text_color);
-    root.style.setProperty('--krator-trial-button-hover', theme.krator_trial_button_hover_color);
+    root.style.setProperty('--krator-trial-button-bg', convertHslToValidColor(theme.krator_trial_button_bg_color));
+    root.style.setProperty('--krator-trial-button-text', convertHslToValidColor(theme.krator_trial_button_text_color));
+    root.style.setProperty('--krator-trial-button-hover', convertHslToValidColor(theme.krator_trial_button_hover_color));
   };
 
   const activateTheme = async (themeId: string) => {
@@ -212,5 +229,6 @@ export const useTheme = () => {
     deleteTheme,
     fetchThemes,
     applyTheme,
+    convertHslToValidColor,
   };
 };
