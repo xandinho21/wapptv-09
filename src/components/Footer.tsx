@@ -87,7 +87,7 @@ const Footer = () => {
                 )}
                 {adminData.socialLinks?.youtube && (
                   <a href={adminData.socialLinks.youtube} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-700 hover:bg-theme-secondary rounded-full flex items-center justify-center transition-colors duration-200 cursor-pointer">
-                    <span className="text-white font-bold">Y</span>
+                    <span className="text-white font-bold">Youtube</span>
                   </a>
                 )}
               </div>
