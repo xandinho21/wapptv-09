@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -55,21 +54,19 @@ export const useTheme = () => {
 
   const fetchThemes = async () => {
     try {
-      if (!tenantId) return;
-
+      // Fetch all global themes (no tenant filter)
       const { data, error } = await supabase
         .from('theme_settings')
         .select('*')
-        .eq('tenant_id', tenantId)
         .order('created_at', { ascending: true });
 
       if (error) throw error;
 
       setThemes(data || []);
-      const active = data?.find(theme => theme.is_active);
-      if (active) {
-        setActiveTheme(active);
-        applyTheme(active);
+
+      // Fetch active theme for current tenant
+      if (tenantId) {
+        await fetchActiveTheme();
       }
     } catch (error) {
       console.error('Error fetching themes:', error);
@@ -80,6 +77,42 @@ export const useTheme = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchActiveTheme = async () => {
+    try {
+      if (!tenantId) return;
+
+      const { data, error } = await supabase
+        .from('tenant_theme_preferences')
+        .select(`
+          active_theme_id,
+          theme_settings!inner(*)
+        `)
+        .eq('tenant_id', tenantId)
+        .single();
+
+      if (error && error.code !== 'PGRST116') throw error;
+
+      if (data?.theme_settings) {
+        const activeTheme = data.theme_settings as any as ThemeSettings;
+        setActiveTheme(activeTheme);
+        applyTheme(activeTheme);
+      } else {
+        // No theme preference set, use first available theme as default
+        const { data: themes } = await supabase
+          .from('theme_settings')
+          .select('*')
+          .order('created_at', { ascending: true })
+          .limit(1);
+        
+        if (themes?.[0]) {
+          await activateTheme(themes[0].id);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching active theme:', error);
     }
   };
 
@@ -105,22 +138,24 @@ export const useTheme = () => {
     try {
       if (!tenantId) return;
 
-      // Deactivate all themes for current tenant first
-      await supabase
-        .from('theme_settings')
-        .update({ is_active: false })
-        .eq('tenant_id', tenantId);
-
-      // Activate selected theme
+      // Upsert tenant theme preference
       const { error } = await supabase
-        .from('theme_settings')
-        .update({ is_active: true })
-        .eq('id', themeId)
-        .eq('tenant_id', tenantId);
+        .from('tenant_theme_preferences')
+        .upsert({ 
+          tenant_id: tenantId, 
+          active_theme_id: themeId 
+        }, { 
+          onConflict: 'tenant_id' 
+        });
 
       if (error) throw error;
 
-      await fetchThemes();
+      // Find the activated theme and apply it
+      const activatedTheme = themes.find(theme => theme.id === themeId);
+      if (activatedTheme) {
+        setActiveTheme(activatedTheme);
+        applyTheme(activatedTheme);
+      }
       
       toast({
         title: "Tema Aplicado",
@@ -138,13 +173,11 @@ export const useTheme = () => {
 
   const updateTheme = async (themeId: string, updates: Partial<ThemeSettings>) => {
     try {
-      if (!tenantId) return;
-
+      // Update global theme (only admins should have access to this)
       const { error } = await supabase
         .from('theme_settings')
         .update(updates)
-        .eq('id', themeId)
-        .eq('tenant_id', tenantId);
+        .eq('id', themeId);
 
       if (error) throw error;
 
@@ -166,15 +199,13 @@ export const useTheme = () => {
 
   const duplicateTheme = async (originalTheme: ThemeSettings, newName: string) => {
     try {
-      if (!tenantId) return;
-
+      // Create global theme (no tenant_id)
       const { error } = await supabase
         .from('theme_settings')
         .insert({
           name: newName,
           slug: newName.toLowerCase().replace(/\s+/g, '-'),
           is_active: false,
-          tenant_id: tenantId,
           primary_color: originalTheme.primary_color,
           secondary_color: originalTheme.secondary_color,
           accent_color: originalTheme.accent_color,
@@ -205,11 +236,8 @@ export const useTheme = () => {
 
   const deleteTheme = async (themeId: string, themeName: string) => {
     try {
-      if (!tenantId) return;
-
-      // Check if theme is active
-      const themeToDelete = themes.find(theme => theme.id === themeId);
-      if (themeToDelete?.is_active) {
+      // Check if theme is currently active for this tenant
+      if (activeTheme?.id === themeId) {
         toast({
           title: "Erro",
           description: "Não é possível excluir o tema ativo. Ative outro tema primeiro.",
@@ -218,11 +246,11 @@ export const useTheme = () => {
         return;
       }
 
+      // Delete global theme
       const { error } = await supabase
         .from('theme_settings')
         .delete()
-        .eq('id', themeId)
-        .eq('tenant_id', tenantId);
+        .eq('id', themeId);
 
       if (error) throw error;
 

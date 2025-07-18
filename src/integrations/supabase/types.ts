@@ -257,6 +257,45 @@ export type Database = {
           },
         ]
       }
+      tenant_theme_preferences: {
+        Row: {
+          active_theme_id: string
+          created_at: string
+          id: string
+          tenant_id: string
+          updated_at: string
+        }
+        Insert: {
+          active_theme_id: string
+          created_at?: string
+          id?: string
+          tenant_id: string
+          updated_at?: string
+        }
+        Update: {
+          active_theme_id?: string
+          created_at?: string
+          id?: string
+          tenant_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenant_theme_preferences_active_theme_id_fkey"
+            columns: ["active_theme_id"]
+            isOneToOne: false
+            referencedRelation: "theme_settings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tenant_theme_preferences_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: true
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tenants: {
         Row: {
           created_at: string
