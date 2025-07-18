@@ -22,13 +22,45 @@ export const useTheme = () => {
   const [themes, setThemes] = useState<ThemeSettings[]>([]);
   const [activeTheme, setActiveTheme] = useState<ThemeSettings | null>(null);
   const [loading, setLoading] = useState(true);
+  const [tenantId, setTenantId] = useState<string | null>(null);
   const { toast } = useToast();
+
+  const getCurrentTenant = async () => {
+    try {
+      const currentDomain = window.location.hostname;
+      const { data: tenant, error } = await supabase
+        .from('tenants')
+        .select('id')
+        .or(`domain.eq.${currentDomain},subdomain.eq.${currentDomain}`)
+        .eq('is_active', true)
+        .single();
+
+      if (error) {
+        // Fallback to default tenant
+        const { data: defaultTenant } = await supabase
+          .from('tenants')
+          .select('id')
+          .eq('domain', 'wapptv.top')
+          .single();
+        
+        return defaultTenant?.id || null;
+      }
+
+      return tenant?.id || null;
+    } catch (error) {
+      console.error('Error getting tenant:', error);
+      return null;
+    }
+  };
 
   const fetchThemes = async () => {
     try {
+      if (!tenantId) return;
+
       const { data, error } = await supabase
         .from('theme_settings')
         .select('*')
+        .eq('tenant_id', tenantId)
         .order('created_at', { ascending: true });
 
       if (error) throw error;
@@ -71,17 +103,20 @@ export const useTheme = () => {
 
   const activateTheme = async (themeId: string) => {
     try {
-      // Deactivate all themes first
+      if (!tenantId) return;
+
+      // Deactivate all themes for current tenant first
       await supabase
         .from('theme_settings')
         .update({ is_active: false })
-        .neq('id', '00000000-0000-0000-0000-000000000000'); // Update all
+        .eq('tenant_id', tenantId);
 
       // Activate selected theme
       const { error } = await supabase
         .from('theme_settings')
         .update({ is_active: true })
-        .eq('id', themeId);
+        .eq('id', themeId)
+        .eq('tenant_id', tenantId);
 
       if (error) throw error;
 
@@ -103,10 +138,13 @@ export const useTheme = () => {
 
   const updateTheme = async (themeId: string, updates: Partial<ThemeSettings>) => {
     try {
+      if (!tenantId) return;
+
       const { error } = await supabase
         .from('theme_settings')
         .update(updates)
-        .eq('id', themeId);
+        .eq('id', themeId)
+        .eq('tenant_id', tenantId);
 
       if (error) throw error;
 
@@ -128,12 +166,15 @@ export const useTheme = () => {
 
   const duplicateTheme = async (originalTheme: ThemeSettings, newName: string) => {
     try {
+      if (!tenantId) return;
+
       const { error } = await supabase
         .from('theme_settings')
         .insert({
           name: newName,
           slug: newName.toLowerCase().replace(/\s+/g, '-'),
           is_active: false,
+          tenant_id: tenantId,
           primary_color: originalTheme.primary_color,
           secondary_color: originalTheme.secondary_color,
           accent_color: originalTheme.accent_color,
@@ -164,6 +205,8 @@ export const useTheme = () => {
 
   const deleteTheme = async (themeId: string, themeName: string) => {
     try {
+      if (!tenantId) return;
+
       // Check if theme is active
       const themeToDelete = themes.find(theme => theme.id === themeId);
       if (themeToDelete?.is_active) {
@@ -178,7 +221,8 @@ export const useTheme = () => {
       const { error } = await supabase
         .from('theme_settings')
         .delete()
-        .eq('id', themeId);
+        .eq('id', themeId)
+        .eq('tenant_id', tenantId);
 
       if (error) throw error;
 
@@ -199,7 +243,17 @@ export const useTheme = () => {
   };
 
   useEffect(() => {
-    fetchThemes();
+    const initializeThemes = async () => {
+      const currentTenantId = await getCurrentTenant();
+      setTenantId(currentTenantId);
+      if (currentTenantId) {
+        await fetchThemes();
+      } else {
+        setLoading(false);
+      }
+    };
+
+    initializeThemes();
   }, []);
 
   return {
