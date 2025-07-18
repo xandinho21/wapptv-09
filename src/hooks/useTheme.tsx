@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { useTenant } from '@/contexts/TenantContext';
 
 export interface ThemeSettings {
   id: string;
@@ -24,19 +23,12 @@ export const useTheme = () => {
   const [activeTheme, setActiveTheme] = useState<ThemeSettings | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  const { currentTenant, loading: tenantLoading } = useTenant();
 
   const fetchThemes = async () => {
-    if (!currentTenant) {
-      setLoading(false);
-      return;
-    }
-
     try {
       const { data, error } = await supabase
         .from('theme_settings')
         .select('*')
-        .eq('tenant_id', currentTenant.id)
         .order('created_at', { ascending: true });
 
       if (error) throw error;
@@ -78,21 +70,18 @@ export const useTheme = () => {
   };
 
   const activateTheme = async (themeId: string) => {
-    if (!currentTenant) return;
-
     try {
-      // Deactivate all themes for this tenant first
+      // Deactivate all themes first
       await supabase
         .from('theme_settings')
         .update({ is_active: false })
-        .eq('tenant_id', currentTenant.id);
+        .neq('id', '00000000-0000-0000-0000-000000000000'); // Update all
 
       // Activate selected theme
       const { error } = await supabase
         .from('theme_settings')
         .update({ is_active: true })
-        .eq('id', themeId)
-        .eq('tenant_id', currentTenant.id);
+        .eq('id', themeId);
 
       if (error) throw error;
 
@@ -113,14 +102,11 @@ export const useTheme = () => {
   };
 
   const updateTheme = async (themeId: string, updates: Partial<ThemeSettings>) => {
-    if (!currentTenant) return;
-
     try {
       const { error } = await supabase
         .from('theme_settings')
         .update(updates)
-        .eq('id', themeId)
-        .eq('tenant_id', currentTenant.id);
+        .eq('id', themeId);
 
       if (error) throw error;
 
@@ -141,8 +127,6 @@ export const useTheme = () => {
   };
 
   const duplicateTheme = async (originalTheme: ThemeSettings, newName: string) => {
-    if (!currentTenant) return;
-
     try {
       const { error } = await supabase
         .from('theme_settings')
@@ -150,7 +134,6 @@ export const useTheme = () => {
           name: newName,
           slug: newName.toLowerCase().replace(/\s+/g, '-'),
           is_active: false,
-          tenant_id: currentTenant.id,
           primary_color: originalTheme.primary_color,
           secondary_color: originalTheme.secondary_color,
           accent_color: originalTheme.accent_color,
@@ -180,8 +163,6 @@ export const useTheme = () => {
   };
 
   const deleteTheme = async (themeId: string, themeName: string) => {
-    if (!currentTenant) return;
-
     try {
       // Check if theme is active
       const themeToDelete = themes.find(theme => theme.id === themeId);
@@ -197,8 +178,7 @@ export const useTheme = () => {
       const { error } = await supabase
         .from('theme_settings')
         .delete()
-        .eq('id', themeId)
-        .eq('tenant_id', currentTenant.id);
+        .eq('id', themeId);
 
       if (error) throw error;
 
@@ -219,10 +199,8 @@ export const useTheme = () => {
   };
 
   useEffect(() => {
-    if (!tenantLoading) {
-      fetchThemes();
-    }
-  }, [tenantLoading, currentTenant]);
+    fetchThemes();
+  }, []);
 
   return {
     themes,
