@@ -26,6 +26,8 @@ export const useSupabaseAdmin = () => {
     try {
       if (!currentTenant) throw new Error('Tenant not found');
       
+      console.log(`Updating contacts for tenant ${currentTenant.id}:`, contacts);
+      
       // Delete existing non-reseller contacts for this tenant
       await supabase.from('contacts').delete().eq('tenant_id', currentTenant.id).eq('is_reseller', false);
       
@@ -36,7 +38,10 @@ export const useSupabaseAdmin = () => {
         tenant_id: currentTenant.id
       }));
       
-      await supabase.from('contacts').insert(contactData);
+      const { error } = await supabase.from('contacts').insert(contactData);
+      if (error) throw error;
+      
+      console.log('Contacts updated successfully');
     } catch (error) {
       console.error('Error updating contacts:', error);
       throw error;
@@ -46,6 +51,8 @@ export const useSupabaseAdmin = () => {
   const updateResellerContacts = async (contacts: string[]) => {
     try {
       if (!currentTenant) throw new Error('Tenant not found');
+      
+      console.log(`Updating reseller contacts for tenant ${currentTenant.id}:`, contacts);
       
       // Delete existing reseller contacts for this tenant
       await supabase.from('contacts').delete().eq('tenant_id', currentTenant.id).eq('is_reseller', true);
@@ -57,7 +64,10 @@ export const useSupabaseAdmin = () => {
         tenant_id: currentTenant.id
       }));
       
-      await supabase.from('contacts').insert(contactData);
+      const { error } = await supabase.from('contacts').insert(contactData);
+      if (error) throw error;
+      
+      console.log('Reseller contacts updated successfully');
     } catch (error) {
       console.error('Error updating reseller contacts:', error);
       throw error;
@@ -69,6 +79,8 @@ export const useSupabaseAdmin = () => {
     try {
       if (!currentTenant) throw new Error('Tenant not found');
       
+      console.log(`Updating messages for tenant ${currentTenant.id}:`, messages);
+      
       const messageUpdates = Object.entries(messages).map(([type, content]) => ({
         type,
         content,
@@ -76,10 +88,14 @@ export const useSupabaseAdmin = () => {
       }));
 
       for (const message of messageUpdates) {
-        await supabase
+        const { error } = await supabase
           .from('messages')
           .upsert(message, { onConflict: 'type,tenant_id' });
+        
+        if (error) throw error;
       }
+      
+      console.log('Messages updated successfully');
     } catch (error) {
       console.error('Error updating messages:', error);
       throw error;
@@ -91,6 +107,8 @@ export const useSupabaseAdmin = () => {
     try {
       if (!currentTenant) throw new Error('Tenant not found');
       
+      console.log(`Updating button texts for tenant ${currentTenant.id}:`, buttonTexts);
+      
       const buttonUpdates = Object.entries(buttonTexts).map(([key, text]) => ({
         key,
         text,
@@ -98,10 +116,14 @@ export const useSupabaseAdmin = () => {
       }));
 
       for (const button of buttonUpdates) {
-        await supabase
+        const { error } = await supabase
           .from('button_texts')
           .upsert(button, { onConflict: 'key,tenant_id' });
+        
+        if (error) throw error;
       }
+      
+      console.log('Button texts updated successfully');
     } catch (error) {
       console.error('Error updating button texts:', error);
       throw error;

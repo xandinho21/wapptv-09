@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -40,37 +41,47 @@ export const TenantProvider = ({ children }: { children: React.ReactNode }) => {
         const currentDomain = window.location.hostname;
         console.log('Current domain:', currentDomain);
 
-        // Try to find tenant by domain
+        // Map development domains to localhost for consistency
+        const domainToQuery = currentDomain === '127.0.0.1' || currentDomain.includes('localhost') 
+          ? 'localhost' 
+          : currentDomain;
+
+        console.log('Querying for domain:', domainToQuery);
+
+        // Try to find tenant by domain or subdomain
         const { data: tenant, error: tenantError } = await supabase
           .from('tenants')
           .select('*')
-          .or(`domain.eq.${currentDomain},subdomain.eq.${currentDomain}`)
+          .or(`domain.eq.${domainToQuery},subdomain.eq.${domainToQuery}`)
           .eq('is_active', true)
           .single();
 
         if (tenantError) {
           console.error('Error finding tenant:', tenantError);
           
-          // Fallback to default tenant if no specific tenant found
-          const { data: defaultTenant, error: defaultError } = await supabase
+          // Enhanced fallback: try to get any active tenant as last resort
+          const { data: fallbackTenant, error: fallbackError } = await supabase
             .from('tenants')
             .select('*')
-            .eq('domain', 'wapptv.top')
+            .eq('is_active', true)
+            .limit(1)
             .single();
 
-          if (defaultError) {
-            console.error('Error finding default tenant:', defaultError);
-            setError('Tenant not found');
+          if (fallbackError) {
+            console.error('Error finding fallback tenant:', fallbackError);
+            setError(`Nenhum tenant encontrado para o domínio: ${currentDomain}`);
             return;
           }
 
-          setCurrentTenant(defaultTenant);
+          console.log('Using fallback tenant:', fallbackTenant);
+          setCurrentTenant(fallbackTenant);
         } else {
+          console.log('Found tenant:', tenant);
           setCurrentTenant(tenant);
         }
       } catch (err) {
         console.error('Error identifying tenant:', err);
-        setError('Error identifying tenant');
+        setError('Erro ao identificar tenant');
       } finally {
         setLoading(false);
       }
