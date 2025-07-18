@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useTenant } from '@/contexts/TenantContext';
 
 interface Plan {
   id: string;
@@ -19,29 +18,19 @@ interface Tutorial {
 }
 
 export const useSupabaseAdmin = () => {
-  const { currentTenant } = useTenant();
-
   // Contacts
   const updateContacts = async (contacts: string[]) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
-      console.log(`Updating contacts for tenant ${currentTenant.id}:`, contacts);
-      
-      // Delete existing non-reseller contacts for this tenant
-      await supabase.from('contacts').delete().eq('tenant_id', currentTenant.id).eq('is_reseller', false);
+      // Delete existing non-reseller contacts
+      await supabase.from('contacts').delete().eq('is_reseller', false);
       
       // Insert new contacts
       const contactData = contacts.map(phone => ({
         phone_number: phone,
-        is_reseller: false,
-        tenant_id: currentTenant.id
+        is_reseller: false
       }));
       
-      const { error } = await supabase.from('contacts').insert(contactData);
-      if (error) throw error;
-      
-      console.log('Contacts updated successfully');
+      await supabase.from('contacts').insert(contactData);
     } catch (error) {
       console.error('Error updating contacts:', error);
       throw error;
@@ -50,24 +39,16 @@ export const useSupabaseAdmin = () => {
 
   const updateResellerContacts = async (contacts: string[]) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
-      console.log(`Updating reseller contacts for tenant ${currentTenant.id}:`, contacts);
-      
-      // Delete existing reseller contacts for this tenant
-      await supabase.from('contacts').delete().eq('tenant_id', currentTenant.id).eq('is_reseller', true);
+      // Delete existing reseller contacts
+      await supabase.from('contacts').delete().eq('is_reseller', true);
       
       // Insert new reseller contacts
       const contactData = contacts.map(phone => ({
         phone_number: phone,
-        is_reseller: true,
-        tenant_id: currentTenant.id
+        is_reseller: true
       }));
       
-      const { error } = await supabase.from('contacts').insert(contactData);
-      if (error) throw error;
-      
-      console.log('Reseller contacts updated successfully');
+      await supabase.from('contacts').insert(contactData);
     } catch (error) {
       console.error('Error updating reseller contacts:', error);
       throw error;
@@ -77,25 +58,16 @@ export const useSupabaseAdmin = () => {
   // Messages
   const updateMessages = async (messages: Record<string, string>) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
-      console.log(`Updating messages for tenant ${currentTenant.id}:`, messages);
-      
       const messageUpdates = Object.entries(messages).map(([type, content]) => ({
         type,
-        content,
-        tenant_id: currentTenant.id
+        content
       }));
 
       for (const message of messageUpdates) {
-        const { error } = await supabase
+        await supabase
           .from('messages')
-          .upsert(message, { onConflict: 'type,tenant_id' });
-        
-        if (error) throw error;
+          .upsert(message, { onConflict: 'type' });
       }
-      
-      console.log('Messages updated successfully');
     } catch (error) {
       console.error('Error updating messages:', error);
       throw error;
@@ -105,25 +77,16 @@ export const useSupabaseAdmin = () => {
   // Button texts
   const updateButtonTexts = async (buttonTexts: Record<string, string>) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
-      console.log(`Updating button texts for tenant ${currentTenant.id}:`, buttonTexts);
-      
       const buttonUpdates = Object.entries(buttonTexts).map(([key, text]) => ({
         key,
-        text,
-        tenant_id: currentTenant.id
+        text
       }));
 
       for (const button of buttonUpdates) {
-        const { error } = await supabase
+        await supabase
           .from('button_texts')
-          .upsert(button, { onConflict: 'key,tenant_id' });
-        
-        if (error) throw error;
+          .upsert(button, { onConflict: 'key' });
       }
-      
-      console.log('Button texts updated successfully');
     } catch (error) {
       console.error('Error updating button texts:', error);
       throw error;
@@ -133,15 +96,9 @@ export const useSupabaseAdmin = () => {
   // Admin settings
   const updateKratorPrice = async (price: string) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
       await supabase
         .from('admin_settings')
-        .upsert({ 
-          key: 'krator_price', 
-          value: JSON.stringify(price),
-          tenant_id: currentTenant.id
-        }, { onConflict: 'key,tenant_id' });
+        .upsert({ key: 'krator_price', value: JSON.stringify(price) }, { onConflict: 'key' });
     } catch (error) {
       console.error('Error updating krator price:', error);
       throw error;
@@ -150,15 +107,9 @@ export const useSupabaseAdmin = () => {
 
   const updatePopularText = async (text: string) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
       await supabase
         .from('admin_settings')
-        .upsert({ 
-          key: 'popular_text', 
-          value: JSON.stringify(text),
-          tenant_id: currentTenant.id
-        }, { onConflict: 'key,tenant_id' });
+        .upsert({ key: 'popular_text', value: JSON.stringify(text) }, { onConflict: 'key' });
     } catch (error) {
       console.error('Error updating popular text:', error);
       throw error;
@@ -167,15 +118,9 @@ export const useSupabaseAdmin = () => {
 
   const updateSiteName = async (name: string) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
       await supabase
         .from('admin_settings')
-        .upsert({ 
-          key: 'site_name', 
-          value: JSON.stringify(name),
-          tenant_id: currentTenant.id
-        }, { onConflict: 'key,tenant_id' });
+        .upsert({ key: 'site_name', value: JSON.stringify(name) }, { onConflict: 'key' });
     } catch (error) {
       console.error('Error updating site name:', error);
       throw error;
@@ -184,17 +129,15 @@ export const useSupabaseAdmin = () => {
 
   const updateSiteLogo = async (file: File) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
-      // Delete old logo if exists for this tenant
-      const { data: files } = await supabase.storage.from('logos').list(`${currentTenant.id}/`);
+      // Delete old logo if exists
+      const { data: files } = await supabase.storage.from('logos').list();
       if (files && files.length > 0) {
-        await supabase.storage.from('logos').remove(files.map(f => `${currentTenant.id}/${f.name}`));
+        await supabase.storage.from('logos').remove(files.map(f => f.name));
       }
 
       // Upload new logo
       const fileExt = file.name.split('.').pop();
-      const fileName = `${currentTenant.id}/logo.${fileExt}`;
+      const fileName = `logo.${fileExt}`;
       
       const { data, error } = await supabase.storage
         .from('logos')
@@ -210,11 +153,7 @@ export const useSupabaseAdmin = () => {
       // Update logo URL in settings
       await supabase
         .from('admin_settings')
-        .upsert({ 
-          key: 'site_logo_url', 
-          value: JSON.stringify(publicUrl),
-          tenant_id: currentTenant.id
-        }, { onConflict: 'key,tenant_id' });
+        .upsert({ key: 'site_logo_url', value: JSON.stringify(publicUrl) }, { onConflict: 'key' });
 
       return publicUrl;
     } catch (error) {
@@ -226,10 +165,8 @@ export const useSupabaseAdmin = () => {
   // Plans
   const updatePlans = async (plans: Plan[]) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
-      // Delete existing plans for this tenant
-      await supabase.from('plans').delete().eq('tenant_id', currentTenant.id);
+      // Delete existing plans
+      await supabase.from('plans').delete().neq('id', '00000000-0000-0000-0000-000000000000');
       
       // Insert new plans
       const planData = plans.map((plan, index) => ({
@@ -239,8 +176,7 @@ export const useSupabaseAdmin = () => {
         period: plan.period,
         features: plan.features,
         popular: plan.popular,
-        sort_order: index + 1,
-        tenant_id: currentTenant.id
+        sort_order: index + 1
       }));
       
       await supabase.from('plans').insert(planData);
@@ -253,17 +189,10 @@ export const useSupabaseAdmin = () => {
   // Tutorials
   const updateTutorials = async (type: 'wapp' | 'krator', tutorials: Tutorial[]) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
       console.log(`Atualizando tutoriais ${type}:`, tutorials);
       
-      // Delete existing tutorials of this type for this tenant
-      const { error: deleteError } = await supabase
-        .from('tutorials')
-        .delete()
-        .eq('type', type)
-        .eq('tenant_id', currentTenant.id);
-        
+      // Delete existing tutorials of this type
+      const { error: deleteError } = await supabase.from('tutorials').delete().eq('type', type);
       if (deleteError) {
         console.error('Erro ao deletar tutoriais existentes:', deleteError);
         throw deleteError;
@@ -276,8 +205,7 @@ export const useSupabaseAdmin = () => {
         title: tutorial.title,
         image: tutorial.image,
         link: tutorial.link,
-        sort_order: index + 1,
-        tenant_id: currentTenant.id
+        sort_order: index + 1
       }));
       
       if (tutorialData.length > 0) {
@@ -302,16 +230,13 @@ export const useSupabaseAdmin = () => {
     creditPrices: { credits: number; price: string; }[];
   }) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
-      // Delete existing reseller settings for this tenant
-      await supabase.from('reseller_settings').delete().eq('tenant_id', currentTenant.id);
+      // Delete existing reseller settings
+      await supabase.from('reseller_settings').delete().neq('id', '00000000-0000-0000-0000-000000000000');
       
       // Insert new settings
       await supabase.from('reseller_settings').insert({
         show_button: settings.showButton,
-        credit_prices: settings.creditPrices,
-        tenant_id: currentTenant.id
+        credit_prices: settings.creditPrices
       });
     } catch (error) {
       console.error('Error updating reseller settings:', error);
@@ -331,23 +256,21 @@ export const useSupabaseAdmin = () => {
     twitterDescription: string;
   }) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
       const seoUpdates = [
-        { key: 'seo_title', value: JSON.stringify(seoData.title), tenant_id: currentTenant.id },
-        { key: 'seo_description', value: JSON.stringify(seoData.description), tenant_id: currentTenant.id },
-        { key: 'seo_keywords', value: JSON.stringify(seoData.keywords), tenant_id: currentTenant.id },
-        { key: 'seo_og_title', value: JSON.stringify(seoData.ogTitle), tenant_id: currentTenant.id },
-        { key: 'seo_og_description', value: JSON.stringify(seoData.ogDescription), tenant_id: currentTenant.id },
-        { key: 'seo_og_image', value: JSON.stringify(seoData.ogImage), tenant_id: currentTenant.id },
-        { key: 'seo_twitter_title', value: JSON.stringify(seoData.twitterTitle), tenant_id: currentTenant.id },
-        { key: 'seo_twitter_description', value: JSON.stringify(seoData.twitterDescription), tenant_id: currentTenant.id }
+        { key: 'seo_title', value: JSON.stringify(seoData.title) },
+        { key: 'seo_description', value: JSON.stringify(seoData.description) },
+        { key: 'seo_keywords', value: JSON.stringify(seoData.keywords) },
+        { key: 'seo_og_title', value: JSON.stringify(seoData.ogTitle) },
+        { key: 'seo_og_description', value: JSON.stringify(seoData.ogDescription) },
+        { key: 'seo_og_image', value: JSON.stringify(seoData.ogImage) },
+        { key: 'seo_twitter_title', value: JSON.stringify(seoData.twitterTitle) },
+        { key: 'seo_twitter_description', value: JSON.stringify(seoData.twitterDescription) }
       ];
 
       for (const setting of seoUpdates) {
         await supabase
           .from('admin_settings')
-          .upsert(setting, { onConflict: 'key,tenant_id' });
+          .upsert(setting, { onConflict: 'key' });
       }
 
       // Call edge function to update index.html with new SEO data
@@ -368,17 +291,15 @@ export const useSupabaseAdmin = () => {
 
   const updateSeoImage = async (file: File) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
-      // Delete old SEO image if exists for this tenant
-      const { data: files } = await supabase.storage.from('logos').list(`${currentTenant.id}/seo/`);
+      // Delete old SEO image if exists
+      const { data: files } = await supabase.storage.from('logos').list('seo/');
       if (files && files.length > 0) {
-        await supabase.storage.from('logos').remove(files.map(f => `${currentTenant.id}/seo/${f.name}`));
+        await supabase.storage.from('logos').remove(files.map(f => `seo/${f.name}`));
       }
 
       // Upload new SEO image
       const fileExt = file.name.split('.').pop();
-      const fileName = `${currentTenant.id}/seo/og-image.${fileExt}`;
+      const fileName = `seo/og-image.${fileExt}`;
       
       const { data, error } = await supabase.storage
         .from('logos')
@@ -394,11 +315,7 @@ export const useSupabaseAdmin = () => {
       // Update SEO image URL in settings
       await supabase
         .from('admin_settings')
-        .upsert({ 
-          key: 'seo_og_image', 
-          value: JSON.stringify(publicUrl),
-          tenant_id: currentTenant.id
-        }, { onConflict: 'key,tenant_id' });
+        .upsert({ key: 'seo_og_image', value: JSON.stringify(publicUrl) }, { onConflict: 'key' });
 
       return publicUrl;
     } catch (error) {
@@ -409,23 +326,20 @@ export const useSupabaseAdmin = () => {
 
   const updateContentSettings = async (section: string, data: any) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
       const updates = [];
       
       // Convert section data to individual admin_settings entries
       for (const [key, value] of Object.entries(data)) {
         updates.push({
           key: `${section}_${key}`,
-          value: JSON.stringify(value),
-          tenant_id: currentTenant.id
+          value: JSON.stringify(value)
         });
       }
 
       const { error } = await supabase
         .from('admin_settings')
         .upsert(updates, {
-          onConflict: 'key,tenant_id'
+          onConflict: 'key'
         });
 
       if (error) {
@@ -441,15 +355,12 @@ export const useSupabaseAdmin = () => {
   // Social Links
   const updateSocialLinks = async (socialLinks: { facebook: string; instagram: string; youtube: string }) => {
     try {
-      if (!currentTenant) throw new Error('Tenant not found');
-      
       await supabase
         .from('admin_settings')
         .upsert({
           key: 'social_links',
-          value: socialLinks,
-          tenant_id: currentTenant.id
-        }, { onConflict: 'key,tenant_id' });
+          value: socialLinks
+        }, { onConflict: 'key' });
     } catch (error) {
       console.error('Error updating social links:', error);
       throw error;

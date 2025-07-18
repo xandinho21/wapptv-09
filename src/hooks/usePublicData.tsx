@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useTenant } from '@/contexts/TenantContext';
 
 interface Plan {
   id: string;
@@ -258,17 +257,12 @@ const DEFAULT_PUBLIC_DATA: PublicData = {
 export const usePublicData = () => {
   const [data, setData] = useState<PublicData>(DEFAULT_PUBLIC_DATA);
   const [loading, setLoading] = useState(true);
-  const { currentTenant } = useTenant();
 
   const fetchData = async () => {
     try {
       setLoading(true);
       
-      if (!currentTenant) {
-        return;
-      }
-      
-      // Fetch all data in parallel with tenant filtering
+      // Fetch all data in parallel
       const [
         { data: contacts = [] },
         { data: messages = [] },
@@ -278,13 +272,13 @@ export const usePublicData = () => {
         { data: tutorials = [] },
         { data: resellerSettings = [] }
       ] = await Promise.all([
-        supabase.from('contacts').select('*').eq('tenant_id', currentTenant.id),
-        supabase.from('messages').select('*').eq('tenant_id', currentTenant.id),
-        supabase.from('button_texts').select('*').eq('tenant_id', currentTenant.id),
-        supabase.from('admin_settings').select('*').eq('tenant_id', currentTenant.id),
-        supabase.from('plans').select('*').eq('tenant_id', currentTenant.id).order('sort_order'),
-        supabase.from('tutorials').select('*').eq('tenant_id', currentTenant.id).order('sort_order'),
-        supabase.from('reseller_settings').select('*').eq('tenant_id', currentTenant.id).limit(1)
+        supabase.from('contacts').select('*'),
+        supabase.from('messages').select('*'),
+        supabase.from('button_texts').select('*'),
+        supabase.from('admin_settings').select('*'),
+        supabase.from('plans').select('*').order('sort_order'),
+        supabase.from('tutorials').select('*').order('sort_order'),
+        supabase.from('reseller_settings').select('*').limit(1)
       ]);
 
       // Process contacts
@@ -461,27 +455,25 @@ export const usePublicData = () => {
   };
 
   useEffect(() => {
-    if (currentTenant) {
-      fetchData();
+    fetchData();
 
-      // Set up real-time subscriptions for data updates
-      const channels = [
-        supabase.channel('contacts-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'contacts' }, fetchData),
-        supabase.channel('messages-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, fetchData),
-        supabase.channel('button_texts-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'button_texts' }, fetchData),
-        supabase.channel('admin_settings-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'admin_settings' }, fetchData),
-        supabase.channel('plans-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'plans' }, fetchData),
-        supabase.channel('tutorials-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'tutorials' }, fetchData),
-        supabase.channel('reseller_settings-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'reseller_settings' }, fetchData)
-      ];
+    // Set up real-time subscriptions for data updates
+    const channels = [
+      supabase.channel('contacts-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'contacts' }, fetchData),
+      supabase.channel('messages-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'messages' }, fetchData),
+      supabase.channel('button_texts-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'button_texts' }, fetchData),
+      supabase.channel('admin_settings-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'admin_settings' }, fetchData),
+      supabase.channel('plans-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'plans' }, fetchData),
+      supabase.channel('tutorials-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'tutorials' }, fetchData),
+      supabase.channel('reseller_settings-changes').on('postgres_changes', { event: '*', schema: 'public', table: 'reseller_settings' }, fetchData)
+    ];
 
-      channels.forEach(channel => channel.subscribe());
+    channels.forEach(channel => channel.subscribe());
 
-      return () => {
-        channels.forEach(channel => supabase.removeChannel(channel));
-      };
-    }
-  }, [currentTenant]);
+    return () => {
+      channels.forEach(channel => supabase.removeChannel(channel));
+    };
+  }, []);
 
   return { data, loading, refetch: fetchData };
 };
