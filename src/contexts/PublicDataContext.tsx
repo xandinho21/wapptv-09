@@ -25,7 +25,11 @@ interface PublicData {
     instagram: string;
     youtube: string;
   };
-  seoSettings: {
+  tutorials: {
+    wapp: any[];
+    krator: any[];
+  };
+  seo: {
     title: string;
     description: string;
     keywords: string;
@@ -34,6 +38,56 @@ interface PublicData {
     ogImage: string;
     twitterTitle: string;
     twitterDescription: string;
+  };
+  content: {
+    hero: {
+      title: string;
+      subtitle: string;
+      buttonText: string;
+      priceText: string;
+      initialPrice: string;
+      card1Title: string;
+      card1Subtitle: string;
+      card2Title: string;
+      card2Subtitle: string;
+      card3Title: string;
+      card3Subtitle: string;
+    };
+    trial: {
+      title: string;
+      subtitle: string;
+    };
+    krator: {
+      mainTitle: string;
+      mainSubtitle: string;
+      whatTitle: string;
+      description: string;
+    };
+    reseller: {
+      title: string;
+      subtitle: string;
+      supportTitle: string;
+      supportText: string;
+      commissionTitle: string;
+      commissionText: string;
+      qualityTitle: string;
+      qualityText: string;
+      priceTableTitle: string;
+    };
+    footer: {
+      companyDescription: string;
+      copyright: string;
+      linksTitle: string;
+      contactTitle: string;
+      linkInicio: string;
+      linkPlanos: string;
+      linkKrator: string;
+      linkSupport: string;
+      whatsappButton: string;
+      activationText: string;
+      socialTitle: string;
+      tagline: string;
+    };
   };
 }
 
@@ -122,6 +176,14 @@ export const PublicDataProvider = ({ children }: { children: React.ReactNode }) 
       const contacts = allContacts.filter((c: any) => !c.is_reseller).map((c: any) => c.phone_number);
       const resellerContacts = allContacts.filter((c: any) => c.is_reseller).map((c: any) => c.phone_number);
 
+      // Process reseller settings with proper type checking
+      const resellerData = resellerSettingsResult.data;
+      let creditPrices: { credits: number; price: string; }[] = [];
+      
+      if (resellerData?.credit_prices && Array.isArray(resellerData.credit_prices)) {
+        creditPrices = resellerData.credit_prices as { credits: number; price: string; }[];
+      }
+
       const result = {
         siteName: settingsMap.site_name || 'Wapp TV',
         siteLogoUrl: settingsMap.site_logo_url || '',
@@ -146,11 +208,15 @@ export const PublicDataProvider = ({ children }: { children: React.ReactNode }) 
           reseller: buttonTexts.reseller || 'Seja Revendedor'
         },
         resellerSettings: {
-          showButton: resellerSettingsResult.data?.show_button ?? true,
-          creditPrices: resellerSettingsResult.data?.credit_prices || []
+          showButton: resellerData?.show_button ?? true,
+          creditPrices
         },
         socialLinks: settingsMap.social_links || { facebook: '', instagram: '', youtube: '' },
-        seoSettings: {
+        tutorials: {
+          wapp: wappTutorials,
+          krator: kratorTutorials
+        },
+        seo: {
           title: settingsMap.seo_title || 'Wapp TV - IPTV de Qualidade',
           description: settingsMap.seo_description || 'Os melhores canais de TV em alta definição',
           keywords: settingsMap.seo_keywords || 'iptv, tv online, canais',
@@ -159,6 +225,56 @@ export const PublicDataProvider = ({ children }: { children: React.ReactNode }) 
           ogImage: settingsMap.seo_og_image || '',
           twitterTitle: settingsMap.seo_twitter_title || 'Wapp TV - IPTV de Qualidade',
           twitterDescription: settingsMap.seo_twitter_description || 'Os melhores canais de TV em alta definição'
+        },
+        content: {
+          hero: {
+            title: settingsMap.hero_title || 'Experimente o Melhor do Streaming',
+            subtitle: settingsMap.hero_subtitle || 'Entretenimento de qualidade com tecnologia avançada. Desfrute de milhares de canais, filmes e séries com a melhor qualidade de streaming.',
+            buttonText: settingsMap.hero_buttonText || 'Ver Planos',
+            priceText: settingsMap.hero_priceText || 'A partir de',
+            initialPrice: settingsMap.hero_initialPrice || 'R$ 25,00',
+            card1Title: settingsMap.hero_card1Title || 'Streaming',
+            card1Subtitle: settingsMap.hero_card1Subtitle || 'Qualidade Premium',
+            card2Title: settingsMap.hero_card2Title || 'Suporte',
+            card2Subtitle: settingsMap.hero_card2Subtitle || 'Pelo Whatsapp',
+            card3Title: settingsMap.hero_card3Title || '15.000+',
+            card3Subtitle: settingsMap.hero_card3Subtitle || 'Conteúdos Disponíveis'
+          },
+          trial: {
+            title: settingsMap.trial_title || 'Experimente Antes de Comprar',
+            subtitle: settingsMap.trial_subtitle || 'Teste nossa plataforma gratuitamente por 4 horas e veja a qualidade do nosso serviço'
+          },
+          krator: {
+            mainTitle: settingsMap.krator_mainTitle || 'Conheça o Novo Sistema Krator',
+            mainSubtitle: settingsMap.krator_mainSubtitle || 'Tecnologia revolucionária que transforma sua experiência de entretenimento',
+            whatTitle: settingsMap.krator_whatTitle || 'O que é o Krator?',
+            description: settingsMap.krator_description || 'O Krator é nosso sistema proprietário de streaming que garante a melhor qualidade de imagem, estabilidade de conexão e experiência de usuário incomparável.'
+          },
+          reseller: {
+            title: settingsMap.reseller_title || 'Seja um Revendedor',
+            subtitle: settingsMap.reseller_subtitle || 'Faça parte da nossa rede de revendedores e tenha uma fonte extra de renda vendendo nossos produtos com excelente suporte e comissões atrativas.',
+            supportTitle: settingsMap.reseller_supportTitle || 'Suporte Completo',
+            supportText: settingsMap.reseller_supportText || 'Oferecemos suporte técnico e comercial para você e seus clientes',
+            commissionTitle: settingsMap.reseller_commissionTitle || 'Comissões Atrativas',
+            commissionText: settingsMap.reseller_commissionText || 'Ganhe comissões competitivas em cada venda realizada',
+            qualityTitle: settingsMap.reseller_qualityTitle || 'Produtos de Qualidade',
+            qualityText: settingsMap.reseller_qualityText || 'Venda produtos testados e aprovados por milhares de clientes',
+            priceTableTitle: settingsMap.reseller_priceTableTitle || 'Tabela de Preços para Revendedores'
+          },
+          footer: {
+            companyDescription: settingsMap.footer_companyDescription || 'A melhor experiência em streaming com tecnologia avançada. Entretenimento de qualidade para toda a família.',
+            copyright: settingsMap.footer_copyright || '© 2025 Wapp TV. Todos os direitos reservados.',
+            linksTitle: settingsMap.footer_linksTitle || 'Links Úteis',
+            contactTitle: settingsMap.footer_contactTitle || 'Contato',
+            linkInicio: settingsMap.footer_linkInicio || 'Início',
+            linkPlanos: settingsMap.footer_linkPlanos || 'Planos',
+            linkKrator: settingsMap.footer_linkKrator || 'Sistema Krator',
+            linkSupport: settingsMap.footer_linkSupport || 'Suporte Técnico',
+            whatsappButton: settingsMap.footer_whatsappButton || 'Falar no WhatsApp',
+            activationText: settingsMap.footer_activationText || '⚡ Ativação imediata',
+            socialTitle: settingsMap.footer_socialTitle || 'Redes Sociais',
+            tagline: settingsMap.footer_tagline || 'Wapp TV - Transformando sua experiência de entretenimento'
+          }
         }
       };
 
@@ -199,7 +315,11 @@ export const PublicDataProvider = ({ children }: { children: React.ReactNode }) 
         creditPrices: []
       },
       socialLinks: { facebook: '', instagram: '', youtube: '' },
-      seoSettings: {
+      tutorials: {
+        wapp: [],
+        krator: []
+      },
+      seo: {
         title: 'Wapp TV - IPTV de Qualidade',
         description: 'Os melhores canais de TV em alta definição',
         keywords: 'iptv, tv online, canais',
@@ -208,6 +328,56 @@ export const PublicDataProvider = ({ children }: { children: React.ReactNode }) 
         ogImage: '',
         twitterTitle: 'Wapp TV - IPTV de Qualidade',
         twitterDescription: 'Os melhores canais de TV em alta definição'
+      },
+      content: {
+        hero: {
+          title: 'Experimente o Melhor do Streaming',
+          subtitle: 'Entretenimento de qualidade com tecnologia avançada. Desfrute de milhares de canais, filmes e séries com a melhor qualidade de streaming.',
+          buttonText: 'Ver Planos',
+          priceText: 'A partir de',
+          initialPrice: 'R$ 25,00',
+          card1Title: 'Streaming',
+          card1Subtitle: 'Qualidade Premium',
+          card2Title: 'Suporte',
+          card2Subtitle: 'Pelo Whatsapp',
+          card3Title: '15.000+',
+          card3Subtitle: 'Conteúdos Disponíveis'
+        },
+        trial: {
+          title: 'Experimente Antes de Comprar',
+          subtitle: 'Teste nossa plataforma gratuitamente por 4 horas e veja a qualidade do nosso serviço'
+        },
+        krator: {
+          mainTitle: 'Conheça o Novo Sistema Krator',
+          mainSubtitle: 'Tecnologia revolucionária que transforma sua experiência de entretenimento',
+          whatTitle: 'O que é o Krator?',
+          description: 'O Krator é nosso sistema proprietário de streaming que garante a melhor qualidade de imagem, estabilidade de conexão e experiência de usuário incomparável.'
+        },
+        reseller: {
+          title: 'Seja um Revendedor',
+          subtitle: 'Faça parte da nossa rede de revendedores e tenha uma fonte extra de renda vendendo nossos produtos com excelente suporte e comissões atrativas.',
+          supportTitle: 'Suporte Completo',
+          supportText: 'Oferecemos suporte técnico e comercial para você e seus clientes',
+          commissionTitle: 'Comissões Atrativas',
+          commissionText: 'Ganhe comissões competitivas em cada venda realizada',
+          qualityTitle: 'Produtos de Qualidade',
+          qualityText: 'Venda produtos testados e aprovados por milhares de clientes',
+          priceTableTitle: 'Tabela de Preços para Revendedores'
+        },
+        footer: {
+          companyDescription: 'A melhor experiência em streaming com tecnologia avançada. Entretenimento de qualidade para toda a família.',
+          copyright: '© 2025 Wapp TV. Todos os direitos reservados.',
+          linksTitle: 'Links Úteis',
+          contactTitle: 'Contato',
+          linkInicio: 'Início',
+          linkPlanos: 'Planos',
+          linkKrator: 'Sistema Krator',
+          linkSupport: 'Suporte Técnico',
+          whatsappButton: 'Falar no WhatsApp',
+          activationText: '⚡ Ativação imediata',
+          socialTitle: 'Redes Sociais',
+          tagline: 'Wapp TV - Transformando sua experiência de entretenimento'
+        }
       }
     },
     isLoading: isLoading || tenantLoading,
