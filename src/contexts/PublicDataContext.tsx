@@ -14,8 +14,19 @@ interface PublicData {
   kratorTutorials: any[];
   contacts: string[];
   resellerContacts: string[];
-  messages: Record<string, string>;
-  buttonTexts: Record<string, string>;
+  messages: {
+    default: string;
+    krator: string;
+    contact: string;
+    trial4h: string;
+    trial1h: string;
+    reseller: string;
+  };
+  buttonTexts: {
+    trial4h: string;
+    trial1h: string;
+    reseller: string;
+  };
   resellerSettings: {
     showButton: boolean;
     creditPrices: { credits: number; price: string; }[];
@@ -62,6 +73,21 @@ interface PublicData {
       mainSubtitle: string;
       whatTitle: string;
       description: string;
+      features: string[];
+      performanceTitle: string;
+      performanceText: string;
+      stabilityTitle: string;
+      stabilityText: string;
+      qualityTitle: string;
+      qualityText: string;
+      planSectionTitle: string;
+      planName: string;
+      planFeatures: string[];
+      trialTitle: string;
+      trialDuration: string;
+      trialSubtitle: string;
+      trialDescription: string;
+      trialFeature: string;
     };
     reseller: {
       title: string;
@@ -73,8 +99,11 @@ interface PublicData {
       qualityTitle: string;
       qualityText: string;
       priceTableTitle: string;
+      creditsText: string;
+      perCreditText: string;
     };
     footer: {
+      companyName: string;
       companyDescription: string;
       copyright: string;
       linksTitle: string;
@@ -248,7 +277,22 @@ export const PublicDataProvider = ({ children }: { children: React.ReactNode }) 
             mainTitle: settingsMap.krator_mainTitle || 'Conheça o Novo Sistema Krator',
             mainSubtitle: settingsMap.krator_mainSubtitle || 'Tecnologia revolucionária que transforma sua experiência de entretenimento',
             whatTitle: settingsMap.krator_whatTitle || 'O que é o Krator?',
-            description: settingsMap.krator_description || 'O Krator é nosso sistema proprietário de streaming que garante a melhor qualidade de imagem, estabilidade de conexão e experiência de usuário incomparável.'
+            description: settingsMap.krator_description || 'O Krator é nosso sistema proprietário de streaming que garante a melhor qualidade de imagem, estabilidade de conexão e experiência de usuário incomparável.',
+            features: settingsMap.krator_features || [],
+            performanceTitle: settingsMap.krator_performanceTitle || 'Performance Superior',
+            performanceText: settingsMap.krator_performanceText || 'Sistema otimizado para máxima performance',
+            stabilityTitle: settingsMap.krator_stabilityTitle || 'Estabilidade Garantida',
+            stabilityText: settingsMap.krator_stabilityText || 'Conexão estável e confiável',
+            qualityTitle: settingsMap.krator_qualityTitle || 'Qualidade HD/4K',
+            qualityText: settingsMap.krator_qualityText || 'Imagem em alta definição',
+            planSectionTitle: settingsMap.krator_planSectionTitle || 'Plano Krator',
+            planName: settingsMap.krator_planName || 'Krator Premium',
+            planFeatures: settingsMap.krator_planFeatures || [],
+            trialTitle: settingsMap.krator_trialTitle || 'Teste Grátis',
+            trialDuration: settingsMap.krator_trialDuration || '1 Hora',
+            trialSubtitle: settingsMap.krator_trialSubtitle || 'Experimente sem compromisso',
+            trialDescription: settingsMap.krator_trialDescription || 'Teste por 1 hora gratuitamente',
+            trialFeature: settingsMap.krator_trialFeature || 'Acesso completo por 1 hora'
           },
           reseller: {
             title: settingsMap.reseller_title || 'Seja um Revendedor',
@@ -259,9 +303,12 @@ export const PublicDataProvider = ({ children }: { children: React.ReactNode }) 
             commissionText: settingsMap.reseller_commissionText || 'Ganhe comissões competitivas em cada venda realizada',
             qualityTitle: settingsMap.reseller_qualityTitle || 'Produtos de Qualidade',
             qualityText: settingsMap.reseller_qualityText || 'Venda produtos testados e aprovados por milhares de clientes',
-            priceTableTitle: settingsMap.reseller_priceTableTitle || 'Tabela de Preços para Revendedores'
+            priceTableTitle: settingsMap.reseller_priceTableTitle || 'Tabela de Preços para Revendedores',
+            creditsText: settingsMap.reseller_creditsText || 'Créditos',
+            perCreditText: settingsMap.reseller_perCreditText || 'por crédito'
           },
           footer: {
+            companyName: settingsMap.footer_companyName || 'Wapp TV',
             companyDescription: settingsMap.footer_companyDescription || 'A melhor experiência em streaming com tecnologia avançada. Entretenimento de qualidade para toda a família.',
             copyright: settingsMap.footer_copyright || '© 2025 Wapp TV. Todos os direitos reservados.',
             linksTitle: settingsMap.footer_linksTitle || 'Links Úteis',
@@ -351,7 +398,22 @@ export const PublicDataProvider = ({ children }: { children: React.ReactNode }) 
           mainTitle: 'Conheça o Novo Sistema Krator',
           mainSubtitle: 'Tecnologia revolucionária que transforma sua experiência de entretenimento',
           whatTitle: 'O que é o Krator?',
-          description: 'O Krator é nosso sistema proprietário de streaming que garante a melhor qualidade de imagem, estabilidade de conexão e experiência de usuário incomparável.'
+          description: 'O Krator é nosso sistema proprietário de streaming que garante a melhor qualidade de imagem, estabilidade de conexão e experiência de usuário incomparável.',
+          features: [],
+          performanceTitle: 'Performance Superior',
+          performanceText: 'Sistema otimizado para máxima performance',
+          stabilityTitle: 'Estabilidade Garantida',
+          stabilityText: 'Conexão estável e confiável',
+          qualityTitle: 'Qualidade HD/4K',
+          qualityText: 'Imagem em alta definição',
+          planSectionTitle: 'Plano Krator',
+          planName: 'Krator Premium',
+          planFeatures: [],
+          trialTitle: 'Teste Grátis',
+          trialDuration: '1 Hora',
+          trialSubtitle: 'Experimente sem compromisso',
+          trialDescription: 'Teste por 1 hora gratuitamente',
+          trialFeature: 'Acesso completo por 1 hora'
         },
         reseller: {
           title: 'Seja um Revendedor',
@@ -362,9 +424,12 @@ export const PublicDataProvider = ({ children }: { children: React.ReactNode }) 
           commissionText: 'Ganhe comissões competitivas em cada venda realizada',
           qualityTitle: 'Produtos de Qualidade',
           qualityText: 'Venda produtos testados e aprovados por milhares de clientes',
-          priceTableTitle: 'Tabela de Preços para Revendedores'
+          priceTableTitle: 'Tabela de Preços para Revendedores',
+          creditsText: 'Créditos',
+          perCreditText: 'por crédito'
         },
         footer: {
+          companyName: 'Wapp TV',
           companyDescription: 'A melhor experiência em streaming com tecnologia avançada. Entretenimento de qualidade para toda a família.',
           copyright: '© 2025 Wapp TV. Todos os direitos reservados.',
           linksTitle: 'Links Úteis',
