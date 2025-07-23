@@ -19,9 +19,9 @@ const Krator = () => {
     window.open(`https://wa.me/${randomContact}?text=${message}`, '_blank');
   };
   const kratorPlan = {
-    name: 'Krator 1 Tela',
+    name: publicData.content.krator.planName,
     price: adminData.kratorPrice,
-    features: ['1 Tela simultânea', 'Sistema Krator incluído', 'Alta qualidade', 'Streaming otimizado', 'Suporte via whatsapp']
+    features: publicData.content.krator.planFeatures
   };
   return <section id="krator" className="py-20" style={{ background: `linear-gradient(135deg, hsl(var(--krator-primary) / 0.8), hsl(var(--krator-secondary) / 0.9), hsl(217.2 32.6% 17.5%))` }}>
       <div className="container mx-auto px-4">
@@ -44,7 +44,7 @@ const Krator = () => {
                 </p>
                 
                 <div className="space-y-4">
-                  {['Streaming em tempo real otimizado', 'Qualidade adaptativa automática', 'Cache inteligente para maior velocidade', 'Interface intuitiva e responsiva'].map((feature, index) => <div key={index} className="flex items-center">
+                  {publicData.content.krator.features.map((feature, index) => <div key={index} className="flex items-center">
                       <div className="w-3 h-3 bg-krator-primary rounded-full mr-4"></div>
                       <span className="text-gray-300 text-base">{feature}</span>
                     </div>)}
@@ -54,23 +54,23 @@ const Krator = () => {
 
             <div className="space-y-8">
               <div className="bg-krator-secondary/30 backdrop-blur-sm rounded-xl p-6 border border-krator-primary/20">
-                <h4 className="text-xl font-bold text-white mb-3">Performance Superior</h4>
+                <h4 className="text-xl font-bold text-white mb-3">{publicData.content.krator.performanceTitle}</h4>
                 <p className="text-gray-300">
-                  Velocidade de carregamento 3x mais rápida comparado aos sistemas tradicionais
+                  {publicData.content.krator.performanceText}
                 </p>
               </div>
 
               <div className="bg-krator-secondary/30 backdrop-blur-sm rounded-xl p-6 border border-krator-primary/20">
-                <h4 className="text-xl font-bold text-white mb-3">Estabilidade Garantida</h4>
+                <h4 className="text-xl font-bold text-white mb-3">{publicData.content.krator.stabilityTitle}</h4>
                 <p className="text-gray-300">
-                  99.9% de uptime com servidores redundantes para máxima disponibilidade
+                  {publicData.content.krator.stabilityText}
                 </p>
               </div>
 
               <div className="bg-krator-secondary/30 backdrop-blur-sm rounded-xl p-6 border border-krator-primary/20">
-                <h4 className="text-xl font-bold text-white mb-3">Qualidade Adaptativa</h4>
+                <h4 className="text-xl font-bold text-white mb-3">{publicData.content.krator.qualityTitle}</h4>
                 <p className="text-gray-300">
-                  Ajuste automático da qualidade baseado na sua conexão para melhor experiência
+                  {publicData.content.krator.qualityText}
                 </p>
               </div>
             </div>
@@ -79,7 +79,7 @@ const Krator = () => {
           <div className="text-center mt-16">
             <div className="rounded-2xl p-8 border border-krator-primary/30" style={{ background: `linear-gradient(135deg, hsl(var(--krator-primary) / 0.6), hsl(var(--krator-secondary) / 0.8))` }}>
               <h3 className="text-3xl font-bold text-white mb-8">
-                Plano com Sistema Krator
+                {publicData.content.krator.planSectionTitle}
               </h3>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -110,17 +110,17 @@ const Krator = () => {
                 {/* Teste Grátis */}
                 <div className="bg-krator-secondary/50 backdrop-blur-sm rounded-xl p-6 border-2 border-krator-primary/50 shadow-xl transition-all duration-300 hover:scale-105">
                   <div className="text-center mb-6">
-                    <h4 className="text-2xl font-bold text-white mb-4">Teste Grátis</h4>
-                    <div className="text-3xl font-bold text-krator-primary mb-2">1 Hora</div>
-                    <div className="text-gray-200">Sistema Krator</div>
+                    <h4 className="text-2xl font-bold text-white mb-4">{publicData.content.krator.trialTitle}</h4>
+                    <div className="text-3xl font-bold text-krator-primary mb-2">{publicData.content.krator.trialDuration}</div>
+                    <div className="text-gray-200">{publicData.content.krator.trialSubtitle}</div>
                   </div>
 
                   <div className="space-y-4 mb-6">
                     <div className="text-center text-gray-100">
-                      <p className="mb-4">Experimente o sistema Krator gratuitamente e veja a diferença na qualidade do streaming.</p>
+                      <p className="mb-4">{publicData.content.krator.trialDescription}</p>
                       <div className="flex items-center justify-center">
                         <div className="w-2 h-2 bg-krator-primary rounded-full mr-3"></div>
-                        <span>Acesso completo por 1 hora</span>
+                        <span>{publicData.content.krator.trialFeature}</span>
                       </div>
                     </div>
                   </div>
