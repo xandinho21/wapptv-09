@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '../hooks/useAdmin';
+import { useAuth } from '../contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,7 +10,8 @@ import { useToast } from '@/hooks/use-toast';
 import { LogOut, Phone, MessageSquare, Plus, Trash2, TestTube, Users, Eye, EyeOff } from 'lucide-react';
 
 const AdminDashboard = () => {
-  const { adminData, logout, updateContacts, updateResellerContacts, updateMessages, updateButtonTexts, updateResellerSettings } = useAdmin();
+  const { adminData, updateContacts, updateResellerContacts, updateMessages, updateButtonTexts, updateResellerSettings } = useAdmin();
+  const { signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -21,9 +23,9 @@ const AdminDashboard = () => {
   const [newContact, setNewContact] = useState('');
   const [newResellerContact, setNewResellerContact] = useState('');
 
-  const handleLogout = () => {
-    logout();
-    navigate('/admin/login');
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/');
     toast({
       title: "Logout realizado",
       description: "Você foi desconectado do painel administrativo.",
@@ -110,14 +112,7 @@ const AdminDashboard = () => {
               Ver Site
             </Button>
             <Button
-              onClick={() => {
-                logout();
-                navigate('/admin/login');
-                toast({
-                  title: "Logout realizado",
-                  description: "Você foi desconectado do painel administrativo.",
-                });
-              }}
+              onClick={handleLogout}
               variant="destructive"
               className="flex items-center gap-2"
             >
