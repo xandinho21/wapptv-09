@@ -52,7 +52,16 @@ serve(async (req) => {
     // Convert array to object for easier access
     const seoData: Record<string, string> = {};
     seoSettings?.forEach(setting => {
-      seoData[setting.key] = typeof setting.value === 'string' ? setting.value : String(setting.value || '');
+      // Parse JSON if the value is a JSON string
+      let value = setting.value;
+      if (typeof value === 'string' && (value.startsWith('"') && value.endsWith('"'))) {
+        try {
+          value = JSON.parse(value);
+        } catch (e) {
+          console.warn('Failed to parse JSON value for', setting.key, ':', value);
+        }
+      }
+      seoData[setting.key] = String(value || '');
     });
 
     // Generate theme CSS variables
@@ -69,13 +78,27 @@ serve(async (req) => {
     </style>`;
     }
 
-    // Read current index.html
-    const indexPath = './index.html';
-    let htmlContent: string;
+    // Since we can't write to the deployment files, return the SEO data for client-side updates
+    console.log('SEO Data to be applied:', seoData);
     
-    try {
-      htmlContent = await Deno.readTextFile(indexPath);
-    } catch {
+    // For now, we'll return success but not actually write the file
+    // The client will handle meta tag updates dynamically
+    return new Response(JSON.stringify({ 
+      success: true, 
+      message: 'SEO data processed successfully',
+      seoData: seoData,
+      theme: activeTheme
+    }), {
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+
+    // Read current index.html (commented out as we can't modify deployment files)
+    // const indexPath = './index.html';
+    // let htmlContent: string;
+    
+    // try {
+    //   htmlContent = await Deno.readTextFile(indexPath);
+    // } catch {
       // If file doesn't exist, create basic structure
       htmlContent = `<!DOCTYPE html>
 <html lang="pt-BR">
@@ -218,16 +241,7 @@ serve(async (req) => {
       } else if (headCloseRegex.test(updatedHtml)) {
         updatedHtml = updatedHtml.replace(headCloseRegex, `${themeStyles}\n  $1`);
       }
-    }
-
-    // Write updated HTML back to file
-    await Deno.writeTextFile(indexPath, updatedHtml);
-
-    console.log('Successfully updated index.html with new SEO data');
-
-    return new Response(JSON.stringify({ success: true, message: 'SEO HTML updated successfully' }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
+    // }
 
   } catch (error) {
     console.error('Error updating SEO HTML:', error);

@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAdmin } from '../../hooks/useAdmin';
+import { usePublicDataContext } from '../../contexts/PublicDataContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,6 +13,7 @@ import { toast } from 'sonner';
 
 const SeoConfig = () => {
   const { adminData, updateSeoSettings, updateSeoImage } = useAdmin();
+  const { refetch } = usePublicDataContext();
   const [seoData, setSeoData] = useState({
     title: '',
     description: '',
@@ -70,6 +72,10 @@ const SeoConfig = () => {
       }
 
       await updateSeoSettings(seoData);
+      
+      // Refetch data to sync the changes immediately
+      await refetch();
+      
       toast.success('Configurações de SEO salvas com sucesso!');
     } catch (error) {
       console.error('Erro ao salvar configurações SEO:', error);
