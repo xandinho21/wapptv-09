@@ -241,7 +241,7 @@ serve(async (req) => {
       } else if (headCloseRegex.test(updatedHtml)) {
         updatedHtml = updatedHtml.replace(headCloseRegex, `${themeStyles}\n  $1`);
       }
-    // }
+    }
 
   } catch (error) {
     console.error('Error updating SEO HTML:', error);
