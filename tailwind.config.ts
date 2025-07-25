@@ -69,7 +69,10 @@ export default {
 				},
 				krator: {
 					primary: 'hsl(var(--krator-primary))',
-					secondary: 'hsl(var(--krator-secondary))'
+					secondary: 'hsl(var(--krator-secondary))',
+					'trial-button-bg': 'hsl(var(--krator-trial-button-bg))',
+					'trial-button-text': 'hsl(var(--krator-trial-button-text))',
+					'trial-button-hover': 'hsl(var(--krator-trial-button-hover))'
 				}
 			},
 			borderRadius: {

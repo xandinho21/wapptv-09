@@ -52,6 +52,7 @@ export const useTheme = () => {
   };
 
   const applyTheme = (theme: ThemeSettings) => {
+    console.log('Applying theme:', theme.name, theme);
     const root = document.documentElement;
     
     // Apply main theme colors
@@ -67,6 +68,8 @@ export const useTheme = () => {
     root.style.setProperty('--krator-trial-button-bg', theme.krator_trial_button_bg_color);
     root.style.setProperty('--krator-trial-button-text', theme.krator_trial_button_text_color);
     root.style.setProperty('--krator-trial-button-hover', theme.krator_trial_button_hover_color);
+    
+    console.log('Theme applied - CSS variables set');
   };
 
   const activateTheme = async (themeId: string) => {
@@ -85,7 +88,18 @@ export const useTheme = () => {
 
       if (error) throw error;
 
-      await fetchThemes();
+      // Immediately apply the theme locally for instant feedback
+      const targetTheme = themes.find(t => t.id === themeId);
+      if (targetTheme) {
+        const updatedTheme = { ...targetTheme, is_active: true };
+        setActiveTheme(updatedTheme);
+        applyTheme(updatedTheme);
+      }
+
+      // Then refetch to ensure consistency
+      setTimeout(() => {
+        fetchThemes();
+      }, 100);
       
       toast({
         title: "Tema Aplicado",
@@ -110,7 +124,17 @@ export const useTheme = () => {
 
       if (error) throw error;
 
-      await fetchThemes();
+      // If updating the active theme, apply changes immediately
+      if (activeTheme?.id === themeId) {
+        const updatedTheme = { ...activeTheme, ...updates };
+        setActiveTheme(updatedTheme);
+        applyTheme(updatedTheme);
+      }
+
+      // Then refetch to ensure consistency
+      setTimeout(() => {
+        fetchThemes();
+      }, 100);
       
       toast({
         title: "Tema Atualizado",
@@ -200,6 +224,30 @@ export const useTheme = () => {
 
   useEffect(() => {
     fetchThemes();
+    
+    // Set up real-time listener for theme changes
+    const channel = supabase
+      .channel('theme_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'theme_settings'
+        },
+        (payload) => {
+          console.log('Theme change detected:', payload);
+          // Refetch themes when any change is detected
+          setTimeout(() => {
+            fetchThemes();
+          }, 500);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   return {
