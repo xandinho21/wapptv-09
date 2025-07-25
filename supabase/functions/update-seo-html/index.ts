@@ -12,10 +12,49 @@ serve(async (req) => {
   }
 
   try {
+    // Get the authorization header
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: 'Missing authorization header' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
     const supabaseClient = createClient(
       'https://ycvuonxjasgvbuqpxbcj.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljdnVvbnhqYXNndmJ1cXB4YmNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1OTY2MzksImV4cCI6MjA2NzE3MjYzOX0.HXhuZu6ThhW9-LvsMxw7oIKEjcJ73IBLHV1CZAaOxqk'
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljdnVvbnhqYXNndmJ1cXB4YmNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1OTY2MzksImV4cCI6MjA2NzE3MjYzOX0.HXhuZu6ThhW9-LvsMxw7oIKEjcJ73IBLHV1CZAaOxqk',
+      {
+        global: {
+          headers: {
+            Authorization: authHeader
+          }
+        }
+      }
     );
+
+    // Verify the user is authenticated and has admin role
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+    if (userError || !user) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+
+    // Check if user has admin role
+    const { data: userRole, error: roleError } = await supabaseClient
+      .from('user_roles')
+      .select('role')
+      .eq('user_id', user.id)
+      .single();
+
+    if (roleError || !userRole || userRole.role !== 'admin') {
+      return new Response(JSON.stringify({ error: 'Insufficient permissions' }), {
+        status: 403,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
 
     // Fetch current SEO settings and active theme from database
     const [seoResult, themeResult] = await Promise.all([
@@ -52,16 +91,7 @@ serve(async (req) => {
     // Convert array to object for easier access
     const seoData: Record<string, string> = {};
     seoSettings?.forEach(setting => {
-      // Parse JSON if the value is a JSON string
-      let value = setting.value;
-      if (typeof value === 'string' && (value.startsWith('"') && value.endsWith('"'))) {
-        try {
-          value = JSON.parse(value);
-        } catch (e) {
-          console.warn('Failed to parse JSON value for', setting.key, ':', value);
-        }
-      }
-      seoData[setting.key] = String(value || '');
+      seoData[setting.key] = typeof setting.value === 'string' ? setting.value : String(setting.value || '');
     });
 
     // Generate theme CSS variables
@@ -78,15 +108,163 @@ serve(async (req) => {
     </style>`;
     }
 
-    // Return the SEO data for client-side updates
-    console.log('SEO Data to be applied:', seoData);
+    // Read current index.html
+    const indexPath = './index.html';
+    let htmlContent: string;
     
-    return new Response(JSON.stringify({ 
-      success: true, 
-      message: 'SEO data processed successfully',
-      seoData: seoData,
-      theme: activeTheme
-    }), {
+    try {
+      htmlContent = await Deno.readTextFile(indexPath);
+    } catch {
+      // If file doesn't exist, create basic structure
+      htmlContent = `<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wapp TV - O Melhor da IPTV</title>
+    <meta name="description" content="Experimente o melhor da IPTV com Wapp TV. Planos a partir de R$ 25,00 com o novo sistema Krator." />
+    <meta name="author" content="Wapp TV" />
+
+    <meta property="og:title" content="Wapp TV - O Melhor da IPTV" />
+    <meta property="og:description" content="Experimente o melhor da IPTV com Wapp TV. Planos a partir de R$ 25,00 com o novo sistema Krator." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@wapptv" />
+    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>`;
+    }
+
+    // Update meta tags with new SEO data
+    let updatedHtml = htmlContent;
+
+    // Update title
+    if (seoData.seo_title) {
+      updatedHtml = updatedHtml.replace(
+        /<title>.*?<\/title>/i,
+        `<title>${seoData.seo_title}</title>`
+      );
+    }
+
+    // Update description
+    if (seoData.seo_description) {
+      updatedHtml = updatedHtml.replace(
+        /<meta name="description" content=".*?"/i,
+        `<meta name="description" content="${seoData.seo_description}"`
+      );
+    }
+
+    // Update keywords if provided
+    if (seoData.seo_keywords) {
+      if (updatedHtml.includes('<meta name="keywords"')) {
+        updatedHtml = updatedHtml.replace(
+          /<meta name="keywords" content=".*?"/i,
+          `<meta name="keywords" content="${seoData.seo_keywords}"`
+        );
+      } else {
+        // Add keywords meta tag after description
+        updatedHtml = updatedHtml.replace(
+          /(<meta name="description"[^>]*>)/i,
+          `$1\n    <meta name="keywords" content="${seoData.seo_keywords}" />`
+        );
+      }
+    }
+
+    // Update Open Graph title
+    if (seoData.seo_og_title) {
+      updatedHtml = updatedHtml.replace(
+        /<meta property="og:title" content=".*?"/i,
+        `<meta property="og:title" content="${seoData.seo_og_title}"`
+      );
+    }
+
+    // Update Open Graph description
+    if (seoData.seo_og_description) {
+      updatedHtml = updatedHtml.replace(
+        /<meta property="og:description" content=".*?"/i,
+        `<meta property="og:description" content="${seoData.seo_og_description}"`
+      );
+    }
+
+    // Update Open Graph image
+    if (seoData.seo_og_image) {
+      updatedHtml = updatedHtml.replace(
+        /<meta property="og:image" content=".*?"/i,
+        `<meta property="og:image" content="${seoData.seo_og_image}"`
+      );
+    }
+
+    // Update Twitter title
+    if (seoData.seo_twitter_title) {
+      if (updatedHtml.includes('<meta name="twitter:title"')) {
+        updatedHtml = updatedHtml.replace(
+          /<meta name="twitter:title" content=".*?"/i,
+          `<meta name="twitter:title" content="${seoData.seo_twitter_title}"`
+        );
+      } else {
+        // Add twitter title after twitter:site
+        updatedHtml = updatedHtml.replace(
+          /(<meta name="twitter:site"[^>]*>)/i,
+          `$1\n    <meta name="twitter:title" content="${seoData.seo_twitter_title}" />`
+        );
+      }
+    }
+
+    // Update Twitter description
+    if (seoData.seo_twitter_description) {
+      if (updatedHtml.includes('<meta name="twitter:description"')) {
+        updatedHtml = updatedHtml.replace(
+          /<meta name="twitter:description" content=".*?"/i,
+          `<meta name="twitter:description" content="${seoData.seo_twitter_description}"`
+        );
+      } else {
+        // Add twitter description after twitter title or site
+        const insertAfter = updatedHtml.includes('<meta name="twitter:title"') 
+          ? /(<meta name="twitter:title"[^>]*>)/i 
+          : /(<meta name="twitter:site"[^>]*>)/i;
+        
+        updatedHtml = updatedHtml.replace(
+          insertAfter,
+          `$1\n    <meta name="twitter:description" content="${seoData.seo_twitter_description}" />`
+        );
+      }
+    }
+
+    // Update Twitter image
+    if (seoData.seo_og_image) {
+      updatedHtml = updatedHtml.replace(
+        /<meta name="twitter:image" content=".*?"/i,
+        `<meta name="twitter:image" content="${seoData.seo_og_image}"`
+      );
+    }
+
+    // Add theme styles to head if theme is available
+    if (themeStyles) {
+      // Add theme styles after favicon but before closing head tag
+      const faviconRegex = /(<link[^>]*rel="icon"[^>]*>)/i;
+      const headCloseRegex = /(<\/head>)/i;
+      
+      if (faviconRegex.test(updatedHtml)) {
+        updatedHtml = updatedHtml.replace(faviconRegex, `$1${themeStyles}`);
+      } else if (headCloseRegex.test(updatedHtml)) {
+        updatedHtml = updatedHtml.replace(headCloseRegex, `${themeStyles}\n  $1`);
+      }
+    }
+
+    // Write updated HTML back to file
+    await Deno.writeTextFile(indexPath, updatedHtml);
+
+    console.log('Successfully updated index.html with new SEO data');
+
+    return new Response(JSON.stringify({ success: true, message: 'SEO HTML updated successfully' }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
 

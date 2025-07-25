@@ -273,8 +273,16 @@ export const useSupabaseAdmin = () => {
           .upsert(setting, { onConflict: 'key' });
       }
 
-      // Trigger a refetch to sync updated data immediately
-      console.log('SEO settings updated successfully in database');
+      // Call edge function to update index.html with new SEO data
+      try {
+        const { error: functionError } = await supabase.functions.invoke('update-seo-html');
+        if (functionError) {
+          console.error('Error calling update-seo-html function:', functionError);
+        }
+      } catch (functionCallError) {
+        console.error('Error invoking SEO update function:', functionCallError);
+        // Don't throw here as the main SEO data was saved successfully
+      }
     } catch (error) {
       console.error('Error updating SEO settings:', error);
       throw error;
