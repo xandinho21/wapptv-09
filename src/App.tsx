@@ -4,10 +4,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { SecureAdminProvider } from "./contexts/SecureAdminContext";
+import { AdminProvider } from "./contexts/AdminContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { PublicDataProvider } from "./contexts/PublicDataContext";
-import AdminProtectedRoute from "./components/AdminProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import AdminLayout from "./pages/admin/AdminLayout";
@@ -33,7 +33,7 @@ const App = () => (
     <TooltipProvider>
       <AuthProvider>
         <PublicDataProvider>
-          <SecureAdminProvider>
+          <AdminProvider>
             <Toaster />
             <Sonner />
             <BrowserRouter>
@@ -41,9 +41,9 @@ const App = () => (
                 <Route path="/" element={<Index />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/admin/dashboard" element={
-                  <AdminProtectedRoute>
+                  <ProtectedRoute>
                     <AdminLayout />
-                  </AdminProtectedRoute>
+                  </ProtectedRoute>
                 }>
                   <Route index element={<WhatsappConfig />} />
                   <Route path="whatsapp" element={<WhatsappConfig />} />
@@ -63,7 +63,7 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
-          </SecureAdminProvider>
+          </AdminProvider>
         </PublicDataProvider>
       </AuthProvider>
     </TooltipProvider>

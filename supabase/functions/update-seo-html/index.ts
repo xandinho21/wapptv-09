@@ -12,49 +12,10 @@ serve(async (req) => {
   }
 
   try {
-    // Get the authorization header
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: 'Missing authorization header' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-
     const supabaseClient = createClient(
       'https://ycvuonxjasgvbuqpxbcj.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljdnVvbnhqYXNndmJ1cXB4YmNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1OTY2MzksImV4cCI6MjA2NzE3MjYzOX0.HXhuZu6ThhW9-LvsMxw7oIKEjcJ73IBLHV1CZAaOxqk',
-      {
-        global: {
-          headers: {
-            Authorization: authHeader
-          }
-        }
-      }
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InljdnVvbnhqYXNndmJ1cXB4YmNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE1OTY2MzksImV4cCI6MjA2NzE3MjYzOX0.HXhuZu6ThhW9-LvsMxw7oIKEjcJ73IBLHV1CZAaOxqk'
     );
-
-    // Verify the user is authenticated and has admin role
-    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
-    if (userError || !user) {
-      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-
-    // Check if user has admin role
-    const { data: userRole, error: roleError } = await supabaseClient
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .single();
-
-    if (roleError || !userRole || userRole.role !== 'admin') {
-      return new Response(JSON.stringify({ error: 'Insufficient permissions' }), {
-        status: 403,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
 
     // Fetch current SEO settings and active theme from database
     const [seoResult, themeResult] = await Promise.all([

@@ -1,12 +1,12 @@
 
 import { useContext } from 'react';
-import { SecureAdminContext } from '../contexts/SecureAdminContext';
+import { AdminContext } from '../contexts/AdminContext';
 import { usePublicDataContext } from '../contexts/PublicDataContext';
 
 export const useAdmin = () => {
-  const context = useContext(SecureAdminContext);
+  const context = useContext(AdminContext);
   if (context === undefined) {
-    throw new Error('useAdmin deve ser usado dentro de SecureAdminProvider');
+    throw new Error('useAdmin deve ser usado dentro de AdminProvider');
   }
   return context;
 };
